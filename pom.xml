@@ -1,282 +1,254 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
-================================================================================
-Copyright (c) 2019 AT&T Intellectual Property. All rights reserved.
-================================================================================
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-     http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-============LICENSE_END=========================================================
-
+  ============LICENSE_START=======================================================
+  pcims
+   ================================================================================
+   Copyright (C) 2018 Wipro Limited.
+   ==============================================================================
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+         http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+    ============LICENSE_END=========================================================
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0   http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+  <groupId>org.onap.dcaegen2.services</groupId>
+  <artifactId>son-handler</artifactId>
+  <name>dcaegen2-services-son-handler</name>
+  <version>1.0.0-SNAPSHOT</version>
+
+  <!--parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.0.4.RELEASE</version>
+  </parent-->
+	
   <parent>
     <groupId>org.onap.oparent</groupId>
     <artifactId>oparent</artifactId>
     <version>1.2.1</version>
     <relativePath/>
   </parent>
-  <parent>
-  <!--- CHANGE THE FOLLOWING 3 OBJECTS for your own repo -->
-  <groupId>org.onap.dcaegen2.services</groupId>
-  <artifactId>son-handler</artifactId>
-  <name>dcaegen2-services-son-handler</name>
-  <version>1.0.0-SNAPSHOT</version>
-  <url>http://maven.apache.org</url>
+
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <sonar.skip>true</sonar.skip>
-    <sonar.sources>.</sonar.sources>
-    <!-- customize the SONARQUBE URL -->
-    <!-- sonar.host.url>http://localhost:9000</sonar.host.url -->
-    <!-- below are language dependent -->
-    <!-- for Python -->
-    <sonar.language>py</sonar.language>
-    <sonar.pluginName>Python</sonar.pluginName>
-    <sonar.inclusions>**/*.py</sonar.inclusions>
-    <!-- for JavaScaript -->
-    <!--
-    <sonar.language>js</sonar.language>
-    <sonar.pluginName>JS</sonar.pluginName>
-    <sonar.inclusions>**/*.js</sonar.inclusions>
-    -->
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
+
+  <dependencies>
+  <dependency>
+        <!-- Import dependency management from Spring Boot -->
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>2.0.4.RELEASE</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+  	<dependency>
+	  <groupId>com.att.nsa</groupId>
+	  <artifactId>cambriaClient</artifactId>
+	  <version>0.0.1</version>
+	</dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+    <version>2.9.6</version>
+	</dependency>
+	<dependency>
+	  <groupId>com.fasterxml.jackson.core</groupId>
+	  <artifactId>jackson-databind</artifactId>
+    <version>2.9.6</version>
+	</dependency>
+<!-- https://mvnrepository.com/artifact/javax.json/javax.json-api -->
+<dependency>
+    <groupId>javax.json</groupId>
+    <artifactId>javax.json-api</artifactId>
+    <version>1.1.2</version>
+    </dependency>
+
+  	<dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+	<version>2.0.4.RELEASE</version>
+    </dependency>
+    <dependency>
+     <groupId>org.postgresql</groupId>
+     <artifactId>postgresql</artifactId>
+	<version>42.2.4</version>
+     </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-jpa</artifactId>
+	<version>2.0.4.RELEASE</version>
+    </dependency>
+<dependency>
+    <groupId>org.springframework.data</groupId>
+    <artifactId>spring-data-commons-core</artifactId>
+    <version>1.0.0.RELEASE</version>
+</dependency>
+
+
+  
+<!-- https://mvnrepository.com/artifact/org.codehaus.jackson/jackson-mapper-asl -->
+	<dependency>
+      <groupId>org.codehaus.jackson</groupId>
+      <artifactId>jackson-mapper-asl</artifactId>
+      <version>1.9.13</version>
+    </dependency>
+    <dependency>
+        <groupId>org.hibernate.javax.persistence</groupId>
+        <artifactId>hibernate-jpa-2.0-api</artifactId>
+        <version>1.0.1.Final</version>
+    </dependency>
+<!-- https://mvnrepository.com/artifact/org.springframework/spring-beans -->
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-beans</artifactId>
+    <version>5.0.8.RELEASE</version>
+</dependency>
+
+   <dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-test</artifactId>
+<version>2.0.4.RELEASE</version>
+		<scope>test</scope>
+		<!-- exclusions>
+        <exclusion> 
+          <groupId>org.mockito</groupId>
+          <artifactId>mockito-core</artifactId>
+        </exclusion>
+      </exclusions--> 
+	</dependency>
+	<!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
+	
+<dependency>
+    <groupId>org.mockito</groupId>
+    <artifactId>mockito-core</artifactId>
+    <version>1.10.16</version>
+    <scope>test</scope>
+</dependency>
+	
+	  	
+<dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+      <scope>test</scope>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.powermock/powermock-module-junit4 -->
+<!-- https://mvnrepository.com/artifact/org.powermock/powermock-api-mockito -->
+<dependency>
+    <groupId>org.powermock</groupId>
+    <artifactId>powermock-api-mockito</artifactId>
+    <version>1.6.4</version>
+    <scope>test</scope>
+</dependency>
+<!-- https://mvnrepository.com/artifact/org.powermock/powermock-module-junit4 -->
+<dependency>
+    <groupId>org.powermock</groupId>
+    <artifactId>powermock-module-junit4</artifactId>
+    <version>1.6.4</version>
+    <scope>test</scope>
+</dependency>
+
+
+
+    
+  </dependencies>
+
   <build>
-    <finalName>${project.artifactId}-${project.version}</finalName>
-    <pluginManagement>
-      <plugins>
-        <!-- the following plugins are invoked from oparent, we do not need them -->
-        <plugin>
-          <groupId>org.sonatype.plugins</groupId>
-          <artifactId>nexus-staging-maven-plugin</artifactId>
-          <version>1.6.7</version>
-          <configuration>
-            <skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-deploy-plugin</artifactId>
-          <!-- This version supports the "deployAtEnd" parameter -->
-          <version>2.8</version>
-          <configuration>
-            <skip>true</skip>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-enforcer-plugin</artifactId>
-          <version>3.0.0-M1</version>
-          <configuration>
-            <skip>true</skip>
-          </configuration>
-        </plugin>
-        <!-- first disable the default Java plugins at various stages -->
-        <!-- maven-resources-plugin is called during "*resource" phases by default behavior.  it prepares the resources
-       dir.  we do not need it -->
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-resources-plugin</artifactId>
-          <version>2.6</version>
-          <configuration>
-            <skip>true</skip>
-          </configuration>
-        </plugin>
-        <!-- maven-compiler-plugin is called during "compile" phases by default behavior.  we do not need it -->
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.1</version>
-          <configuration>
-            <skip>true</skip>
-          </configuration>
-        </plugin>
-        <!-- maven-jar-plugin is called during "compile" phase by default behavior.  we do not need it -->
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-jar-plugin</artifactId>
-          <version>2.4</version>
-          <executions>
-            <execution>
-              <id>default-jar</id>
-              <phase/>
-            </execution>
-          </executions>
-        </plugin>
-        <!-- maven-install-plugin is called during "install" phase by default behavior.  it tries to copy stuff under 
-       target dir to ~/.m2.  we do not need it -->
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-install-plugin</artifactId>
-          <version>2.4</version>
-          <configuration>
-            <skip>true</skip>
-          </configuration>
-        </plugin>
-        <!-- maven-surefire-plugin is called during "test" phase by default behavior.  it triggers junit test.
-       we do not need it -->
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.12.4</version>
-          <configuration>
-            <skipTests>true</skipTests>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>exec-maven-plugin</artifactId>
-          <version>1.2.1</version>
-          <configuration>
-            <executable>${session.executionRootDirectory}/mvn-phase-script.sh</executable>
-            <environmentVariables>
-              <!-- make mvn properties as env for our script -->
-              <!-- make mvn properties as env for our script -->
-              <MVN_PROJECT_GROUPID>${project.groupId}</MVN_PROJECT_GROUPID>
-              <MVN_PROJECT_ARTIFACTID>${project.artifactId}</MVN_PROJECT_ARTIFACTID>
-              <MVN_PROJECT_VERSION>${project.version}</MVN_PROJECT_VERSION>
-              <MVN_NEXUSPROXY>${onap.nexus.url}</MVN_NEXUSPROXY>
-              <MVN_RAWREPO_BASEURL_UPLOAD>${onap.nexus.rawrepo.baseurl.upload}</MVN_RAWREPO_BASEURL_UPLOAD>
-              <MVN_RAWREPO_BASEURL_DOWNLOAD>${onap.nexus.rawrepo.baseurl.download}</MVN_RAWREPO_BASEURL_DOWNLOAD>
-              <MVN_RAWREPO_SERVERID>${onap.nexus.rawrepo.serverid}</MVN_RAWREPO_SERVERID>
-              <MVN_DOCKERREGISTRY_SNAPSHOT>${onap.nexus.dockerregistry.snapshot}</MVN_DOCKERREGISTRY_SNAPSHOT>
-              <MVN_DOCKERREGISTRY_RELEASE>${onap.nexus.dockerregistry.release}</MVN_DOCKERREGISTRY_RELEASE>
-              <MVN_DOCKERREGISTRY_SNAPSHOT_SERVERID>${onap.nexus.dockerregistry.snapshot.serverid}</MVN_DOCKERREGISTRY_SNAPSHOT_SERVERID>
-              <MVN_DOCKERREGISTRY_RELEASE_SERVERID>${onap.nexus.dockerregistry.release.serverid}</MVN_DOCKERREGISTRY_RELEASE_SERVERID>
-              <MVN_PYPISERVER_BASEURL>${onap.nexus.pypiserver.baseurl}</MVN_PYPISERVER_BASEURL>
-              <MVN_PYPISERVER_SERVERID>${onap.nexus.pypiserver.serverid}</MVN_PYPISERVER_SERVERID>
-            </environmentVariables>
-          </configuration>
-        </plugin>
-      </plugins>
-    </pluginManagement>
     <plugins>
-      <!-- plugin>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <version>2.4.1</version>
-        <configuration>
-          <descriptors>
-            <descriptor>assembly/dep.xml</descriptor>
-          </descriptors>
-        </configuration>
-        <executions>
-          <execution>
-            <id>make-assembly</id>
-            <phase>package</phase>
-            <goals>
-              <goal>single</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin -->
-      <!-- now we configure custom action (calling a script) at various lifecycle phases -->
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-        <version>1.2.1</version>
-        <executions>
-          <execution>
-            <id>clean phase script</id>
-            <phase>clean</phase>
-            <goals>
-              <goal>exec</goal>
-            </goals>
-            <configuration>
-              <arguments>
-                <argument>__</argument>
-                <argument>clean</argument>
-              </arguments>
-            </configuration>
-          </execution>
-          <execution>
-            <id>generate-sources script</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>exec</goal>
-            </goals>
-            <configuration>
-              <arguments>
-                <argument>__</argument>
-                <argument>generate-sources</argument>
-              </arguments>
-            </configuration>
-          </execution>
-          <execution>
-            <id>compile script</id>
-            <phase>compile</phase>
-            <goals>
-              <goal>exec</goal>
-            </goals>
-            <configuration>
-              <arguments>
-                <argument>__</argument>
-                <argument>compile</argument>
-              </arguments>
-            </configuration>
-          </execution>
-          <execution>
-            <id>package script</id>
-            <phase>package</phase>
-            <goals>
-              <goal>exec</goal>
-            </goals>
-            <configuration>
-              <arguments>
-                <argument>__</argument>
-                <argument>package</argument>
-              </arguments>
-            </configuration>
-          </execution>
-          <execution>
-            <id>test script</id>
-            <phase>test</phase>
-            <goals>
-              <goal>exec</goal>
-            </goals>
-            <configuration>
-              <arguments>
-                <argument>__</argument>
-                <argument>test</argument>
-              </arguments>
-            </configuration>
-          </execution>
-          <execution>
-            <id>install script</id>
-            <phase>install</phase>
-            <goals>
-              <goal>exec</goal>
-            </goals>
-            <configuration>
-              <arguments>
-                <argument>__</argument>
-                <argument>install</argument>
-              </arguments>
-            </configuration>
-          </execution>
-          <execution>
-            <id>deploy script</id>
-            <phase>deploy</phase>
-            <goals>
-              <goal>exec</goal>
-            </goals>
-            <configuration>
-              <arguments>
-                <argument>__</argument>
-                <argument>deploy</argument>
-              </arguments>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
+            <plugin>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>onap-java-style</id>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <phase>process-sources</phase>
+                        <configuration>
+                            <!-- Use Google Java Style Guide:
+                            https://github.com/checkstyle/checkstyle/blob/master/src/main/resources/google_checks.xml
+                            with minor changes -->
+                            <configLocation>onap-checkstyle/onap-java-style.xml</configLocation>
+                            <!-- <sourceDirectory> is needed so that checkstyle ignores the generated sources directory -->
+                            <sourceDirectories>
+                            	<sourceDirectory>${project.build.sourceDirectory}</sourceDirectory>
+                            </sourceDirectories>
+                            <includeResources>true</includeResources>
+                            <includeTestSourceDirectory>false</includeTestSourceDirectory>
+                            <includeTestResources>false</includeTestResources>
+                            <excludes>
+                            </excludes>
+                            <consoleOutput>true</consoleOutput>
+                            <failsOnViolation>false</failsOnViolation>
+                            <violationSeverity>warning</violationSeverity>
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.onap.oparent</groupId>
+                        <artifactId>checkstyle</artifactId>
+                        <version>1.2.3-SNAPSHOT</version>
+                        <scope>compile</scope>
+                    </dependency>
+                </dependencies>
+            </plugin>
+                <plugin>
+                    <groupId>org.eclipse.m2e</groupId>
+                    <artifactId>lifecycle-mapping</artifactId>
+                    <configuration>
+                        <lifecycleMappingMetadata>
+                            <pluginExecutions>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.apache.maven.plugins</groupId>
+                                        <artifactId>maven-checkstyle-plugin</artifactId>
+                                        <versionRange>2.17,)</versionRange>
+                                        <goals>
+                                            <goal>check</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore />
+                                    </action>
+                                </pluginExecution>
+                            </pluginExecutions>
+                        </lifecycleMappingMetadata>
+                    </configuration>
+                </plugin>
+		<plugin>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-maven-plugin</artifactId>
+                	<version>2.0.4.RELEASE</version>
+			<executions>
+                    		<execution>
+                        		<goals>
+                            			<goal>repackage</goal>
+                        		</goals>
+                    		</execution>
+                	</executions>
+		</plugin>
+	</plugins>
   </build>
 </project>
+
+
