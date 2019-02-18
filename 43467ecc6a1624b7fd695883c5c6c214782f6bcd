@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "69b9fc4a_6d2ed825",
+        "filename": "LICENSE.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-02-18T23:49:28Z",
+      "side": 1,
+      "message": "To be corrected",
+      "range": {
+        "startLine": 4,
+        "startChar": 16,
+        "endLine": 4,
+        "endChar": 26
+      },
+      "revId": "43467ecc6a1624b7fd695883c5c6c214782f6bcd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d1e8e273_3a1dba96",
+        "filename": "pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-02-18T23:49:28Z",
+      "side": 1,
+      "message": "2019",
+      "range": {
+        "startLine": 6,
+        "startChar": 17,
+        "endLine": 6,
+        "endChar": 21
+      },
+      "revId": "43467ecc6a1624b7fd695883c5c6c214782f6bcd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5523d154_1e6346e1",
+        "filename": "settings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-02-18T23:49:28Z",
+      "side": 1,
+      "message": "to be removed",
+      "range": {
+        "startLine": 90,
+        "startChar": 0,
+        "endLine": 112,
+        "endChar": 12
+      },
+      "revId": "43467ecc6a1624b7fd695883c5c6c214782f6bcd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "494a70c8_71083977",
+        "filename": "src/main/docker/son-handler/config.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-02-18T23:49:28Z",
+      "side": 1,
+      "message": "should eventually conform to structure documented - https://wiki.onap.org/display/DW/MicroServices+Onboarding+in+ONAP#MicroServicesOnboardinginONAP-SampleDRconfigurationstructure",
+      "range": {
+        "startLine": 4,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 2
+      },
+      "revId": "43467ecc6a1624b7fd695883c5c6c214782f6bcd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bd14610b_8d0cb445",
+        "filename": "src/main/java/com/wipro/www/sonhms/Application.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-02-18T23:49:28Z",
+      "side": 1,
+      "message": "package structure to be modified complaint to onap/dcae (org/onap/dcae)",
+      "range": {
+        "startLine": 21,
+        "startChar": 12,
+        "endLine": 21,
+        "endChar": 17
+      },
+      "revId": "43467ecc6a1624b7fd695883c5c6c214782f6bcd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
