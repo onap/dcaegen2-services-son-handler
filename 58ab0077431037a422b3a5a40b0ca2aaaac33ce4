@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dbc4e9a2_d8d66fc5",
+        "filename": "pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-03-05T22:33:53Z",
+      "side": 1,
+      "message": "pls switch to 5.0.11.RELEASE",
+      "range": {
+        "startLine": 116,
+        "startChar": 13,
+        "endLine": 116,
+        "endChar": 27
+      },
+      "revId": "58ab0077431037a422b3a5a40b0ca2aaaac33ce4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
