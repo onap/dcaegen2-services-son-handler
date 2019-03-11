@@ -1,0 +1,1 @@
+[{"cellId":"48","physicalCellId":0,"neighbours":"[]"},{"cellId":"45","physicalCellId":310,"neighbours":"[{\"physicalCellId\":0,\"cellId\":\"48\"}]"},{"cellId":"47","physicalCellId":302,"neighbours":"[{\"physicalCellId\":310,\"cellId\":\"45\"}]"}]

@@ -1,0 +1,20 @@
+{
+
+    "closedLoopControlName":"ControlLoop-vPCI-fb41f388-a5f2-11e8-98d0-529269fb1459",
+    "closedLoopAlarmStart":1542445563201,
+    "closedLoopEventClient":"microservice.PCI",
+    "closedLoopEventStatus":"ONSET",
+    "target_type":"VNF",
+    "target":"generic-vnf.vnf-id",
+    "requestID":"a4130fd5-2291-4a83-8992-04e4c9f32731",
+    "from":"PCIMS",
+    "version":"1.0.2",
+    "payload":"{\"Configurations\":[{\"data\":{\"FAPService\":{\"alias\":\"Chn0330\",\"X0005b9Lte\":{\"phyCellIdInUse\":6,\"pnfName\":\"ncserver23\"},\"CellConfig\":{\"LTE\":{\"RAN\":{\"Common\":{\"CellIdentity\":\"Chn0330\"}}}}}}},{\"data\":{\"FAPService\":{\"alias\":\"Chn0331\",\"X0005b9Lte\":{\"phyCellIdInUse\":7,\"pnfName\":\"ncserver23\"},\"CellConfig\":{\"LTE\":{\"RAN\":{\"Common\":{\"CellIdentity\":\"Chn0331\"}}}}}}}]}",
+    "AAI":{
+        "generic-vnf.prov-status":"ACTIVE",
+        "generic-vnf.is-closed-loop-disabled":"false",
+        "generic-vnf.vnf-id":"ncserver23"
+    },
+    "Action":"ModifyConfig"
+
+}
