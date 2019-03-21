@@ -1,0 +1,280 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "85cc940b_72e5baa5",
+        "filename": "dpo/blueprints/k8s-sonhms-inputs.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-03-21T23:20:38Z",
+      "side": 1,
+      "message": "message-router.onap.svc.cluster.local",
+      "range": {
+        "startLine": 43,
+        "startChar": 21,
+        "endLine": 43,
+        "endChar": 29
+      },
+      "revId": "f698da02672f39167efc24325049d598b11d310f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "577c62a2_eaacc5b2",
+        "filename": "dpo/blueprints/k8s-sonhms-inputs.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-03-21T23:20:38Z",
+      "side": 1,
+      "message": "message-router.onap.svc.cluster.local",
+      "range": {
+        "startLine": 47,
+        "startChar": 21,
+        "endLine": 47,
+        "endChar": 29
+      },
+      "revId": "f698da02672f39167efc24325049d598b11d310f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "483ca68b_2a929104",
+        "filename": "dpo/blueprints/k8s-sonhms-inputs.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-03-21T23:20:38Z",
+      "side": 1,
+      "message": "message-router.onap.svc.cluster.local",
+      "range": {
+        "startLine": 51,
+        "startChar": 21,
+        "endLine": 51,
+        "endChar": 29
+      },
+      "revId": "f698da02672f39167efc24325049d598b11d310f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a3890e96_208d4aa4",
+        "filename": "dpo/blueprints/k8s-sonhms-inputs.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-03-21T23:20:38Z",
+      "side": 1,
+      "message": "message-router.onap.svc.cluster.local",
+      "range": {
+        "startLine": 55,
+        "startChar": 21,
+        "endLine": 55,
+        "endChar": 29
+      },
+      "revId": "f698da02672f39167efc24325049d598b11d310f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e6f6476b_75609688",
+        "filename": "dpo/blueprints/k8s-sonhms.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-03-21T23:20:38Z",
+      "side": 1,
+      "message": "why SON_handler needs node port? This is required only for components exposing api\u0027s outside of k8s cluster.",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 18
+      },
+      "revId": "f698da02672f39167efc24325049d598b11d310f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "90d785b1_2f1bafee",
+        "filename": "dpo/blueprints/k8s-sonhms.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-03-21T23:20:38Z",
+      "side": 1,
+      "message": "nexus3.onap.org:10001/",
+      "range": {
+        "startLine": 36,
+        "startChar": 14,
+        "endLine": 36,
+        "endChar": 72
+      },
+      "revId": "f698da02672f39167efc24325049d598b11d310f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b6d81a4a_5a120b8a",
+        "filename": "dpo/blueprints/k8s-sonhms.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-03-21T23:20:38Z",
+      "side": 1,
+      "message": "not being utilized; can be removed",
+      "range": {
+        "startLine": 105,
+        "startChar": 0,
+        "endLine": 108,
+        "endChar": 19
+      },
+      "revId": "f698da02672f39167efc24325049d598b11d310f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0b2a083f_a007bbb6",
+        "filename": "dpo/blueprints/k8s-sonhms.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-03-21T23:20:38Z",
+      "side": 1,
+      "message": "same - don\u0027t see this being used; can be removed",
+      "range": {
+        "startLine": 109,
+        "startChar": 0,
+        "endLine": 116,
+        "endChar": 20
+      },
+      "revId": "f698da02672f39167efc24325049d598b11d310f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "324720c2_069b7a54",
+        "filename": "dpo/blueprints/k8s-sonhms.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-03-21T23:20:38Z",
+      "side": 1,
+      "message": "use dcae.nodes.ContainerizedServiceComponent",
+      "range": {
+        "startLine": 131,
+        "startChar": 10,
+        "endLine": 131,
+        "endChar": 50
+      },
+      "revId": "f698da02672f39167efc24325049d598b11d310f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3edebee6_2964759a",
+        "filename": "dpo/data-formats/configdb-req-dataformat.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-03-21T23:20:38Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 5,
+        "startChar": 24,
+        "endLine": 5,
+        "endChar": 32
+      },
+      "revId": "f698da02672f39167efc24325049d598b11d310f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a28b88c_c3306214",
+        "filename": "dpo/data-formats/sonToPolicyDmaap-dataformat.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-03-21T23:20:38Z",
+      "side": 1,
+      "message": "This output to policy is not following standard CL format?\nThe CL format/associated DF can be found here - https://git.onap.org/dcaegen2/analytics/tca/tree/dpo/dcaeCLOutput.json",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 177,
+        "endChar": 1
+      },
+      "revId": "f698da02672f39167efc24325049d598b11d310f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fdca3f63_71a53753",
+        "filename": "dpo/spec/sonhandler-componentspec.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-03-21T23:20:38Z",
+      "side": 1,
+      "message": "Not sure why is this required? I thought SON_handler will not have direct interface to policy (configuraton policy will be retrieved based on policy_id and loaded under application configuration)",
+      "range": {
+        "startLine": 101,
+        "startChar": 0,
+        "endLine": 110,
+        "endChar": 9
+      },
+      "revId": "f698da02672f39167efc24325049d598b11d310f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
