@@ -21,10 +21,6 @@
 
 package org.onap.dcaegen2.services.sonhms;
 
-import org.onap.dcaegen2.services.sonhms.model.Notification;
-import org.onap.dcaegen2.services.sonhms.utils.ClusterUtils;
-import org.onap.dcaegen2.services.sonhms.utils.ThreadUtils;
-
 import fj.data.Either;
 
 import java.util.HashMap;
@@ -33,6 +29,9 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import org.onap.dcaegen2.services.sonhms.model.Notification;
+import org.onap.dcaegen2.services.sonhms.utils.ClusterUtils;
+import org.onap.dcaegen2.services.sonhms.utils.ThreadUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

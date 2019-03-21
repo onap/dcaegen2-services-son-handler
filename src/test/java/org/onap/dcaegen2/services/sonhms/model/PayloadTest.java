@@ -26,15 +26,6 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 
 import org.junit.Test;
-import org.onap.dcaegen2.services.sonhms.model.CellConfig;
-import org.onap.dcaegen2.services.sonhms.model.Common;
-import org.onap.dcaegen2.services.sonhms.model.Configurations;
-import org.onap.dcaegen2.services.sonhms.model.Data;
-import org.onap.dcaegen2.services.sonhms.model.FapService;
-import org.onap.dcaegen2.services.sonhms.model.Lte;
-import org.onap.dcaegen2.services.sonhms.model.Payload;
-import org.onap.dcaegen2.services.sonhms.model.Ran;
-import org.onap.dcaegen2.services.sonhms.model.X0005b9Lte;
 
 
 

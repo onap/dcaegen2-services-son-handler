@@ -22,7 +22,6 @@
 package org.onap.dcaegen2.services.sonhms.dao;
 
 import org.onap.dcaegen2.services.sonhms.entity.PciRequests;
-
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

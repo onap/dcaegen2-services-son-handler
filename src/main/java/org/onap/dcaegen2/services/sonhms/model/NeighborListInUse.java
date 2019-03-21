@@ -22,6 +22,7 @@
 package org.onap.dcaegen2.services.sonhms.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 public class NeighborListInUse {

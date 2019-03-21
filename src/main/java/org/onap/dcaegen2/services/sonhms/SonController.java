@@ -23,7 +23,6 @@ package org.onap.dcaegen2.services.sonhms;
 
 import org.onap.dcaegen2.services.sonhms.child.ChildThread;
 import org.onap.dcaegen2.services.sonhms.restclient.AsyncResponseBody;
-
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;

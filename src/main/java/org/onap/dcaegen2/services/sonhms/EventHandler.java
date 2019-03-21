@@ -22,16 +22,9 @@ package org.onap.dcaegen2.services.sonhms;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.onap.dcaegen2.services.sonhms.child.ChildThread;
-import org.onap.dcaegen2.services.sonhms.child.Graph;
-import org.onap.dcaegen2.services.sonhms.entity.ClusterDetails;
-import org.onap.dcaegen2.services.sonhms.exceptions.ConfigDbNotFoundException;
-import org.onap.dcaegen2.services.sonhms.model.FapServiceList;
-import org.onap.dcaegen2.services.sonhms.model.Notification;
-import org.onap.dcaegen2.services.sonhms.utils.ClusterUtils;
-import org.onap.dcaegen2.services.sonhms.utils.ThreadUtils;
 
 import fj.data.Either;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,6 +34,15 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
+
+import org.onap.dcaegen2.services.sonhms.child.ChildThread;
+import org.onap.dcaegen2.services.sonhms.child.Graph;
+import org.onap.dcaegen2.services.sonhms.entity.ClusterDetails;
+import org.onap.dcaegen2.services.sonhms.exceptions.ConfigDbNotFoundException;
+import org.onap.dcaegen2.services.sonhms.model.FapServiceList;
+import org.onap.dcaegen2.services.sonhms.model.Notification;
+import org.onap.dcaegen2.services.sonhms.utils.ClusterUtils;
+import org.onap.dcaegen2.services.sonhms.utils.ThreadUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -82,11 +84,10 @@ public class EventHandler {
         try {
             List<ClusterDetails> clusterDetails = clusterUtils.getAllClusters();
 
-            NotificationToClusterMapping mapping = new NotificationToClusterMapping();
-            mapping = clusterUtils.getClustersForNotification(notification, clusterDetails);
+            NotificationToClusterMapping mapping = clusterUtils.getClustersForNotification(notification, 
+                    clusterDetails);
 
             // Matching cells
-            System.out.println(mapping);
             if (mapping.getCellsinCluster() != null) {
                 handleMatchingCells(mapping.getCellsinCluster(), clusterDetails);
             }

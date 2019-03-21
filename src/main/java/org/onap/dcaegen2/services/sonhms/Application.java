@@ -21,33 +21,19 @@
 
 package org.onap.dcaegen2.services.sonhms;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.onap.dcaegen2.services.sonhms.dmaap.DmaapClient;
-import org.onap.dcaegen2.services.sonhms.restclient.PolicyRestClient;
-import org.onap.dcaegen2.services.sonhms.utils.FileIo;
+import javax.sql.DataSource;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.PostConstruct;
-
+import org.onap.dcaegen2.services.sonhms.controller.ConfigFetchFromCbs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.jdbc.DataSourceBuilder;
+import org.springframework.context.annotation.Bean;
 
-@SpringBootApplication
+@SpringBootApplication  
 public class Application {
 
-    @Autowired
-    DmaapClient dmaapClient;
-
-    @Autowired
-    MainThreadComponent mainThreadComponent;
 
     private static Logger log = LoggerFactory.getLogger(Application.class);
 
@@ -55,75 +41,35 @@ public class Application {
      * Main method where the pci context is initially set.
      */
     public static void main(String[] args) {
+        
+        ConfigFetchFromCbs configFetchFromCbs = new ConfigFetchFromCbs();
+        configFetchFromCbs.getAppConfig();
+        try {
+			Thread.sleep(10000);
+		} catch (InterruptedException e) {
+			log.debug("InterruptedException : {}",e);
+		}
+        log.info("after 10s sleep");
+        log.info("Starting spring boot application");
         SpringApplication.run(Application.class);
 
     }
 
     /**
-     * initialization.
+     * DataSource bean.
      */
-    @PostConstruct
-    void init() {
-        getConfig();
-        fetchIntialConfigFromPolicy();
-        NewNotification newNotification = new NewNotification(false);
-        dmaapClient.initClient(newNotification);
-        mainThreadComponent.init(newNotification);
-    }
-
-    /**
-     * Gets configuration from policy.
-     */
-    @SuppressWarnings("unchecked")
-    private void fetchIntialConfigFromPolicy() {
-        log.debug("fetch initial config from policy");
-        String configPolicyResponseJson = PolicyRestClient.fetchConfigFromPolicy();
-        if (configPolicyResponseJson.equals("Post failed")) {
-            log.debug("cannot fetch config from policy");
-            return;
-        }
-        ObjectMapper mapper = new ObjectMapper();
-        List<HashMap<String, Object>> configPolicyResponse = new ArrayList<>();
-        try {
-            configPolicyResponse = mapper.readValue(configPolicyResponseJson, List.class);
-        } catch (IOException e) {
-            log.debug("exception during parsing response from policy", e);
-        }
-        String configPolicyJson = null;
-        if (configPolicyResponse != null) {
-            configPolicyJson = (String) configPolicyResponse.get(0).get("config");
-        } else {
-            return;
-        }
-        Map<String, Object> configPolicyMap = new HashMap<>();
-        try {
-            configPolicyMap = mapper.readValue(configPolicyJson, HashMap.class);
-        } catch (IOException e) {
-            log.debug("exception during parsing config body from policy", e);
-        }
-        ConfigPolicy configPolicy = ConfigPolicy.getInstance();
-        configPolicy.setConfig(configPolicyMap);
-        if (log.isDebugEnabled()) {
-            log.debug(configPolicy.toString());
-        }
-    }
-
-    /**
-     * Gets config from config.json.
-     *
-     */
-    private void getConfig() {
-        log.debug("getting initial config");
-        String configJson = FileIo.readFromFile("/etc/config.json");
-        ObjectMapper mapper = new ObjectMapper();
+    @Bean
+    public DataSource dataSource() {
         Configuration configuration = Configuration.getInstance();
-        try {
-            mapper.readerForUpdating(configuration).readValue(configJson);
-            if (log.isDebugEnabled()) {
-                log.debug(configuration.toString());
-            }
-        } catch (IOException e) {
-            log.debug("exception during parsing configuration", e);
-        }
+        
+        String url = "jdbc:postgresql://" + configuration.getPgHost() + ":" + configuration.getPgPort() + "/sonhms";
+        
+        return DataSourceBuilder
+                .create()
+                .url(url)
+                .username(configuration.getPgUsername())
+                .password(configuration.getPgPassword())
+                .build();
     }
+
 }

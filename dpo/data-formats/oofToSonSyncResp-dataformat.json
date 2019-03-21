@@ -1,0 +1,38 @@
+{
+    "dataformatversion": "1.0.0", 
+    "jsonschema": {
+        "$schema": "http://json-schema.org/draft-04/schema#", 
+        "additionalproperties": true, 
+        "description": "", 
+        "properties": {
+            "requestId": {
+                "description": "", 
+                "type": "string"
+            }, 
+            "requestStatus": {
+                "description": "", 
+                "type": "string"
+            }, 
+            "statusMessage": {
+                "description": "", 
+                "type": "string"
+            }, 
+            "transactionId": {
+                "description": "", 
+                "type": "string"
+            }
+        }, 
+        "required": [
+            "requestId", 
+            "requestStatus", 
+            "statusMessage", 
+            "transactionId"
+        ], 
+        "type": "object"
+    }, 
+    "self": {
+        "description": "", 
+        "name": "SON_OOF_SYNC_RESP", 
+        "version": "1.0.0"
+    }
+}

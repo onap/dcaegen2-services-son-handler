@@ -1,0 +1,45 @@
+{"nbr_list_change_topic":{
+    "type": "message_router",
+    "aaf_username": "",
+    "aaf_password": "",
+    "dmaap_info": {
+        "client_role": "son-subscriber",
+        "client_id": "sdnr-son-1",
+        "location": "onap",
+        "topic_url": "https://HOSTNAME:3905/events/PCI-NOTIF-TOPIC-NGHBR-LIST-CHANGE-INFO"
+    }
+},
+"fault_management_topic":{
+    "type": "message_router",
+    "aaf_username": "",
+    "aaf_password": "",
+    "dmaap_info": {
+        "client_role": "son-subscriber",
+        "client_id": "sdnr-son-1",
+        "location": "onap",
+        "topic_url": "https://HOSTNAME:3905/events/unauthenticated.SEC_FAULT_OUTPUT"
+    }
+},
+"performance_management_topic":{
+    "type": "message_router",
+    "aaf_username": "",
+    "aaf_password": "",
+    "dmaap_info": {
+        "client_role": "son-subscriber",
+        "client_id": "sdnr-son-1",
+        "location": "onap",
+        "topic_url": "https://HOSTNAME:3905/events/unauthenticated.SEC_MEASUREMENT_OUTPUT"
+    }
+},
+"CL_topic":{
+    "type": "message_router",
+    "aaf_username": "",
+    "aaf_password": "",
+    "dmaap_info": {
+        "client_role": "policy-publisher",
+        "client_id": "policy-son-1",
+        "location": "onap",
+        "topic_url": "https://HOSTNAME:3905/events/DCAE_CL_OUTPUT"
+    }
+}
+}

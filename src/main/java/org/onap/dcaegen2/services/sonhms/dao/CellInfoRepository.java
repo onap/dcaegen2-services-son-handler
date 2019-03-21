@@ -22,7 +22,6 @@
 package org.onap.dcaegen2.services.sonhms.dao;
 
 import org.onap.dcaegen2.services.sonhms.entity.CellInfo;
-
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

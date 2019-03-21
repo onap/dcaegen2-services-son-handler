@@ -19,8 +19,27 @@
  *  
  *******************************************************************************/
 
-package org.onap.dcaegen2.services.sonhms;
+package org.onap.dcaegen2.services.sonhms.entity;
 
-public class MainThreadTest {
+import static org.junit.Assert.assertEquals;
+
+import java.sql.Timestamp;
+
+import org.junit.Test;
+
+public class FaultNotificationsTest {
     
+    private Timestamp createdAt;
+
+    @Test
+    public void faultNotififcationsTest() {
+        FaultNotifications faultNotifications = new FaultNotifications();
+        faultNotifications.setNotification("notification");
+        faultNotifications.setCreatedAt(createdAt);
+        assertEquals("notification", faultNotifications.getNotification());
+        assertEquals(createdAt, faultNotifications.getCreatedAt());
+    }
+
 }
+
+

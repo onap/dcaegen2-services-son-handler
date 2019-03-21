@@ -1,0 +1,87 @@
+{
+    "dataformatversion": "1.0.0",
+    "jsonschema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "additionalproperties": true,
+        "description": "",
+        "properties": {
+            "AAI": {
+                "additionalproperties": true,
+                "description": "",
+                "properties": {
+                    "generic-vnf.is-closed-loop-disabled": {
+                        "description": "",
+                        "type": "string"
+                    },
+                    "generic-vnf.prov-status": {
+                        "description": "",
+                        "type": "string"
+                    },
+                    "generic-vnf.vnf-id": {
+                        "description": "",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "generic-vnf.is-closed-loop-disabled",
+                    "generic-vnf.prov-status",
+                    "generic-vnf.vnf-id"
+                ],
+                "type": "object"
+            },
+            "Action": {
+                "description": "",
+                "type": "string"
+            },
+            "closedLoopAlarmStart": {
+                "description": "",
+                "type": "integer"
+            },
+            "closedLoopControlName": {
+                "description": "",
+                "type": "string"
+            },
+            "closedLoopEventClient": {
+                "description": "",
+                "type": "string"
+            },
+            "closedLoopEventStatus": {
+                "description": "",
+                "type": "string"
+            },
+            "from": {
+                "description": "",
+                "type": "string"
+            },
+            "payload": {
+                "description": "",
+                "type": "string"
+            },
+            "requestID": {
+                "description": "",
+                "type": "string"
+            },
+            "target": {
+                "description": "",
+                "type": "string"
+            },
+            "target_type": {
+                "description": "",
+                "type": "string"
+            },
+            "version": {
+                "description": "",
+                "type": "string"
+            }
+        },
+        "required": [
+            "AAI",  "Action",  "closedLoopAlarmStart",  "closedLoopControlName", "closedLoopEventClient", "closedLoopEventStatus", "from",  "payload",  "requestID",  "target", "target_type", "version"
+        ],
+        "type": "object"
+    },
+    "self": {
+        "description": "",
+        "name": "SON_TO_POLICY_DMAAP",
+        "version": "1.0.0"
+    }
+}

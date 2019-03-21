@@ -21,6 +21,9 @@
 
 package org.onap.dcaegen2.services.sonhms;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class NewNotification {
 
     private Boolean newNotif;
@@ -36,6 +39,10 @@ public class NewNotification {
     public NewNotification(Boolean newNotif) {
         super();
         this.newNotif = newNotif;
+    }
+    
+    public NewNotification() {
+    	
     }
 
 }

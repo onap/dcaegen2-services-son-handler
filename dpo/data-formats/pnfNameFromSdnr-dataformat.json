@@ -1,0 +1,29 @@
+{
+    "dataformatversion": "1.0.0", 
+    "jsonschema": {
+        "$schema": "http://json-schema.org/draft-04/schema#", 
+        "additionalproperties": true, 
+        "description": "", 
+        "properties": {
+            "attribute-name": {
+                "description": "", 
+                "type": "string"
+            }, 
+            "value": {
+                "description": "", 
+                "type": "string"
+            }
+        }, 
+        "required": [
+            "attribute-name", 
+            "value"
+        ], 
+        "type": "object"
+    }, 
+    "self": {
+        "description": "", 
+        "name": "PNFNAME_FROM_SDNR", 
+        "version": "1.0.0"
+    }
+}
+

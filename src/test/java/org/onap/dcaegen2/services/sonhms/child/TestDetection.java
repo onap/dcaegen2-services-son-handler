@@ -27,8 +27,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Test;
-import org.onap.dcaegen2.services.sonhms.child.Detection;
-import org.onap.dcaegen2.services.sonhms.child.Graph;
 import org.onap.dcaegen2.services.sonhms.model.CellPciPair;
 
 

@@ -21,10 +21,9 @@
 
 package org.onap.dcaegen2.services.sonhms.dmaap;
 
-import com.att.nsa.cambria.client.CambriaTopicManager;
-
 import static org.mockito.Mockito.when;
 
+import com.att.nsa.cambria.client.CambriaTopicManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -38,10 +37,8 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-
-import org.onap.dcaegen2.services.sonhms.Configuration;
-import org.onap.dcaegen2.services.sonhms.NewNotification;
 import org.mockito.MockitoAnnotations;
+import org.onap.dcaegen2.services.sonhms.Configuration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -61,8 +58,6 @@ public class DmaapClientTest {
 		MockitoAnnotations.initMocks(this);
 	}
 
-	private Boolean newNotif;
-
 	@Test
 	public void getAllTopicsTest() {
 		Set<String> topics = new HashSet<String>();
@@ -71,37 +66,27 @@ public class DmaapClientTest {
 		Configuration configuration = Configuration.getInstance();
 		configuration.setBufferTime(60);
 		configuration.setCallbackUrl("/callbackUrl");
-		configuration.setConfigName("configName");
 		List<String> list = new ArrayList<String>();
 		list.add("server");
-		configuration.setServers(list);
+		configuration.setDmaapServers(list);
 		configuration.setCg("cg");
 		configuration.setCid("cid");
-		configuration.setManagerApiKey("managerApiKey");
-		configuration.setManagerSecretKey("managerSecretKey");
 		configuration.setMaximumClusters(5);
 		configuration.setMinCollision(5);
 		configuration.setMinConfusion(5);
 		configuration.setNumSolutions(1);
 		configuration.setOofService("oofService");
 		configuration.setOptimizers(list);
-		configuration.setPcimsApiKey("pcimsApiKey");
-		configuration.setPcimsSecretKey("pcimsSecretKey");
-		configuration.setPolicyName("policyName");
-		configuration.setPolicyService("policyService");
-		configuration.setPolicyTopic("policyTopic");
 		configuration.setPollingInterval(30);
 		configuration.setPollingTimeout(100);
-		configuration.setSdnrService("sdnrService");
-		configuration.setSdnrTopic("sdnrTopic");
+		configuration.setConfigDbService("sdnrService");
 		configuration.setSourceId("sourceId");
-		NewNotification newNotification = new NewNotification(newNotif);
 		
 		try {
 			when(topicManager.getTopics()).thenReturn(topics);
 			client=Mockito.mock(DmaapClient.class);
-			client.initClient(newNotification);
-			Mockito.verify(client).initClient(newNotification);      
+			client.initClient();
+			Mockito.verify(client).initClient();      
 	       // Mockito.verifycreateAndConfigureTopics();
 
 		} catch (IOException e) {

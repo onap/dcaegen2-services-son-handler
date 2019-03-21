@@ -1,0 +1,12 @@
+{
+    "self": {
+        "name": "CONFIGDB-REQ",
+        "version": "1.0.0",
+        "description": "Request to config DB"
+
+    },
+    "dataformatversion": "1.0.0",
+    "unstructured": {
+        "encoding": "UTF-8"
+    }
+}

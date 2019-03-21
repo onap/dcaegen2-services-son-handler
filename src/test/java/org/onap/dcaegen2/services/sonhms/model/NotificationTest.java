@@ -32,16 +32,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import org.junit.Test;
-import org.onap.dcaegen2.services.sonhms.model.FapServiceList;
-import org.onap.dcaegen2.services.sonhms.model.LteNeighborListInUseLteCell;
-import org.onap.dcaegen2.services.sonhms.model.NeighborListInUse;
-import org.onap.dcaegen2.services.sonhms.model.Notification;
-import org.onap.dcaegen2.services.sonhms.model.NotificationCellConfig;
-import org.onap.dcaegen2.services.sonhms.model.NotificationLte;
-import org.onap.dcaegen2.services.sonhms.model.NotificationPayload;
-import org.onap.dcaegen2.services.sonhms.model.NotificationRan;
-import org.onap.dcaegen2.services.sonhms.model.RadioAccess;
-import org.onap.dcaegen2.services.sonhms.model.X0005b9Lte;
 
 public class NotificationTest {
 

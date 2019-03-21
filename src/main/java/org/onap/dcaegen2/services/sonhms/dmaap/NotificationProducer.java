@@ -22,8 +22,8 @@
 package org.onap.dcaegen2.services.sonhms.dmaap;
 
 import com.att.nsa.cambria.client.CambriaBatchingPublisher;
+
 import java.io.IOException;
-import java.security.GeneralSecurityException;
 
 public class NotificationProducer {
 
@@ -31,7 +31,7 @@ public class NotificationProducer {
      
 
     /**
-     * Parameterised constructor.
+     * Parameterized constructor.
      */
     public NotificationProducer(CambriaBatchingPublisher cambriaBatchingPublisher) {
         super();
@@ -41,11 +41,9 @@ public class NotificationProducer {
     /**
      * sends notification to dmaap.
      */
-    public int sendNotification(String msg) throws GeneralSecurityException, IOException {
+    public int sendNotification(String msg) throws IOException {
     
-        int result = cambriaBatchingPublisher.send("", msg);
-        System.out.println(result);
-        return result;
+        return cambriaBatchingPublisher.send("", msg);
 
     }
 

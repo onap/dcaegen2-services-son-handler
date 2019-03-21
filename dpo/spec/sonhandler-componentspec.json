@@ -1,0 +1,297 @@
+{
+  "self":{
+    "version":"1.0.0",
+    "name":"docker.sonhandler.app",
+    "description":"Handles the PCI optimization for SON network",
+    "component_type":"docker"
+  },
+  "streams":{
+    "subscribes":[
+      {
+        "format":"SON_INPUT_FROM_SDNR",
+        "version":"1.0.0",
+        "config_key":"nbr_list_change_topic",
+        "type":"message router"
+      },
+      {
+        "format":"FM_ALARM_FROM_VES",
+        "version":"1.0.0",
+        "config_key":"fault_management_topic",
+        "type":"message router"
+      },
+      {
+        "format":"PM_ALARM_FROM_VES",
+        "version":"1.0.0",
+        "config_key":"performance_management_topic",
+        "type":"message router"
+      },
+      {
+        "format":"SON_OOF_ASYNC_RESP",
+        "version":"1.0.0",
+        "route":"/callbackUrl",
+        "type":"http"
+      }
+    ],
+    "publishes":[
+      {
+        "format":"SON_TO_POLICY_DMAAP",
+        "version":"1.0.0",
+        "config_key":"CL_topic",
+        "type":"message router"
+      }
+    ]
+  },
+  "services":{
+    "calls":[
+      {
+        "config_key":"oof-req",
+        "request":{
+          "format":"SON_TO_OOF_REST_REQ",
+          "version":"1.0.0"
+        },
+        "response":{
+          "format":"SON_OOF_SYNC_RESP",
+          "version":"1.0.0"
+        }
+      },
+      {
+        "config_key":"sdnr-getpnfname",
+        "request":{
+          "format":"CONFIGDB-REQ",
+          "version":"1.0.0"
+        },
+        "response":{
+          "format":"PNFNAME_FROM_SDNR",
+          "version":"1.0.0"
+        }
+      },
+      {
+        "config_key":"sdnr-getcelllist",
+        "request":{
+          "format":"CONFIGDB-REQ",
+          "version":"1.0.0"
+        },
+        "response":{
+          "format":"CELLLIST_FROM_SDNR",
+          "version":"1.0.0"
+        }
+      },
+      {
+        "config_key":"sdnr-getnbrlist",
+        "request":{
+          "format":"CONFIGDB-REQ",
+          "version":"1.0.0"
+        },
+        "response":{
+          "format":"NBRLST_FROM_SDNR",
+          "version":"1.0.0"
+        }
+      },
+      {
+        "config_key":"sdnr-getpci",
+        "request":{
+          "format":"CONFIGDB-REQ",
+          "version":"1.0.0"
+        },
+        "response":{
+          "format":"PCI_FROM_SDNR",
+          "version":"1.0.0"
+        }
+      }
+    ],
+    "provides":[
+
+    ]
+  },
+  "parameters":[
+    {
+      "name":"postgres.username",
+      "value":"sonuser",
+      "description":"postgres config",
+      "sourced_at_deployment":false,
+      "policy_editable":false,
+      "designer_editable":false
+    },
+    {
+      "name":"postgres.password",
+      "value":"sonpassword",
+      "description":"postgres config",
+      "sourced_at_deployment":false,
+      "policy_editable":false,
+      "designer_editable":false
+    },
+    {
+      "name":"postgres.host",
+      "value":"10.165.160.148",
+      "description":"postgres config",
+      "sourced_at_deployment":false,
+      "policy_editable":false,
+      "designer_editable":false
+    },
+    {
+      "name":"postgres.port",
+      "value":"5432",
+      "description":"postgres config",
+      "sourced_at_deployment":false,
+      "policy_editable":false,
+      "designer_editable":false
+    },
+    {
+      "name":"sonhandler.optimizers",
+      "value":[
+        "pci"
+      ],
+      "description":"son handler optimizers list",
+      "sourced_at_deployment":false,
+      "policy_editable":false,
+      "designer_editable":false
+    },
+    {
+      "name":"sonhandler.buffertime",
+      "value":"60",
+      "description":"buffer time in seconds",
+      "sourced_at_deployment":false,
+      "policy_editable":false,
+      "designer_editable":false
+    },
+    {
+      "name":"sonhandler.numsolutions",
+      "value":"10",
+      "description":"number of solutions",
+      "sourced_at_deployment":false,
+      "policy_editable":false,
+      "designer_editable":false
+    },
+    {
+      "name":"sonhandler.maximumclusters",
+      "value":"5",
+      "description":"maximum number of clusters",
+      "sourced_at_deployment":false,
+      "policy_editable":false,
+      "designer_editable":false
+    },
+    {
+      "name":"sonhandler.cg",
+      "value":"sonhms-cg",
+      "description":"son consumer group",
+      "sourced_at_deployment":false,
+      "policy_editable":false,
+      "designer_editable":false
+    },
+    {
+      "name":"sonhandler.cid",
+      "value":"sonhms-cid",
+      "description":"son consumer Id",
+      "sourced_at_deployment":false,
+      "policy_editable":false,
+      "designer_editable":false
+    },
+    {
+      "name":"sonhandler.dmaap.servers",
+      "value":["message-router:3904"],
+      "description":"dmaap server location",
+      "sourced_at_deployment":false,
+      "policy_editable":false,
+      "designer_editable":false
+    },
+    {
+      "name":"sonhandler.pollingInterval",
+      "value":"20",
+      "description":"dmaap polling interval",
+      "sourced_at_deployment":false,
+      "policy_editable":false,
+      "designer_editable":false
+    },
+    {
+      "name":"sonhandler.pollingTimeout",
+      "value":"60",
+      "description":"dmaap polling timeout",
+      "sourced_at_deployment":false,
+      "policy_editable":false,
+      "designer_editable":false
+    },
+    {
+      "name":"sonhandler.minCollision",
+      "value":"5",
+      "description":"minimum collision count",
+      "sourced_at_deployment":false,
+      "policy_editable":false,
+      "designer_editable":false
+    },
+    {
+      "name":"sonhandler.minConfusion",
+      "value":"5",
+      "description":"minimum confusion count",
+      "sourced_at_deployment":false,
+      "policy_editable":false,
+      "designer_editable":false
+    },
+    {
+      "name":"sonhandler.configDb.service",
+      "value":"http://sdnc:8282",
+      "description":"configDb service url",
+      "sourced_at_deployment":false,
+      "policy_editable":false,
+      "designer_editable":false
+    },
+    {
+      "name":"sonhandler.oof.service",
+      "value":"http://oof:8080",
+      "description":"oof service url",
+      "sourced_at_deployment":false,
+      "policy_editable":false,
+      "designer_editable":false
+    },
+    {
+      "name":"sonhandler.sourceId",
+      "value":"SONHMS",
+      "description":"sonhms source ID",
+      "sourced_at_deployment":false,
+      "policy_editable":false,
+      "designer_editable":false
+    },
+    {
+      "name":"sonhandler.callbackUrl",
+      "value":"http://sonhms.onap:8080/callbackUrl",
+      "description":"sonhms callback url",
+      "sourced_at_deployment":false,
+      "policy_editable":false,
+      "designer_editable":false
+    }
+  ],
+  "auxilary":{
+    "healthcheck":{
+      "type":"http",
+      "interval":"15s",
+      "timeout":"1s",
+      "endpoint":"/healthckeck"
+    },
+    "volumes":[
+      {
+        "container":{
+          "bind":"/etc/localtime"
+        },
+        "host":{
+          "path":"/etc/localtime"
+        }
+      },
+      {
+        "container":{
+          "bind":"/var/log/onap"
+        },
+        "host":{
+          "path":"/dockerdata-nfs/pci-handler/logs"
+        }
+      }
+    ],
+    "ports":[
+      "8080:8080"
+    ]
+  },
+  "artifacts":[
+    {
+      "type":"docker image",
+      "uri":"k8s-rancher-1:5000/son-handler:1.0.1"
+    }
+  ]
+}

@@ -23,13 +23,14 @@ package org.onap.dcaegen2.services.sonhms.restclient;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.List;
+import java.util.UUID;
+
 import org.onap.dcaegen2.services.sonhms.ConfigPolicy;
 import org.onap.dcaegen2.services.sonhms.Configuration;
 import org.onap.dcaegen2.services.sonhms.exceptions.OofNotFoundException;
 import org.onap.dcaegen2.services.sonhms.utils.SonHandlerRestTemplate;
-
-import java.util.List;
-import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
@@ -44,61 +45,64 @@ public class OofRestClient {
 
     /**
      * rest client that pci uses to query the OOF for pci solutions.
-     * @throws OofNotFoundException when request to oof fails
+     * 
+     * @throws OofNotFoundException
+     *             when request to oof fails
      */
 
-    public static String queryOof(int numSolutions, String transactionId, String requestType,
-            List<String> cellIdList, String networkId, List<String> optimizers) throws OofNotFoundException {
+    public static String queryOof(int numSolutions, String transactionId, String requestType, List<String> cellIdList,
+            String networkId, List<String> optimizers) throws OofNotFoundException {
         log.debug("inside queryoof");
 
-        ResponseEntity<String> response = null;
         Configuration configuration = Configuration.getInstance();
+        UUID requestUuid = UUID.randomUUID();
+        String requestId = requestUuid.toString();
+        String callbackUrl = configuration.getCallbackUrl();
+        RequestInfo requestInfo = new RequestInfo();
+        requestInfo.setTransactionId(transactionId);
+        requestInfo.setRequestId(requestId);
+        requestInfo.setCallbackUrl(callbackUrl);
+        String sourceId = configuration.getSourceId();
+        requestInfo.setSourceId(sourceId);
+        requestInfo.setRequestType(requestType);
+        requestInfo.setNumSolutions(numSolutions);
+        requestInfo.setOptimizers(optimizers);
+        ConfigPolicy config = ConfigPolicy.getInstance();
+        int timeout = 60;
         try {
-            UUID requestUuid = UUID.randomUUID();
-            String requestId = requestUuid.toString();
-            String callbackUrl = configuration.getCallbackUrl();
-            RequestInfo requestInfo = new RequestInfo();
-            requestInfo.setTransactionId(transactionId);
-            requestInfo.setRequestId(requestId);
-            requestInfo.setCallbackUrl(callbackUrl);
-            String sourceId = configuration.getSourceId();
-            requestInfo.setSourceId(sourceId);
-            requestInfo.setRequestType(requestType);
-            requestInfo.setNumSolutions(numSolutions);
-            requestInfo.setOptimizers(optimizers);
-            ConfigPolicy config = ConfigPolicy.getInstance();
-            int timeout = 60;
-            try {
-                timeout = (int) config.getConfig().get("PCI_NEIGHBOR_CHANGE_CLUSTER_TIMEOUT_IN_SECS");
-            } catch (NullPointerException e) {
-                log.debug("No config policy available. Using default timeout 60 sec");
-            }
-            requestInfo.setTimeout(timeout);
-            CellInfo cellInfo = new CellInfo();
-            cellInfo.setCellIdList(cellIdList);
-            cellInfo.setNetworkId(networkId);
-            OofRequestBody oofRequestBody = new OofRequestBody();
-            oofRequestBody.setRequestInfo(requestInfo);
-            oofRequestBody.setCellInfo(cellInfo);
-
-            ObjectMapper mapper = new ObjectMapper();
-            String requestBody = mapper.writeValueAsString(oofRequestBody);
-            log.debug("requestBody{}", requestBody);
-
-            String requestUrl = configuration.getOofService() + "/api/oof/v1/pci";
-            log.debug("requestUrl {}", requestUrl);
-
-            response = SonHandlerRestTemplate.sendPostRequestToOof(requestUrl, requestBody,new ParameterizedTypeReference<String>() {});
-            if (response == null) {
-                throw new OofNotFoundException("Request to oof failed");
-            }
-            log.debug("response {}", response);
-
-            return response.getBody();
-        } catch (JsonProcessingException e) {
-            log.debug("exception{}", e);
-
+            timeout = (int) config.getConfig().get("PCI_NEIGHBOR_CHANGE_CLUSTER_TIMEOUT_IN_SECS");
+        } catch (NullPointerException e) {
+            log.debug("No config policy available. Using default timeout 60 sec");
         }
+        requestInfo.setTimeout(timeout);
+        CellInfo cellInfo = new CellInfo();
+        cellInfo.setCellIdList(cellIdList);
+        cellInfo.setNetworkId(networkId);
+        OofRequestBody oofRequestBody = new OofRequestBody();
+        oofRequestBody.setRequestInfo(requestInfo);
+        oofRequestBody.setCellInfo(cellInfo);
+
+        ObjectMapper mapper = new ObjectMapper();
+        String requestBody = "";
+        try {
+            requestBody = mapper.writeValueAsString(oofRequestBody);
+        } catch (JsonProcessingException e) {
+            log.error("Exception when forming JSON String {}", e);
+            
+        }
+        log.debug("requestBody{}", requestBody);
+
+        String requestUrl = configuration.getOofService() + "/api/oof/v1/pci";
+        log.debug("requestUrl {}", requestUrl);
+        ResponseEntity<String> response = null;
+        response = SonHandlerRestTemplate.sendPostRequestToOof(requestUrl, requestBody,
+                new ParameterizedTypeReference<String>() {
+                });
+        if (response == null) {
+            throw new OofNotFoundException("Request to oof failed");
+        }
+        log.debug("response {}", response);
+
         return response.getBody();
     }
 }

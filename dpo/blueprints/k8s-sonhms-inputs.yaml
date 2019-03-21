@@ -1,0 +1,54 @@
+#    ============LICENSE_START=======================================================
+#    son-handler
+#    ================================================================================
+#     Copyright (C) 2019 Wipro Limited.
+#     ==============================================================================
+#       Licensed under the Apache License, Version 2.0 (the "License");
+#       you may not use this file except in compliance with the License.
+#       You may obtain a copy of the License at
+#    
+#            http://www.apache.org/licenses/LICENSE-2.0
+#    
+#       Unless required by applicable law or agreed to in writing, software
+#       distributed under the License is distributed on an "AS IS" BASIS,
+#       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#       See the License for the specific language governing permissions and
+#       limitations under the License.
+#     ============LICENSE_END=========================================================
+ 
+pgaas_cluster_name: dcae-pg-primary.onap
+database_name: sonhms
+tag_version: nexus3.onap.org:10001/onap/org.onap.dcaegen2.services.son-handler:latest
+replicas: 1
+aaf_username: 
+aaf_password: 
+polling_interval: 20
+polling_timeout: 60
+num_solutions: 5
+min_collision: 5
+min_confusion: 5
+max_clusters: 5
+dmaap: message-router
+buffer_time: 60
+cg: sonhms-cg
+cid: sonhms-cid
+config_db: http://sdnc.onap.svc.cluster.local:8181
+oof: http://oof.onap.svc.cluster.local:8080
+pci_optimizer: pci
+log_path: /dockerdata-nfs/son-handler
+topic00_location: onap
+topic00_client_role: son-subscriber
+topic00_client_id: sdnr-son-1
+topic00_url: https://message-router.onap.svc.cluster.local:3905/events/unauthenticated.SEC_MEASUREMENT_OUTPUT
+topic01_location: onap
+topic01_client_role: son-subscriber
+topic01_client_id: sdnr-son-1
+topic01_url: https://message-router.onap.svc.cluster.local:3905/events/unauthenticated.SEC_FAULT_OUTPUT
+topic02_location: onap
+topic02_client_role: son-subscriber
+topic02_client_id: sdnr-son-1
+topic02_url: https://message-router.onap.svc.cluster.local:3905/events/PCI-NOTIF-TOPIC-NGHBR-LIST-CHANGE-INFO
+topic03_location: onap
+topic03_client_role: son-subscriber
+topic03_client_id: sdnr-son-1
+topic03_url: https://message-router.onap.svc.cluster.local:3905/events/DCAE_CL_OUTPUT
