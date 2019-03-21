@@ -21,6 +21,14 @@
 
 package org.onap.dcaegen2.services.sonhms.child;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.BlockingQueue;
+
 import org.onap.dcaegen2.services.sonhms.ConfigPolicy;
 import org.onap.dcaegen2.services.sonhms.Configuration;
 import org.onap.dcaegen2.services.sonhms.dao.SonRequestsRepository;
@@ -33,15 +41,6 @@ import org.onap.dcaegen2.services.sonhms.restclient.AsyncResponseBody;
 import org.onap.dcaegen2.services.sonhms.restclient.OofRestClient;
 import org.onap.dcaegen2.services.sonhms.restclient.Solution;
 import org.onap.dcaegen2.services.sonhms.utils.BeanUtil;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.BlockingQueue;
-
 import org.slf4j.Logger;
 
 public class StateOof {

@@ -25,6 +25,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -59,29 +60,20 @@ public class OofRestClientTest {
 	public void queryOofTest() {
 		configuration.setBufferTime(60);
         configuration.setCallbackUrl("/callbackUrl");
-        configuration.setConfigName("configName");
         List<String> list = new ArrayList<String>();
         list.add("server");
-        configuration.setServers(list);
+        configuration.setDmaapServers(list);
         configuration.setCg("cg");
         configuration.setCid("cid");
-        configuration.setManagerApiKey("managerApiKey");
-        configuration.setManagerSecretKey("managerSecretKey");
         configuration.setMaximumClusters(5);
         configuration.setMinCollision(5);
         configuration.setMinConfusion(5);
         configuration.setNumSolutions(1);
         configuration.setOofService("oofService");
         configuration.setOptimizers(list);
-        configuration.setPcimsApiKey("pcimsApiKey");
-        configuration.setPcimsSecretKey("pcimsSecretKey");
-        configuration.setPolicyName("policyName");
-        configuration.setPolicyService("policyService");
-        configuration.setPolicyTopic("policyTopic");
         configuration.setPollingInterval(30);
         configuration.setPollingTimeout(100);
-        configuration.setSdnrService("sdnrService");
-        configuration.setSdnrTopic("sdnrTopic");
+        configuration.setConfigDbService("sdnrService");
         configuration.setSourceId("sourceId");
         String responseBody="{\n" + 
         		"  \"transactionId\": \"xxx-xxx-xxxx\",\n" + 

@@ -20,6 +20,10 @@
 
 package org.onap.dcaegen2.services.sonhms;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import fj.data.Either;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,6 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,8 +42,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.boot.test.context.SpringBootTest;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.onap.dcaegen2.services.sonhms.child.Graph;
 import org.onap.dcaegen2.services.sonhms.entity.ClusterDetails;
 import org.onap.dcaegen2.services.sonhms.exceptions.ConfigDbNotFoundException;
@@ -47,8 +50,7 @@ import org.onap.dcaegen2.services.sonhms.model.Notification;
 import org.onap.dcaegen2.services.sonhms.utils.ClusterUtils;
 import org.onap.dcaegen2.services.sonhms.utils.ClusterUtilsTest;
 import org.onap.dcaegen2.services.sonhms.utils.ThreadUtils;
-
-import fj.data.Either;
+import org.springframework.boot.test.context.SpringBootTest;
 
 @RunWith(MockitoJUnitRunner.class)
 @SpringBootTest(classes = EventHandler.class)

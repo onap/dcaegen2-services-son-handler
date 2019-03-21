@@ -21,14 +21,6 @@
 
 package org.onap.dcaegen2.services.sonhms.child;
 
-import org.onap.dcaegen2.services.sonhms.Configuration;
-import org.onap.dcaegen2.services.sonhms.dao.ClusterDetailsRepository;
-import org.onap.dcaegen2.services.sonhms.model.FapServiceList;
-import org.onap.dcaegen2.services.sonhms.model.ThreadId;
-import org.onap.dcaegen2.services.sonhms.restclient.AsyncResponseBody;
-import org.onap.dcaegen2.services.sonhms.utils.BeanUtil;
-import org.onap.dcaegen2.services.sonhms.utils.ClusterUtils;
-
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,6 +29,14 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+
+import org.onap.dcaegen2.services.sonhms.Configuration;
+import org.onap.dcaegen2.services.sonhms.dao.ClusterDetailsRepository;
+import org.onap.dcaegen2.services.sonhms.model.FapServiceList;
+import org.onap.dcaegen2.services.sonhms.model.ThreadId;
+import org.onap.dcaegen2.services.sonhms.restclient.AsyncResponseBody;
+import org.onap.dcaegen2.services.sonhms.utils.BeanUtil;
+import org.onap.dcaegen2.services.sonhms.utils.ClusterUtils;
 import org.slf4j.Logger;
 import org.slf4j.MDC;
 

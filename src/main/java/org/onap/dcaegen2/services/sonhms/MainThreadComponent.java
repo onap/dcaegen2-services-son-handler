@@ -21,8 +21,11 @@
 
 package org.onap.dcaegen2.services.sonhms;
 
+import javax.annotation.PostConstruct;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -30,12 +33,14 @@ public class MainThreadComponent {
 
     private static Logger log = LoggerFactory.getLogger(MainThreadComponent.class);
 
-
+    @Autowired
+    private NewNotification newNotification;
 
     /**
      * main thread initialization.
      */
-    public void init(NewNotification newNotification) {
+    @PostConstruct
+    public void init() {
         log.debug("initializing main thread");
         Thread thread = new Thread(new MainThread(newNotification));
         thread.start();

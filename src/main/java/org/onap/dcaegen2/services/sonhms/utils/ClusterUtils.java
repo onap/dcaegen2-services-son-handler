@@ -21,6 +21,16 @@
 
 package org.onap.dcaegen2.services.sonhms.utils;
 
+import fj.data.Either;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+
 import org.onap.dcaegen2.services.sonhms.ClusterDetailsComponent;
 import org.onap.dcaegen2.services.sonhms.NotificationToClusterMapping;
 import org.onap.dcaegen2.services.sonhms.child.Graph;
@@ -32,17 +42,6 @@ import org.onap.dcaegen2.services.sonhms.model.FapServiceList;
 import org.onap.dcaegen2.services.sonhms.model.LteNeighborListInUseLteCell;
 import org.onap.dcaegen2.services.sonhms.model.Notification;
 import org.onap.dcaegen2.services.sonhms.restclient.SdnrRestClient;
-
-import fj.data.Either;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

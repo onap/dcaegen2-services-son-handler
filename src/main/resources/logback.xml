@@ -28,7 +28,7 @@
 
 		<sift>
     		<appender name="file-${logFileName}" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    			<file>/var/log/onap/pci-handler/${logFileName}.log</file>
+    			<file>/var/log/onap/son-handler/${logFileName}.log</file>
     			<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
       				<fileNamePattern>${logFileName}.%i.log.zip</fileNamePattern>
       				<minIndex>1</minIndex>

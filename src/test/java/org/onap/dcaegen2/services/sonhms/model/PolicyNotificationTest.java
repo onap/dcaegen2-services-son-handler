@@ -23,6 +23,8 @@ package org.onap.dcaegen2.services.sonhms.model;
 
 import static org.junit.Assert.assertEquals;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,8 +34,6 @@ import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Test;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.onap.dcaegen2.services.sonhms.utils.ClusterUtilsTest;
 
 public class PolicyNotificationTest {
@@ -94,6 +94,9 @@ public class PolicyNotificationTest {
         }
 		
 		Assert.assertEquals(policyNotification1.hashCode(), policyNotification2.hashCode());
+		Assert.assertEquals(policyNotification1, policyNotification2);
+		Assert.assertTrue(policyNotification1.equals(policyNotification2));
+		Assert.assertFalse(policyNotification1.equals(null));
 		Assert.assertNotEquals(policyNotification1.hashCode(), policyNotification3.hashCode());
 		 
 	 }

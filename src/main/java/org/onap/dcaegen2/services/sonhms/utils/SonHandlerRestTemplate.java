@@ -122,25 +122,6 @@ public class SonHandlerRestTemplate {
     }
 
     /**
-     * Send Post Request1.
-     */
-
-    public static <T> ResponseEntity<T> sendPostRequest1(String requestUrl, String requestBody,
-            ParameterizedTypeReference<T> responseType) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.add(AUTH, "Basic SW5mcmFQb3J0YWxDbGllbnQ6cGFzc3dvcmQxJA==");
-        HttpEntity<Object> requestEntity = new HttpEntity<>(requestBody, headers);
-        try {
-            return restTemplate.exchange(requestUrl, HttpMethod.POST, requestEntity, responseType);
-        } catch (Exception e) {
-            log.debug(EXCEPTION_MSG, e.getMessage());
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    /**
      * Send Post Request to oof.
      */
 

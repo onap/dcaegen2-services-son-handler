@@ -1,0 +1,24 @@
+{
+    "dataformatversion": "1.0.0", 
+    "jsonschema": {
+        "$schema": "http://json-schema.org/draft-04/schema#", 
+        "additionalproperties": true, 
+        "description": "", 
+        "properties": {
+            "policyName": {
+                "description": "", 
+                "type": "string"
+            }
+        }, 
+        "required": [
+            "policyName"
+        ], 
+        "type": "object"
+    }, 
+    "self": {
+        "description": "", 
+        "name": "SON_TO_POLICY_REST_REQ", 
+        "version": "1.0.0"
+    }
+}
+

@@ -22,31 +22,37 @@
 package org.onap.dcaegen2.services.sonhms.dmaap;
 
 import com.att.nsa.cambria.client.CambriaBatchingPublisher;
-import com.att.nsa.cambria.client.CambriaClientBuilders.PublisherBuilder;
 import org.onap.dcaegen2.services.sonhms.Configuration;
+import org.onap.dcaegen2.services.sonhms.utils.DmaapUtils;
 
 import java.io.IOException;
-import java.security.GeneralSecurityException;
+import java.util.Map;
 
 public class PolicyDmaapClient {
 
+	DmaapUtils dmaapUtils = new DmaapUtils();
 
-    /**
-     * Method stub for sending notification to policy.
-     */
-    public boolean sendNotificationToPolicy(String msg) {
+	/**
+	 * Method stub for sending notification to policy.
+	 */
+	@SuppressWarnings("unchecked")
+	public boolean sendNotificationToPolicy(String msg) {
 
-        Configuration configuration = Configuration.getInstance();
-        CambriaBatchingPublisher cambriaBatchingPublisher;
-        try {
-            cambriaBatchingPublisher = new PublisherBuilder().usingHosts(configuration.getServers())
-                    .onTopic(configuration.getPolicyTopic())
-                    .authenticatedBy(configuration.getPcimsApiKey(), configuration.getPcimsSecretKey()).build();
-            NotificationProducer notificationProducer = new NotificationProducer(cambriaBatchingPublisher);
-            notificationProducer.sendNotification(msg);
-        } catch (GeneralSecurityException | IOException e) {
-            return false;
-        }
-        return true;
-    }
+		Map<String,Object> streamSubscribes= Configuration.getInstance().getStreamsPublishes();
+		String policyTopicUrl =((Map<String,String>)((Map<String,Object>)streamSubscribes.get("CL_topic")).get("dmaap_info")).get("topic_url");
+		String[] policyTopicSplit=policyTopicUrl.split("\\/");
+		String policyTopic=policyTopicSplit[policyTopicSplit.length-1];
+		Configuration configuration = Configuration.getInstance();
+		CambriaBatchingPublisher cambriaBatchingPublisher;
+		try {
+
+			cambriaBatchingPublisher = dmaapUtils.buildPublisher(configuration, policyTopic);
+
+			NotificationProducer notificationProducer = new NotificationProducer(cambriaBatchingPublisher);
+			notificationProducer.sendNotification(msg);
+		} catch (IOException e) {
+			return false;
+		}
+		return true;
+	}
 }

@@ -25,8 +25,8 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 import com.att.nsa.cambria.client.CambriaBatchingPublisher;
+
 import java.io.IOException;
-import java.security.GeneralSecurityException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -39,33 +39,24 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest(classes = NotificationProducerTest.class)
 public class NotificationProducerTest {
 
-	
 	@Mock
 	CambriaBatchingPublisher cambriaBatchingPublisher;
-	
+
 	@InjectMocks
 	NotificationProducer notificationProducer;
-	
+
 	@Test
 	public void notificationProducerTest() {
-		
-		
-		
-			try {
-				
-				when(cambriaBatchingPublisher.send(Mockito.anyString(), Mockito.anyString())).thenReturn(0);
-				int result=notificationProducer.sendNotification("msg");
-				assertEquals(0, result);
-			} catch (GeneralSecurityException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		
-		
+
+		try {
+
+			when(cambriaBatchingPublisher.send(Mockito.anyString(), Mockito.anyString())).thenReturn(0);
+			int result = notificationProducer.sendNotification("msg");
+			assertEquals(0, result);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 }
-
-

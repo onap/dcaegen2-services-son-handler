@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
-import org.onap.dcaegen2.services.sonhms.restclient.RequestInfo;
 
 
 public class RequestInfoTest {

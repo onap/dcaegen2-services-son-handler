@@ -22,7 +22,6 @@
 package org.onap.dcaegen2.services.sonhms;
 
 import org.onap.dcaegen2.services.sonhms.dao.SonRequestsRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

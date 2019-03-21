@@ -28,7 +28,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Test;
-import org.onap.dcaegen2.services.sonhms.child.Graph;
 import org.onap.dcaegen2.services.sonhms.model.CellPciPair;
 import org.slf4j.Logger;
 

@@ -24,7 +24,6 @@ package org.onap.dcaegen2.services.sonhms.restclient;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.onap.dcaegen2.services.sonhms.restclient.SonSolution;
 
 
 public class PciSolutionsTest {

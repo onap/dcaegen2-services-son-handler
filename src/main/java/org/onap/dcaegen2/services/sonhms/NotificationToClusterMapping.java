@@ -21,10 +21,10 @@
 
 package org.onap.dcaegen2.services.sonhms;
 
-import org.onap.dcaegen2.services.sonhms.model.FapServiceList;
-
 import java.util.List;
 import java.util.Map;
+
+import org.onap.dcaegen2.services.sonhms.model.FapServiceList;
 
 
 public class NotificationToClusterMapping {

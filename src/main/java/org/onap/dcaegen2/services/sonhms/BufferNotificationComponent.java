@@ -21,10 +21,11 @@
 
 package org.onap.dcaegen2.services.sonhms;
 
+import java.util.List;
+
 import org.onap.dcaegen2.services.sonhms.dao.BufferedNotificationsRepository;
 import org.onap.dcaegen2.services.sonhms.entity.BufferedNotifications;
 import org.onap.dcaegen2.services.sonhms.utils.BeanUtil;
-import java.util.List;
 
 public class BufferNotificationComponent {
 
@@ -45,7 +46,7 @@ public class BufferNotificationComponent {
      * Retrieves buffered notification from the database.
      */
     public List<String> getBufferedNotification(String clusterId) {
-        BufferedNotificationsRepository bufferedNotificationsRepository = BeanUtil
+        BufferedNotificationsRepository bufferedNotificationsRepository = BeanUtil 
                 .getBean(BufferedNotificationsRepository.class);
         return bufferedNotificationsRepository.getNotificationsFromQueue(clusterId);
 
