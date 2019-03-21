@@ -21,11 +21,6 @@
 
 package org.onap.dcaegen2.services.sonhms.restclient;
 
-import org.onap.dcaegen2.services.sonhms.Configuration;
-import org.onap.dcaegen2.services.sonhms.exceptions.ConfigDbNotFoundException;
-import org.onap.dcaegen2.services.sonhms.model.CellPciPair;
-import org.onap.dcaegen2.services.sonhms.utils.SonHandlerRestTemplate;
-
 import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,6 +28,10 @@ import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.onap.dcaegen2.services.sonhms.Configuration;
+import org.onap.dcaegen2.services.sonhms.exceptions.ConfigDbNotFoundException;
+import org.onap.dcaegen2.services.sonhms.model.CellPciPair;
+import org.onap.dcaegen2.services.sonhms.utils.SonHandlerRestTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
@@ -58,7 +57,7 @@ public class SdnrRestClient {
     public static String getCellList(String networkId) throws ConfigDbNotFoundException {
         Configuration configuration = Configuration.getInstance();
         String ts = new SimpleDateFormat(DATETIMEFORMAT).format(new Time(System.currentTimeMillis()));
-        String requestUrl = configuration.getSdnrService() + "/SDNCConfigDBAPI/getCellList" + "/" + networkId + "/" 
+        String requestUrl = configuration.getConfigDbService() + "/SDNCConfigDBAPI/getCellList" + "/" + networkId + "/" 
                 + encode(ts);
         return sendRequest(requestUrl);
     }
@@ -72,7 +71,7 @@ public class SdnrRestClient {
     public static List<CellPciPair> getNbrList(String cellId) throws ConfigDbNotFoundException {
         Configuration configuration = Configuration.getInstance();
         String ts = new SimpleDateFormat(DATETIMEFORMAT).format(new Time(System.currentTimeMillis()));
-        String requestUrl = configuration.getSdnrService() + "/SDNCConfigDBAPI/getNbrList" + "/" + cellId + "/"
+        String requestUrl = configuration.getConfigDbService() + "/SDNCConfigDBAPI/getNbrList" + "/" + cellId + "/"
                 + encode(ts);
         log.debug("request url: {}", requestUrl);
         String response = sendRequest(requestUrl);
@@ -96,7 +95,7 @@ public class SdnrRestClient {
     public static int getPci(String cellId) throws ConfigDbNotFoundException {
         Configuration configuration = Configuration.getInstance();
         String ts = new SimpleDateFormat(DATETIMEFORMAT).format(new Time(System.currentTimeMillis()));
-        String requestUrl = configuration.getSdnrService() + "/SDNCConfigDBAPI/getPCI" + "/" + cellId + "/"
+        String requestUrl = configuration.getConfigDbService() + "/SDNCConfigDBAPI/getPCI" + "/" + cellId + "/"
                 + encode(ts);
         String response = sendRequest(requestUrl);
         JSONObject respObj = new JSONObject(response);
@@ -112,7 +111,7 @@ public class SdnrRestClient {
     public static String getPnfName(String cellId) throws ConfigDbNotFoundException {
         Configuration configuration = Configuration.getInstance();
         String ts = new SimpleDateFormat(DATETIMEFORMAT).format(new Time(System.currentTimeMillis()));
-        String requestUrl = configuration.getSdnrService() + "/SDNCConfigDBAPI/getPnfName" + "/" + cellId + "/"
+        String requestUrl = configuration.getConfigDbService() + "/SDNCConfigDBAPI/getPnfName" + "/" + cellId + "/"
                 + encode(ts); 
         String response = sendRequest(requestUrl);
         JSONObject responseObject = new JSONObject(response);
@@ -132,7 +131,7 @@ public class SdnrRestClient {
     private static String sendRequest(String url) throws ConfigDbNotFoundException {
         ResponseEntity<String> response = SonHandlerRestTemplate.sendGetRequest(url,
                 new ParameterizedTypeReference<String>() {});
-        if (response.equals(null)) {
+        if (response == null) {
             throw new ConfigDbNotFoundException("Cannot reach Config DB");
         }
         return response.getBody(); 

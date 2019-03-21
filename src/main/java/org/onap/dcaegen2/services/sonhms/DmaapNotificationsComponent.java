@@ -22,13 +22,14 @@
 package org.onap.dcaegen2.services.sonhms;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.onap.dcaegen2.services.sonhms.dao.DmaapNotificationsRepository;
-import org.onap.dcaegen2.services.sonhms.model.Notification;
-import org.onap.dcaegen2.services.sonhms.utils.BeanUtil;
+
 import fj.data.Either;
 
 import java.io.IOException;
 
+import org.onap.dcaegen2.services.sonhms.dao.DmaapNotificationsRepository;
+import org.onap.dcaegen2.services.sonhms.model.Notification;
+import org.onap.dcaegen2.services.sonhms.utils.BeanUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

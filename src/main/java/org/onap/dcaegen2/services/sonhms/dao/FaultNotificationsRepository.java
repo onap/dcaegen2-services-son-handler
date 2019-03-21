@@ -18,8 +18,26 @@
  *     ============LICENSE_END=========================================================
  *  
  *******************************************************************************/
-package org.onap.dcaegen2.services.sonhms;
 
-public class ApplicationTest {
+package org.onap.dcaegen2.services.sonhms.dao;
+
+import org.onap.dcaegen2.services.sonhms.entity.FaultNotifications;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
+
+@Repository
+public interface FaultNotificationsRepository extends CrudRepository<FaultNotifications, String> {
+
+    @Query(nativeQuery = true,
+            value = "DELETE FROM fault_notifications "
+                    + "WHERE notification = ( SELECT notification FROM fault_notifications ORDER BY "
+                    + "created_at FOR UPDATE SKIP LOCKED LIMIT 1 ) RETURNING notification;")
+
+    public String getFaultNotificationFromQueue();
 
 }
+
+
+

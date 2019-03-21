@@ -1,0 +1,91 @@
+{
+    "dataformatversion": "1.0.0", 
+    "jsonschema": {
+        "$schema": "http://json-schema.org/draft-04/schema#", 
+        "additionalproperties": true, 
+        "description": "", 
+        "properties": {
+            "requestId": {
+                "description": "", 
+                "type": "string"
+            }, 
+            "requestStatus": {
+                "description": "", 
+                "type": "string"
+            }, 
+            "solutions": {
+                "description": "", 
+                "items": {
+                    "additionalproperties": true, 
+                    "description": "", 
+                    "properties": {
+                        "finishTime": {
+                            "description": "", 
+                            "type": "string"
+                        }, 
+                        "networkId": {
+                            "description": "", 
+                            "type": "string"
+                        }, 
+                        "pciSolutions": {
+                            "description": "", 
+                            "items": {
+                                "additionalproperties": true, 
+                                "description": "", 
+                                "properties": {
+                                    "cellId": {
+                                        "description": "", 
+                                        "type": "string"
+                                    }, 
+                                    "pci": {
+                                        "description": "", 
+                                        "type": "string"
+                                    }
+                                }, 
+                                "required": [
+                                    "cellId", 
+                                    "pci"
+                                ], 
+                                "type": "object"
+                            }, 
+                            "type": "array"
+                        }, 
+                        "startTime": {
+                            "description": "", 
+                            "type": "string"
+                        }
+                    }, 
+                    "required": [
+                        "finishTime", 
+                        "networkId", 
+                        "pciSolutions", 
+                        "startTime"
+                    ], 
+                    "type": "object"
+                }, 
+                "type": "array"
+            }, 
+            "statusMessage": {
+                "description": "", 
+                "type": "string"
+            }, 
+            "transactionId": {
+                "description": "", 
+                "type": "string"
+            }
+        }, 
+        "required": [
+            "requestId", 
+            "requestStatus", 
+            "solutions", 
+            "statusMessage", 
+            "transactionId"
+        ], 
+        "type": "object"
+    }, 
+    "self": {
+        "description": "", 
+        "name": "SON_OOF_ASYNC_RESP", 
+        "version": "1.0.0"
+    }
+}

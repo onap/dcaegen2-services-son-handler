@@ -1,0 +1,64 @@
+{
+    "dataformatversion": "1.0.0", 
+    "jsonschema": {
+        "$schema": "http://json-schema.org/draft-04/schema#", 
+        "additionalproperties": true, 
+        "description": "", 
+        "properties": {
+            "configBody": {
+                "description": "", 
+                "type": "string"
+            }, 
+            "configBodyType": {
+                "description": "", 
+                "type": "string"
+            }, 
+            "configName": {
+                "description": "", 
+                "type": "string"
+            }, 
+            "onapName": {
+                "description": "", 
+                "type": "string"
+            }, 
+            "policyClass": {
+                "description": "", 
+                "type": "string"
+            }, 
+            "policyConfigType": {
+                "description": "", 
+                "type": "string"
+            }, 
+            "policyName": {
+                "description": "", 
+                "type": "string"
+            }, 
+            "policyVersion": {
+                "description": "", 
+                "type": "string"
+            }, 
+            "ttlDate": {
+                "description": "", 
+                "type": "string"
+            }
+        }, 
+        "required": [
+            "configBody", 
+            "configBodyType", 
+            "configName", 
+            "onapName", 
+            "policyClass", 
+            "policyConfigType", 
+            "policyName", 
+            "policyVersion", 
+            "ttlDate"
+        ], 
+        "type": "object"
+    }, 
+    "self": {
+        "description": "", 
+        "name": "POLICY_TO_SON_REST_RESP", 
+        "version": "1.0.0"
+    }
+}
+

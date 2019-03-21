@@ -1,0 +1,212 @@
+{
+    "dataformatversion": "1.0.0", 
+    "jsonschema": {
+        "$schema": "http://json-schema.org/draft-04/schema#", 
+        "additionalproperties": true, 
+        "description": "", 
+        "properties": {
+            "AAI": {
+                "description": "", 
+                "type": "object"
+            }, 
+            "Action": {
+                "description": "", 
+                "type": "string"
+            }, 
+            "Payload": {
+                "additionalproperties": true, 
+                "description": "", 
+                "properties": {
+                    "RadioAccess": {
+                        "additionalproperties": true, 
+                        "description": "", 
+                        "properties": {
+                            "FAPServiceList": {
+                                "description": "", 
+                                "items": {
+                                    "additionalproperties": true, 
+                                    "description": "", 
+                                    "properties": {
+                                        "CellConfig": {
+                                            "additionalproperties": true, 
+                                            "description": "", 
+                                            "properties": {
+                                                "LTE": {
+                                                    "additionalproperties": true, 
+                                                    "description": "", 
+                                                    "properties": {
+                                                        "RAN": {
+                                                            "additionalproperties": true, 
+                                                            "description": "", 
+                                                            "properties": {
+                                                                "CellIdentity": {
+                                                                    "description": "", 
+                                                                    "type": "string"
+                                                                }, 
+                                                                "NeighborListInUse": {
+                                                                    "additionalproperties": true, 
+                                                                    "description": "", 
+                                                                    "properties": {
+                                                                        "LTECellNumberOfEntries": {
+                                                                            "description": "", 
+                                                                            "type": "string"
+                                                                        }, 
+                                                                        "LTENeighborListInUseLTECell": {
+                                                                            "description": "", 
+                                                                            "items": {
+                                                                                "additionalproperties": true, 
+                                                                                "description": "", 
+                                                                                "properties": {
+                                                                                    "alias": {
+                                                                                        "description": "", 
+                                                                                        "type": "string"
+                                                                                    }, 
+                                                                                    "blacklisted": {
+                                                                                        "description": "", 
+                                                                                        "type": "string"
+                                                                                    }, 
+                                                                                    "cid": {
+                                                                                        "description": "", 
+                                                                                        "type": "string"
+                                                                                    }, 
+                                                                                    "enable": {
+                                                                                        "description": "", 
+                                                                                        "type": "string"
+                                                                                    }, 
+                                                                                    "mustInclude": {
+                                                                                        "description": "", 
+                                                                                        "type": "string"
+                                                                                    }, 
+                                                                                    "phyCellId": {
+                                                                                        "description": "", 
+                                                                                        "type": "string"
+                                                                                    }, 
+                                                                                    "plmnid": {
+                                                                                        "description": "", 
+                                                                                        "type": "string"
+                                                                                    }, 
+                                                                                    "pnfName": {
+                                                                                        "description": "", 
+                                                                                        "type": "string"
+                                                                                    }
+                                                                                }, 
+                                                                                "required": [
+                                                                                    "alias", 
+                                                                                    "blacklisted", 
+                                                                                    "cid", 
+                                                                                    "enable", 
+                                                                                    "mustInclude", 
+                                                                                    "phyCellId", 
+                                                                                    "plmnid", 
+                                                                                    "pnfName"
+                                                                                ], 
+                                                                                "type": "object"
+                                                                            }, 
+                                                                            "type": "array"
+                                                                        }
+                                                                    }, 
+                                                                    "required": [
+                                                                        "LTECellNumberOfEntries", 
+                                                                        "LTENeighborListInUseLTECell"
+                                                                    ], 
+                                                                    "type": "object"
+                                                                }
+                                                            }, 
+                                                            "required": [
+                                                                "CellIdentity", 
+                                                                "NeighborListInUse"
+                                                            ], 
+                                                            "type": "object"
+                                                        }
+                                                    }, 
+                                                    "required": [
+                                                        "RAN"
+                                                    ], 
+                                                    "type": "object"
+                                                }
+                                            }, 
+                                            "required": [
+                                                "LTE"
+                                            ], 
+                                            "type": "object"
+                                        }, 
+                                        "X0005b9Lte": {
+                                            "additionalproperties": true, 
+                                            "description": "", 
+                                            "properties": {
+                                                "phyCellIdInUse": {
+                                                    "description": "", 
+                                                    "type": "string"
+                                                }, 
+                                                "pnfName": {
+                                                    "description": "", 
+                                                    "type": "string"
+                                                }
+                                            }, 
+                                            "required": [
+                                                "phyCellIdInUse", 
+                                                "pnfName"
+                                            ], 
+                                            "type": "object"
+                                        }, 
+                                        "alias": {
+                                            "description": "", 
+                                            "type": "string"
+                                        }
+                                    }, 
+                                    "required": [
+                                        "CellConfig", 
+                                        "X0005b9Lte", 
+                                        "alias"
+                                    ], 
+                                    "type": "object"
+                                }, 
+                                "type": "array"
+                            }, 
+                            "FAPServiceNumberOfEntries": {
+                                "description": "", 
+                                "type": "string"
+                            }
+                        }, 
+                        "required": [
+                            "FAPServiceList", 
+                            "FAPServiceNumberOfEntries"
+                        ], 
+                        "type": "object"
+                    }
+                }, 
+                "required": [
+                    "RadioAccess"
+                ], 
+                "type": "object"
+            }, 
+            "from": {
+                "description": "", 
+                "type": "string"
+            }, 
+            "requestID": {
+                "description": "", 
+                "type": "string"
+            }, 
+            "version": {
+                "description": "", 
+                "type": "string"
+            }
+        }, 
+        "required": [
+            "AAI", 
+            "Action", 
+            "Payload", 
+            "from", 
+            "requestID", 
+            "version"
+        ], 
+        "type": "object"
+    }, 
+    "self": {
+        "description": "dmaap message from SDNR to SON handler", 
+        "name": "SON_INPUT_FROM_SDNR", 
+        "version": "1.0.0"
+    }
+}
+

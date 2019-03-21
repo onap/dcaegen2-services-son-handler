@@ -24,6 +24,10 @@ package org.onap.dcaegen2.services.sonhms.child;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.onap.dcaegen2.services.sonhms.ConfigPolicy;
 import org.onap.dcaegen2.services.sonhms.model.CellConfig;
 import org.onap.dcaegen2.services.sonhms.model.CellPciPair;
@@ -36,8 +40,6 @@ import org.onap.dcaegen2.services.sonhms.model.Payload;
 import org.onap.dcaegen2.services.sonhms.model.PolicyNotification;
 import org.onap.dcaegen2.services.sonhms.model.Ran;
 import org.onap.dcaegen2.services.sonhms.model.X0005b9Lte;
-import java.util.ArrayList;
-import java.util.List;
 import org.slf4j.Logger;
 
 public class ChildThreadUtils {

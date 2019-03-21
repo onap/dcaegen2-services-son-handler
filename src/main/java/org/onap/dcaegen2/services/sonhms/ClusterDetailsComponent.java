@@ -21,11 +21,11 @@
 
 package org.onap.dcaegen2.services.sonhms;
 
+import java.util.List;
+
 import org.onap.dcaegen2.services.sonhms.dao.ClusterDetailsRepository;
 import org.onap.dcaegen2.services.sonhms.entity.ClusterDetails;
 import org.onap.dcaegen2.services.sonhms.utils.BeanUtil;
-
-import java.util.List;
 
 
 public class ClusterDetailsComponent {

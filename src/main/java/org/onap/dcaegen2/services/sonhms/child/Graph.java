@@ -24,8 +24,6 @@ package org.onap.dcaegen2.services.sonhms.child;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.onap.dcaegen2.services.sonhms.model.CellNeighbourList;
-import org.onap.dcaegen2.services.sonhms.model.CellPciPair;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,12 +32,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
-
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.onap.dcaegen2.services.sonhms.model.CellNeighbourList;
+import org.onap.dcaegen2.services.sonhms.model.CellPciPair;
 import org.slf4j.Logger;
 
 public class Graph {

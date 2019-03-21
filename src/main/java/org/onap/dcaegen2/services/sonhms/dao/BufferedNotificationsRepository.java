@@ -21,10 +21,9 @@
 
 package org.onap.dcaegen2.services.sonhms.dao;
 
-import org.onap.dcaegen2.services.sonhms.entity.BufferedNotifications;
-
 import java.util.List;
 
+import org.onap.dcaegen2.services.sonhms.entity.BufferedNotifications;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

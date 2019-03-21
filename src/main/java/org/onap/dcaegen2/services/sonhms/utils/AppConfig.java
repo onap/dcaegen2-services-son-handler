@@ -39,6 +39,7 @@ import org.springframework.web.client.RestTemplate;
 public class AppConfig {
 
 
+    
     /**
      * Rest Template bean.
      */
@@ -60,7 +61,7 @@ public class AppConfig {
     private static ByteArrayHttpMessageConverter generateByteArrayHttpMessageConverter() {
         ByteArrayHttpMessageConverter byteArrayHttpMessageConverter = new ByteArrayHttpMessageConverter();
 
-        List<MediaType> supportedApplicationTypes = new ArrayList<MediaType>();
+        List<MediaType> supportedApplicationTypes = new ArrayList<>();
         supportedApplicationTypes.add(new MediaType("application", "pdf"));
         byteArrayHttpMessageConverter.setSupportedMediaTypes(supportedApplicationTypes);
         return byteArrayHttpMessageConverter;

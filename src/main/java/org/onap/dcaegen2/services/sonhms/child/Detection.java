@@ -21,12 +21,11 @@
 
 package org.onap.dcaegen2.services.sonhms.child;
 
-import org.onap.dcaegen2.services.sonhms.model.CellPciPair;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.onap.dcaegen2.services.sonhms.model.CellPciPair;
 import org.slf4j.Logger;
 
 

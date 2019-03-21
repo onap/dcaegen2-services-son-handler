@@ -22,10 +22,10 @@
 package org.onap.dcaegen2.services.sonhms.dmaap;
 
 import com.att.nsa.cambria.client.CambriaConsumer;
-import org.onap.dcaegen2.services.sonhms.dmaap.DmaapClient.NotificationCallback;
 
 import java.io.IOException;
 
+import org.onap.dcaegen2.services.sonhms.dmaap.DmaapClient.NotificationCallback;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

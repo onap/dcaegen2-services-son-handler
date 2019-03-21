@@ -20,18 +20,17 @@
 
 package org.onap.dcaegen2.services.sonhms.utils;
 
-import org.onap.dcaegen2.services.sonhms.EventHandler;
-import org.onap.dcaegen2.services.sonhms.child.ChildThread;
-import org.onap.dcaegen2.services.sonhms.child.Graph;
-import org.onap.dcaegen2.services.sonhms.model.FapServiceList;
-import org.onap.dcaegen2.services.sonhms.model.ThreadId;
-
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import org.onap.dcaegen2.services.sonhms.EventHandler;
+import org.onap.dcaegen2.services.sonhms.child.ChildThread;
+import org.onap.dcaegen2.services.sonhms.child.Graph;
+import org.onap.dcaegen2.services.sonhms.model.FapServiceList;
+import org.onap.dcaegen2.services.sonhms.model.ThreadId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -22,64 +22,86 @@
 package org.onap.dcaegen2.services.sonhms;
 
 import java.util.List;
+import java.util.Map;
 
 public class Configuration {
 
     private static Configuration instance = null;
-    private List<Topic> topics;
-    private String sdnrTopic;
-    private String policyTopic;
-    private List<String> servers;
-    private String managerApiKey;
-    private String managerSecretKey;
-    private String pcimsApiKey;
-    private String pcimsSecretKey;
+    private String pgHost;
+    private int pgPort;
+    private String pgUsername;
+    private String pgPassword;
+    private List<String> dmaapServers;
+    private String configDbService;
+    private String oofService;
     private String cg;
     private String cid;
     private int pollingInterval;
     private int pollingTimeout;
     private int minCollision;
     private int minConfusion;
-    private String sdnrService;
-    private String policyService;
-    private String oofService;
     private String sourceId;
-    private String policyName;
-    private String configName;
     private String callbackUrl;
     private List<String> optimizers;
     private int numSolutions;
     private int bufferTime;
-    private int maximumClusters;
-    private String consulHost;
-    private String hostName;
-    private String configBindingService;
+    private int maximumClusters; 
+    private String aafUsername;
+    private String aafPassword;
+    private Map<String,Object> streamsSubscribes;
+    private Map<String,Object> streamsPublishes;
     
-    public String getConsulHost() {
-        return consulHost;
-    }
+    public boolean isSecured() {
+		if(aafUsername.equals("")||aafUsername==null){
+			return false;
+		}
+		else 
+			return true;
+	}
 
-    public void setConsulHost(String consulHost) {
-        this.consulHost = consulHost;
-    }
 
-    public String getHostName() {
-        return hostName;
-    }
+    
+    public String getAafUsername() {
+		return aafUsername;
+	}
 
-    public void setHostName(String hostName) {
-        this.hostName = hostName;
-    }
 
-    public String getConfigBindingService() {
-        return configBindingService;
-    }
 
-    public void setConfigBindingService(String configBindingService) {
-        this.configBindingService = configBindingService;
-    }
+	public void setAafUsername(String aafUsername) {
+		this.aafUsername = aafUsername;
+	}
 
-    public int getMaximumClusters() {
+
+
+	public String getAafPassword() {
+		return aafPassword;
+	}
+
+
+
+	public void setAafPassword(String aafPassword) {
+		this.aafPassword = aafPassword;
+	}
+
+
+
+	public Map<String, Object> getStreamsSubscribes() {
+		return streamsSubscribes;
+	}
+
+	public void setStreamsSubscribes(Map<String, Object> streamsSubscribes) {
+		this.streamsSubscribes = streamsSubscribes;
+	}
+
+	public Map<String, Object> getStreamsPublishes() {
+		return streamsPublishes;
+	}
+
+	public void setStreamsPublishes(Map<String, Object> streamsPublishes) {
+		this.streamsPublishes = streamsPublishes;
+	}
+
+	public int getMaximumClusters() {
         return maximumClusters;
     }
 
@@ -99,46 +121,6 @@ public class Configuration {
             instance = new Configuration();
         }
         return instance;
-    }
-
-    public List<String> getServers() {
-        return servers;
-    }
-
-    public void setServers(List<String> servers) {
-        this.servers = servers;
-    }
-
-    public String getManagerApiKey() {
-        return managerApiKey;
-    }
-
-    public void setManagerApiKey(String managerApiKey) {
-        this.managerApiKey = managerApiKey;
-    }
-
-    public String getManagerSecretKey() {
-        return managerSecretKey;
-    }
-
-    public void setManagerSecretKey(String managerSecretKey) {
-        this.managerSecretKey = managerSecretKey;
-    }
-
-    public String getPcimsApiKey() {
-        return pcimsApiKey;
-    }
-
-    public void setPcimsApiKey(String pcimsApiKey) {
-        this.pcimsApiKey = pcimsApiKey;
-    }
-
-    public String getPcimsSecretKey() {
-        return pcimsSecretKey;
-    }
-
-    public void setPcimsSecretKey(String pcimsSecretKey) {
-        this.pcimsSecretKey = pcimsSecretKey;
     }
 
     public String getCg() {
@@ -189,22 +171,6 @@ public class Configuration {
         this.minConfusion = minConfusion;
     }
 
-    public String getSdnrService() {
-        return sdnrService;
-    }
-
-    public void setSdnrService(String sdnrService) {
-        this.sdnrService = sdnrService;
-    }
-
-    public String getPolicyService() {
-        return policyService;
-    }
-
-    public void setPolicyService(String policyService) {
-        this.policyService = policyService;
-    }
-
     public String getOofService() {
         return oofService;
     }
@@ -221,23 +187,7 @@ public class Configuration {
         this.sourceId = sourceId;
     }
 
-    public String getPolicyName() {
-        return policyName;
-    }
-
-    public void setPolicyName(String policyName) {
-        this.policyName = policyName;
-    }
-
-    public String getConfigName() {
-        return configName;
-    }
-
-    public void setConfigName(String configName) {
-        this.configName = configName;
-    }
-
-    public String getCallbackUrl() {
+	public String getCallbackUrl() {
         return callbackUrl;
     }
 
@@ -269,41 +219,70 @@ public class Configuration {
         this.bufferTime = bufferTime;
     }
 
-    public List<Topic> getTopics() {
-        return topics;
+    public String getPgHost() {
+        return pgHost;
     }
 
-    public void setTopics(List<Topic> topics) {
-        this.topics = topics;
+    public void setPgHost(String pgHost) {
+        this.pgHost = pgHost;
     }
 
-    public String getSdnrTopic() {
-        return sdnrTopic;
+    public int getPgPort() {
+        return pgPort;
     }
 
-    public void setSdnrTopic(String sdnrTopic) {
-        this.sdnrTopic = sdnrTopic;
+    public void setPgPort(int pgPort) {
+        this.pgPort = pgPort;
     }
 
-    public String getPolicyTopic() {
-        return policyTopic;
+    public String getPgUsername() {
+        return pgUsername;
     }
 
-    public void setPolicyTopic(String policyTopic) {
-        this.policyTopic = policyTopic;
+    public void setPgUsername(String pgUsername) {
+        this.pgUsername = pgUsername;
     }
 
-    @Override
-    public String toString() {
-        return "Configuration [topics=" + topics + ", sdnrTopic=" + sdnrTopic + ", policyTopic=" + policyTopic
-                + ", servers=" + servers + ", managerApiKey=" + managerApiKey + ", managerSecretKey=" + managerSecretKey
-                + ", pcimsApiKey=" + pcimsApiKey + ", pcimsSecretKey=" + pcimsSecretKey + ", cg=" + cg + ", cid=" + cid
-                + ", pollingInterval=" + pollingInterval + ", pollingTimeout=" + pollingTimeout + ", minCollision="
-                + minCollision + ", minConfusion=" + minConfusion + ", sdnrService=" + sdnrService + ", policyService="
-                + policyService + ", oofService=" + oofService + ", sourceId=" + sourceId + ", policyName=" + policyName
-                + ", configName=" + configName + ", callbackUrl=" + callbackUrl + ", optimizers=" + optimizers
-                + ", numSolutions=" + numSolutions + ", bufferTime=" + bufferTime + ", maximumClusters="
-                + maximumClusters + "]";
+    public String getPgPassword() {
+        return pgPassword;
     }
 
+    public void setPgPassword(String pgPassword) {
+        this.pgPassword = pgPassword;
+    }
+    
+    public List<String> getDmaapServers() {
+		return dmaapServers;
+	}
+
+	public void setDmaapServers(List<String> dmaapServers) {
+		this.dmaapServers = dmaapServers;
+	}
+
+	public String getConfigDbService() {
+		return configDbService;
+	}
+
+	public void setConfigDbService(String configDbService) {
+		this.configDbService = configDbService;
+	}
+
+
+
+	@Override
+	public String toString() {
+		return "Configuration [pgHost=" + pgHost + ", pgPort=" + pgPort + ", pgUsername=" + pgUsername + ", pgPassword="
+				+ pgPassword + ", dmaapServers=" + dmaapServers + ", configDbService=" + configDbService + ", oofService="
+				+ oofService + ", cg=" + cg + ", cid=" + cid + ", pollingInterval=" + pollingInterval
+				+ ", pollingTimeout=" + pollingTimeout + ", minCollision=" + minCollision + ", minConfusion="
+				+ minConfusion + ", sourceId=" + sourceId + ", callbackUrl=" + callbackUrl + ", optimizers="
+				+ optimizers + ", numSolutions=" + numSolutions + ", bufferTime=" + bufferTime + ", maximumClusters="
+				+ maximumClusters + ", aafUsername=" + aafUsername + ", aafPassword=" + aafPassword
+				+ ", streamsSubscribes=" + streamsSubscribes + ", streamsPublishes=" + streamsPublishes + "]";
+	}
+
+	
+
+
+   
 }

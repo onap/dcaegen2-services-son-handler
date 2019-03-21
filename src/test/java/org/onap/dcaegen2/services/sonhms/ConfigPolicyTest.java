@@ -27,7 +27,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Test;
-import org.onap.dcaegen2.services.sonhms.ConfigPolicy;
 
 
 public class ConfigPolicyTest {

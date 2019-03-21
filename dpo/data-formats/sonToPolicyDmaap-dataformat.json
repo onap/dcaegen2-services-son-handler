@@ -1,0 +1,177 @@
+{
+    "dataformatversion": "1.0.0", 
+    "jsonschema": {
+        "$schema": "http://json-schema.org/draft-04/schema#", 
+        "additionalproperties": true, 
+        "description": "", 
+        "properties": {
+            "AAI": {
+                "description": "", 
+                "type": "object"
+            }, 
+            "Action": {
+                "description": "", 
+                "type": "string"
+            }, 
+            "Payload": {
+                "additionalproperties": true, 
+                "description": "", 
+                "properties": {
+                    "Configurations": {
+                        "description": "", 
+                        "items": {
+                            "additionalproperties": true, 
+                            "description": "", 
+                            "properties": {
+                                "data": {
+                                    "additionalproperties": true, 
+                                    "description": "", 
+                                    "properties": {
+                                        "FAPService": {
+                                            "additionalproperties": true, 
+                                            "description": "", 
+                                            "properties": {
+                                                "CellConfig": {
+                                                    "additionalproperties": true, 
+                                                    "description": "", 
+                                                    "properties": {
+                                                        "LTE": {
+                                                            "additionalproperties": true, 
+                                                            "description": "", 
+                                                            "properties": {
+                                                                "RAN": {
+                                                                    "additionalproperties": true, 
+                                                                    "description": "", 
+                                                                    "properties": {
+                                                                        "Common": {
+                                                                            "additionalproperties": true, 
+                                                                            "description": "", 
+                                                                            "properties": {
+                                                                                "CellIdentity": {
+                                                                                    "description": "", 
+                                                                                    "type": "string"
+                                                                                }
+                                                                            }, 
+                                                                            "required": [
+                                                                                "CellIdentity"
+                                                                            ], 
+                                                                            "type": "object"
+                                                                        }, 
+                                                                        "RF": {
+                                                                            "additionalproperties": true, 
+                                                                            "description": "", 
+                                                                            "properties": {
+                                                                                "PhyCellID": {
+                                                                                    "description": "", 
+                                                                                    "type": "string"
+                                                                                }
+                                                                            }, 
+                                                                            "required": [
+                                                                                "PhyCellID"
+                                                                            ], 
+                                                                            "type": "object"
+                                                                        }
+                                                                    }, 
+                                                                    "required": [
+                                                                        "Common", 
+                                                                        "RF"
+                                                                    ], 
+                                                                    "type": "object"
+                                                                }
+                                                            }, 
+                                                            "required": [
+                                                                "RAN"
+                                                            ], 
+                                                            "type": "object"
+                                                        }
+                                                    }, 
+                                                    "required": [
+                                                        "LTE"
+                                                    ], 
+                                                    "type": "object"
+                                                }, 
+                                                "alias": {
+                                                    "description": "", 
+                                                    "type": "string"
+                                                }
+                                            }, 
+                                            "required": [
+                                                "CellConfig", 
+                                                "alias"
+                                            ], 
+                                            "type": "object"
+                                        }
+                                    }, 
+                                    "required": [
+                                        "FAPService"
+                                    ], 
+                                    "type": "object"
+                                }, 
+                                "pnf-name": {
+                                    "description": "", 
+                                    "type": "string"
+                                }
+                            }, 
+                            "required": [
+                                "data", 
+                                "pnf-name"
+                            ], 
+                            "type": "object"
+                        }, 
+                        "type": "array"
+                    }
+                }, 
+                "required": [
+                    "Configurations"
+                ], 
+                "type": "object"
+            }, 
+            "closedLoopAlarmStart": {
+                "description": "", 
+                "type": "integer"
+            }, 
+            "closedLoopControlName": {
+                "description": "", 
+                "type": "string"
+            }, 
+            "closedLoopEventClient": {
+                "description": "", 
+                "type": "string"
+            }, 
+            "closedLoopEventStatus": {
+                "description": "", 
+                "type": "string"
+            }, 
+            "from": {
+                "description": "", 
+                "type": "string"
+            }, 
+            "requestID": {
+                "description": "", 
+                "type": "string"
+            }, 
+            "version": {
+                "description": "", 
+                "type": "string"
+            }
+        }, 
+        "required": [
+            "AAI", 
+            "Action", 
+            "Payload", 
+            "closedLoopAlarmStart", 
+            "closedLoopControlName", 
+            "closedLoopEventClient", 
+            "closedLoopEventStatus", 
+            "from", 
+            "requestID", 
+            "version"
+        ], 
+        "type": "object"
+    }, 
+    "self": {
+        "description": "", 
+        "name": "SON_TO_POLICY_DMAAP", 
+        "version": "1.0.0"
+    }
+}

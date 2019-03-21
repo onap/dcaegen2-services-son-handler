@@ -21,10 +21,9 @@
 
 package org.onap.dcaegen2.services.sonhms.dao;
 
-import org.onap.dcaegen2.services.sonhms.entity.ClusterDetails;
-
 import java.util.List;
 
+import org.onap.dcaegen2.services.sonhms.entity.ClusterDetails;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
