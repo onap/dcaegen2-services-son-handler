@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6aae8a05_4adf91d2",
+        "filename": "dpo/data-formats/sonToPolicyDmaap-dataformat.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-03-27T21:29:32Z",
+      "side": 1,
+      "message": "besides payload, I see action is also new here. \nWill help if the same schema file (https://git.onap.org/dcaegen2/analytics/tca/tree/dpo/dcaeCLOutput.json) is used as base and other optional fields included at the end.",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 87,
+        "endChar": 1
+      },
+      "revId": "ab400d51a639a01f31a60ac9d1e127d4d4d28b24",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
