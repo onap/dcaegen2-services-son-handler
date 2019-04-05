@@ -45,63 +45,71 @@ public class Configuration {
     private List<String> optimizers;
     private int numSolutions;
     private int bufferTime;
-    private int maximumClusters; 
+    private int maximumClusters;
     private String aafUsername;
     private String aafPassword;
-    private Map<String,Object> streamsSubscribes;
-    private Map<String,Object> streamsPublishes;
+    private Map<String, Object> streamsSubscribes;
+    private Map<String, Object> streamsPublishes;
+    private int badThreshold;
+    private int poorThreshold;
     
+    public int getBadThreshold() {
+        return badThreshold;
+    }
+
+    public void setBadThreshold(int badThreshold) {
+        this.badThreshold = badThreshold;
+    }
+
+    public int getPoorThreshold() {
+        return poorThreshold;
+    }
+
+    public void setPoorThreshold(int poorThreshold) {
+        this.poorThreshold = poorThreshold;
+    }
+
+    /**
+     * Check if topic is secure.
+     */
     public boolean isSecured() {
-		if(aafUsername.equals("")||aafUsername==null){
-			return false;
-		}
-		else 
-			return true;
-	}
+        return (aafUsername != null);
+           
+    }
 
-
-    
     public String getAafUsername() {
-		return aafUsername;
-	}
+        return aafUsername;
+    }
 
+    public void setAafUsername(String aafUsername) {
+        this.aafUsername = aafUsername;
+    }
 
+    public String getAafPassword() {
+        return aafPassword;
+    }
 
-	public void setAafUsername(String aafUsername) {
-		this.aafUsername = aafUsername;
-	}
+    public void setAafPassword(String aafPassword) {
+        this.aafPassword = aafPassword;
+    }
 
+    public Map<String, Object> getStreamsSubscribes() {
+        return streamsSubscribes;
+    }
 
+    public void setStreamsSubscribes(Map<String, Object> streamsSubscribes) {
+        this.streamsSubscribes = streamsSubscribes;
+    }
 
-	public String getAafPassword() {
-		return aafPassword;
-	}
+    public Map<String, Object> getStreamsPublishes() {
+        return streamsPublishes;
+    }
 
+    public void setStreamsPublishes(Map<String, Object> streamsPublishes) {
+        this.streamsPublishes = streamsPublishes;
+    }
 
-
-	public void setAafPassword(String aafPassword) {
-		this.aafPassword = aafPassword;
-	}
-
-
-
-	public Map<String, Object> getStreamsSubscribes() {
-		return streamsSubscribes;
-	}
-
-	public void setStreamsSubscribes(Map<String, Object> streamsSubscribes) {
-		this.streamsSubscribes = streamsSubscribes;
-	}
-
-	public Map<String, Object> getStreamsPublishes() {
-		return streamsPublishes;
-	}
-
-	public void setStreamsPublishes(Map<String, Object> streamsPublishes) {
-		this.streamsPublishes = streamsPublishes;
-	}
-
-	public int getMaximumClusters() {
+    public int getMaximumClusters() {
         return maximumClusters;
     }
 
@@ -187,7 +195,7 @@ public class Configuration {
         this.sourceId = sourceId;
     }
 
-	public String getCallbackUrl() {
+    public String getCallbackUrl() {
         return callbackUrl;
     }
 
@@ -250,39 +258,33 @@ public class Configuration {
     public void setPgPassword(String pgPassword) {
         this.pgPassword = pgPassword;
     }
-    
+
     public List<String> getDmaapServers() {
-		return dmaapServers;
-	}
+        return dmaapServers;
+    }
 
-	public void setDmaapServers(List<String> dmaapServers) {
-		this.dmaapServers = dmaapServers;
-	}
+    public void setDmaapServers(List<String> dmaapServers) {
+        this.dmaapServers = dmaapServers;
+    }
 
-	public String getConfigDbService() {
-		return configDbService;
-	}
+    public String getConfigDbService() {
+        return configDbService;
+    }
 
-	public void setConfigDbService(String configDbService) {
-		this.configDbService = configDbService;
-	}
+    public void setConfigDbService(String configDbService) {
+        this.configDbService = configDbService;
+    }
 
+    @Override
+    public String toString() {
+        return "Configuration [pgHost=" + pgHost + ", pgPort=" + pgPort + ", pgUsername=" + pgUsername + ", pgPassword="
+                + pgPassword + ", dmaapServers=" + dmaapServers + ", configDbService=" + configDbService
+                + ", oofService=" + oofService + ", cg=" + cg + ", cid=" + cid + ", pollingInterval=" + pollingInterval
+                + ", pollingTimeout=" + pollingTimeout + ", minCollision=" + minCollision + ", minConfusion="
+                + minConfusion + ", sourceId=" + sourceId + ", callbackUrl=" + callbackUrl + ", optimizers="
+                + optimizers + ", numSolutions=" + numSolutions + ", bufferTime=" + bufferTime + ", maximumClusters="
+                + maximumClusters + ", aafUsername=" + aafUsername + ", aafPassword=" + aafPassword
+                + ", streamsSubscribes=" + streamsSubscribes + ", streamsPublishes=" + streamsPublishes + "]";
+    }
 
-
-	@Override
-	public String toString() {
-		return "Configuration [pgHost=" + pgHost + ", pgPort=" + pgPort + ", pgUsername=" + pgUsername + ", pgPassword="
-				+ pgPassword + ", dmaapServers=" + dmaapServers + ", configDbService=" + configDbService + ", oofService="
-				+ oofService + ", cg=" + cg + ", cid=" + cid + ", pollingInterval=" + pollingInterval
-				+ ", pollingTimeout=" + pollingTimeout + ", minCollision=" + minCollision + ", minConfusion="
-				+ minConfusion + ", sourceId=" + sourceId + ", callbackUrl=" + callbackUrl + ", optimizers="
-				+ optimizers + ", numSolutions=" + numSolutions + ", bufferTime=" + bufferTime + ", maximumClusters="
-				+ maximumClusters + ", aafUsername=" + aafUsername + ", aafPassword=" + aafPassword
-				+ ", streamsSubscribes=" + streamsSubscribes + ", streamsPublishes=" + streamsPublishes + "]";
-	}
-
-	
-
-
-   
 }

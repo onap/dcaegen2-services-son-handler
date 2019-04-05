@@ -22,7 +22,6 @@ package org.onap.dcaegen2.services.sonhms.child;
 
 import static org.junit.Assert.assertEquals;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.BufferedReader;
@@ -48,7 +47,7 @@ import org.onap.dcaegen2.services.sonhms.entity.CellInfo;
 import org.onap.dcaegen2.services.sonhms.exceptions.ConfigDbNotFoundException;
 import org.onap.dcaegen2.services.sonhms.model.CellPciPair;
 import org.onap.dcaegen2.services.sonhms.restclient.SdnrRestClient;
-import org.onap.dcaegen2.services.sonhms.restclient.Solution;
+import org.onap.dcaegen2.services.sonhms.restclient.Solutions;
 import org.onap.dcaegen2.services.sonhms.utils.BeanUtil;
 import org.onap.dcaegen2.services.sonhms.utils.ClusterUtilsTest;
 import org.powermock.api.mockito.PowerMockito;
@@ -69,7 +68,7 @@ public class TestPnfUtils {
     private CellInfoRepository cellInfoRepositoryMock;
     
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(TestPnfUtils.class);
-    private static List<Solution> solutions = new ArrayList<>();
+    private static Solutions solutions = new Solutions();
     private static Optional<CellInfo> cellInfo;
     private static Optional<CellInfo> cellInfoNull;
 
@@ -85,7 +84,7 @@ public class TestPnfUtils {
          ObjectMapper mapper = new ObjectMapper();
             
             try {
-                solutions=mapper.readValue(solutionsString,new TypeReference<List<Solution>>(){});
+                solutions=mapper.readValue(solutionsString, Solutions.class);
             } catch (IOException e) {
                 log.debug("Exception in StateOof Test "+e);
                 e.printStackTrace();

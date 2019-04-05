@@ -22,6 +22,8 @@
 package org.onap.dcaegen2.services.sonhms.child;
 
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -105,10 +107,9 @@ public class TestDetection {
 
         cluster.setCellPciNeighbourMap(map);
 
-        System.out.println("mapsssssss" + cluster.getCellPciNeighbourMap());
         Detection detect = new Detection();
-        detect.detectCollisionConfusion(cluster);
-        System.out.println("result" + detect.detectCollisionConfusion(cluster));
+        Map<String,ArrayList<Integer>> resultmap=detect.detectCollisionConfusion(cluster);
+        assertEquals("{78=[], 56=[], 67=[], 24=[], 25=[0, 1], 69=[], 38=[], 42=[0, 0], 21=[], 32=[1, 0]}", resultmap.toString());
 
     }
 

@@ -31,9 +31,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 
-@SpringBootApplication  
+@SpringBootApplication
 public class Application {
-
 
     private static Logger log = LoggerFactory.getLogger(Application.class);
 
@@ -41,14 +40,14 @@ public class Application {
      * Main method where the pci context is initially set.
      */
     public static void main(String[] args) {
-        
+
         ConfigFetchFromCbs configFetchFromCbs = new ConfigFetchFromCbs();
         configFetchFromCbs.getAppConfig();
         try {
-			Thread.sleep(10000);
-		} catch (InterruptedException e) {
-			log.debug("InterruptedException : {}",e);
-		}
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            log.debug("InterruptedException : {}", e);
+        }
         log.info("after 10s sleep");
         log.info("Starting spring boot application");
         SpringApplication.run(Application.class);
@@ -61,15 +60,11 @@ public class Application {
     @Bean
     public DataSource dataSource() {
         Configuration configuration = Configuration.getInstance();
-        
+
         String url = "jdbc:postgresql://" + configuration.getPgHost() + ":" + configuration.getPgPort() + "/sonhms";
-        
-        return DataSourceBuilder
-                .create()
-                .url(url)
-                .username(configuration.getPgUsername())
-                .password(configuration.getPgPassword())
-                .build();
+
+        return DataSourceBuilder.create().url(url).username(configuration.getPgUsername())
+                .password(configuration.getPgPassword()).build();
     }
 
 }

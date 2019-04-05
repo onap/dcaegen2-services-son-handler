@@ -19,27 +19,26 @@
  *  
  *******************************************************************************/
 
-package org.onap.dcaegen2.services.sonhms.restclient;
+package org.onap.dcaegen2.services.sonhms.model;
 
-public class SonSolution {
+public class PMNotification {
 
-    String cellId = null;
-    int pci;
-
-    public String getCellId() {
-        return cellId;
+    Event event;
+    
+    /**
+     * default constructor
+     */
+    public PMNotification() {
+        
     }
-
-    public void setCellId(String cellId) {
-        this.cellId = cellId;
+    
+    public Event getEvent() {
+        return event;
     }
-
-    public int getPci() {
-        return pci;
+    public void setEvent(Event event) {
+        this.event = event;
     }
-
-    public void setPci(int pci) {
-        this.pci = pci;
-    }
-
+    
+   
+    
 }

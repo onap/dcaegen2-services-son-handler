@@ -25,7 +25,7 @@ public class OofRequestBody {
 
     protected RequestInfo requestInfo = new RequestInfo();
     protected CellInfo cellInfo = new CellInfo();
-
+   
     public RequestInfo getRequestInfo() {
         return requestInfo;
     }

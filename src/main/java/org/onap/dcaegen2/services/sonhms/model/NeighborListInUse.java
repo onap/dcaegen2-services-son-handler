@@ -29,6 +29,9 @@ public class NeighborListInUse {
     @JsonProperty("LTENeighborListInUseLTECell")
     private List<LteNeighborListInUseLteCell> lteNeighborListInUseLteCell;
 
+    @JsonProperty("LTECell")
+    private List<LteCell> lteCell;
+    
     @JsonProperty("LTECellNumberOfEntries")
     private String lteCellNumberOfEntries;
 
@@ -39,13 +42,14 @@ public class NeighborListInUse {
     /**
      * Parameterized Constructor.
      */
-
-    public NeighborListInUse(List<LteNeighborListInUseLteCell> lteNeighborListInUseLteCell,
+    public NeighborListInUse(List<LteNeighborListInUseLteCell> lteNeighborListInUseLteCell, List<LteCell> lteCell,
             String lteCellNumberOfEntries) {
         super();
         this.lteNeighborListInUseLteCell = lteNeighborListInUseLteCell;
+        this.lteCell = lteCell;
         this.lteCellNumberOfEntries = lteCellNumberOfEntries;
     }
+   
 
     public List<LteNeighborListInUseLteCell> getLteNeighborListInUseLteCell() {
         return lteNeighborListInUseLteCell;

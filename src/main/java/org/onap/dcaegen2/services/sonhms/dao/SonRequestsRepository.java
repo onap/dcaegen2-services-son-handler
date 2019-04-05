@@ -21,7 +21,7 @@
 
 package org.onap.dcaegen2.services.sonhms.dao;
 
-import org.onap.dcaegen2.services.sonhms.entity.PciRequests;
+import org.onap.dcaegen2.services.sonhms.entity.SonRequests;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -31,10 +31,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @Transactional
-public interface SonRequestsRepository extends CrudRepository<PciRequests, String> {
+public interface SonRequestsRepository extends CrudRepository<SonRequests, String> {
 
     @Query(nativeQuery = true, value = "SELECT child_thread_id FROM pci_requests WHERE transaction_id = ?1")
-    public long getChildThreadMapping(String transactionId);
+    public Long getChildThreadMapping(String transactionId);
 
     @Modifying
     @Query(nativeQuery = true, value = "DELETE FROM pci_requests WHERE child_thread_id = ?1")

@@ -45,7 +45,7 @@ public class NotificationTest {
         ArrayList<LteNeighborListInUseLteCell> list = new ArrayList<>();
         list.add(lteNeighborListInUseLteCell);
 
-        NeighborListInUse neighborListInUse = new NeighborListInUse(list, "1");
+        NeighborListInUse neighborListInUse = new NeighborListInUse(list, null, "1");
 
         NotificationRan notificationRan = new NotificationRan(neighborListInUse, "Cell25");
         NotificationLte notificationLte = new NotificationLte(notificationRan);

@@ -76,7 +76,7 @@ public class ClusterDetailsComponentTest {
         resultList = clusterDetailsComponent.getClusterDetails();
         for (ClusterDetails each : resultList) {
             assertEquals("clusterId", each.getClusterId());
-            assertEquals("clusterInfo", each.getClusterInfo());
+            assertEquals("clusterInfo", each.getClusterInfo()); 
             assertEquals(1, each.getChildThreadId());
 
         }

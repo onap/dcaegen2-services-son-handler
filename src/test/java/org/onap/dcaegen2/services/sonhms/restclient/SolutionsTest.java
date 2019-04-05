@@ -35,20 +35,26 @@ public class SolutionsTest {
     @Test
     public void solutionsTest() {
 
-        SonSolution pciSolutions = new SonSolution();
+        Solutions solutions = new Solutions();
+        List<AnrSolutions> anrSolutionsList = new ArrayList<>();
+        List<PciSolutions> pciSolutionsList = new ArrayList<>();
+        
+        PciSolutions pciSolutions = new PciSolutions();
         pciSolutions.setCellId("EXP001");
         pciSolutions.setPci(101);
-        List<SonSolution> pciSolutionsList = new ArrayList<SonSolution>();
         pciSolutionsList.add(pciSolutions);
-        Solution solutions = new Solution();
-        solutions.setFinishTime("2018-10-01T00:40+01.00");
+        AnrSolutions anrSolutions = new AnrSolutions();
+        anrSolutions.setCellId("EXP001");
+        List<String> removeableNeighbors = new ArrayList<>();
+        removeableNeighbors.add("cell001");
+        anrSolutions.setRemoveableNeighbors(removeableNeighbors);
+        anrSolutionsList.add(anrSolutions);
         solutions.setNetworkId("EXP001");
         solutions.setPciSolutions(pciSolutionsList);
-        solutions.setStartTime("2018-10-01T00:30+01:00");
-        assertEquals("2018-10-01T00:40+01.00", solutions.getFinishTime());
+        solutions.setAnrSolutions(anrSolutionsList);
         assertEquals("EXP001", solutions.getNetworkId());
         assertEquals(pciSolutionsList, solutions.getPciSolutions());
-        assertEquals("2018-10-01T00:30+01:00", solutions.getStartTime());
+        assertEquals(anrSolutionsList, solutions.getAnrSolutions());
 
     }
 

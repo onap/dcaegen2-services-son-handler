@@ -27,6 +27,7 @@ import static org.mockito.Mockito.when;
 import com.att.nsa.cambria.client.CambriaBatchingPublisher;
 
 import java.io.IOException;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

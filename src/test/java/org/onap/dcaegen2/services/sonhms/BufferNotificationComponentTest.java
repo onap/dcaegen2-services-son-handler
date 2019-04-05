@@ -70,7 +70,7 @@ public class BufferNotificationComponentTest {
                 .thenReturn(bufferedNotificationsRepositoryMock);
         when(bufferedNotificationsRepositoryMock.save(bufferedNotifications)).thenReturn(bufferedNotifications);
         bufferNotificationComponent.bufferNotification("notification", "clusterId");
-        assertEquals(bufferedNotifications, bufferedNotificationsRepositoryMock.save(bufferedNotifications));
+        assertEquals(bufferedNotifications, bufferedNotificationsRepositoryMock.save(bufferedNotifications)); 
 
     }
     

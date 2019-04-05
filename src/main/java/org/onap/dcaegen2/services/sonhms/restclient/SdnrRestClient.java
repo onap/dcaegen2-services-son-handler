@@ -58,7 +58,7 @@ public class SdnrRestClient {
         Configuration configuration = Configuration.getInstance();
         String ts = new SimpleDateFormat(DATETIMEFORMAT).format(new Time(System.currentTimeMillis()));
         String requestUrl = configuration.getConfigDbService() + "/SDNCConfigDBAPI/getCellList" + "/" + networkId + "/" 
-                + encode(ts);
+                + ts;
         return sendRequest(requestUrl);
     }
 
@@ -72,7 +72,7 @@ public class SdnrRestClient {
         Configuration configuration = Configuration.getInstance();
         String ts = new SimpleDateFormat(DATETIMEFORMAT).format(new Time(System.currentTimeMillis()));
         String requestUrl = configuration.getConfigDbService() + "/SDNCConfigDBAPI/getNbrList" + "/" + cellId + "/"
-                + encode(ts);
+                + ts;
         log.debug("request url: {}", requestUrl);
         String response = sendRequest(requestUrl);
         List<CellPciPair> nbrList = new ArrayList<>();
@@ -96,7 +96,7 @@ public class SdnrRestClient {
         Configuration configuration = Configuration.getInstance();
         String ts = new SimpleDateFormat(DATETIMEFORMAT).format(new Time(System.currentTimeMillis()));
         String requestUrl = configuration.getConfigDbService() + "/SDNCConfigDBAPI/getPCI" + "/" + cellId + "/"
-                + encode(ts);
+                + ts;
         String response = sendRequest(requestUrl);
         JSONObject respObj = new JSONObject(response);
         return respObj.getInt("value");
@@ -112,18 +112,12 @@ public class SdnrRestClient {
         Configuration configuration = Configuration.getInstance();
         String ts = new SimpleDateFormat(DATETIMEFORMAT).format(new Time(System.currentTimeMillis()));
         String requestUrl = configuration.getConfigDbService() + "/SDNCConfigDBAPI/getPnfName" + "/" + cellId + "/"
-                + encode(ts); 
+                + ts; 
         String response = sendRequest(requestUrl);
         JSONObject responseObject = new JSONObject(response);
         return responseObject.getString("value");
     }
 
-    /**
-     * Method to encode url.
-     */
-    private static String encode(String url) {
-        return url.replace(" ", "%20");
-    }
 
     /**
      * Method to send request.

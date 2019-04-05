@@ -34,7 +34,13 @@ public class MainThreadComponent {
     private static Logger log = LoggerFactory.getLogger(MainThreadComponent.class);
 
     @Autowired
-    private NewNotification newNotification;
+    private NewSdnrNotification newNotification;
+    
+    @Autowired
+    private NewPmNotification newPmNotification;
+    
+    @Autowired
+    private NewFmNotification newFmNotification;
 
     /**
      * main thread initialization.
@@ -42,7 +48,9 @@ public class MainThreadComponent {
     @PostConstruct
     public void init() {
         log.debug("initializing main thread");
-        Thread thread = new Thread(new MainThread(newNotification));
+        Thread thread = new Thread(new MainThread(newNotification, newFmNotification));
         thread.start();
+        Thread pmThread = new Thread(new PMThread(newPmNotification));
+        pmThread.start();
     }
 }

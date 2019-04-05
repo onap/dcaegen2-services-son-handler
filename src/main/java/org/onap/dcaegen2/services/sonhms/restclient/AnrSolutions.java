@@ -19,30 +19,42 @@
  *  
  *******************************************************************************/
 
-package org.onap.dcaegen2.services.sonhms;
+package org.onap.dcaegen2.services.sonhms.restclient;
 
-import org.springframework.stereotype.Component;
+import java.util.ArrayList;
+import java.util.List;
 
-@Component
-public class NewNotification {
-
-    private Boolean newNotif;
-
-    public Boolean getNewNotif() {
-        return newNotif;
-    }
-
-    public void setNewNotif(Boolean newNotif) {
-        this.newNotif = newNotif;
-    }
-
-    public NewNotification(Boolean newNotif) {
-        super();
-        this.newNotif = newNotif;
+public class AnrSolutions {
+    
+    String cellId;
+    List<String> removeableNeighbors = new ArrayList<>();
+    
+    public AnrSolutions() {
+        
     }
     
-    public NewNotification() {
-    	
+    public AnrSolutions(String cellId, List<String> removeableNeighbors) {
+        super();
+        this.cellId = cellId;
+        this.removeableNeighbors = removeableNeighbors;
     }
+
+    public String getCellId() {
+        return cellId;
+    }
+    public void setCellId(String cellId) {
+        this.cellId = cellId;
+    }
+    public List<String> getRemoveableNeighbors() {
+        return removeableNeighbors;
+    }
+    public void setRemoveableNeighbors(List<String> removeableNeighbors) {
+        this.removeableNeighbors = removeableNeighbors;
+    }
+    @Override
+    public String toString() {
+        return "AnrSolutions [cellId=" + cellId + ", removeableNeighbors=" + removeableNeighbors + "]";
+    }
+    
 
 }

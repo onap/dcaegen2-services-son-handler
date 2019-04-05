@@ -20,16 +20,19 @@
 
 package org.onap.dcaegen2.services.sonhms.utils;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import org.onap.dcaegen2.services.sonhms.EventHandler;
+import org.onap.dcaegen2.services.sonhms.HoMetricsComponent;
 import org.onap.dcaegen2.services.sonhms.child.ChildThread;
 import org.onap.dcaegen2.services.sonhms.child.Graph;
-import org.onap.dcaegen2.services.sonhms.model.FapServiceList;
+import org.onap.dcaegen2.services.sonhms.model.CellPciPair;
 import org.onap.dcaegen2.services.sonhms.model.ThreadId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,13 +47,17 @@ public class ThreadUtils {
      * Create thread.
      */
     public Boolean createNewThread(List<Graph> newClusters, BlockingQueue<List<String>> childStatusQueue,
-            ExecutorService pool, EventHandler eventHandler) {
+            ExecutorService pool, EventHandler eventHandler,String cellId) {
+        
+        
         for (Graph cluster : newClusters) {
 
-            BlockingQueue<FapServiceList> queue = new LinkedBlockingQueue<>();
+            BlockingQueue<Map<CellPciPair, ArrayList<CellPciPair>>> queue = new LinkedBlockingQueue<>();
             ThreadId threadId = new ThreadId();
             threadId.setChildThreadId(0);
-            ChildThread child = new ChildThread(childStatusQueue, cluster, queue, threadId);
+            ChildThread child = new ChildThread(childStatusQueue, cluster, queue, threadId, new HoMetricsComponent());
+            
+            log.info("Creating new child thread");
             pool.execute(child);
             waitForThreadId(threadId);
             UUID clusterId = UUID.randomUUID();
@@ -75,7 +82,7 @@ public class ThreadUtils {
             }
         } catch (InterruptedException e) {
 
-            log.error("ChildThread queue error {}", e);
+            log.error("ChildThread queue error {}", e); 
             Thread.currentThread().interrupt();
         }
     }

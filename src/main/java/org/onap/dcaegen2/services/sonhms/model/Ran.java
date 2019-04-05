@@ -27,6 +27,9 @@ public class Ran {
 
     @JsonProperty(value = "Common")
     private Common common;
+    
+    @JsonProperty("NeighborListInUse")
+    private NeighborListInUse neighborListInUse;
 
     public Ran() {
 
@@ -35,15 +38,18 @@ public class Ran {
     /**
      * Parameterized constructor.
      */
-    public Ran(Common common) {
+    public Ran(Common common, NeighborListInUse neighborListInUse) {
         super();
         this.common = common;
+        this.neighborListInUse = neighborListInUse;
     }
+
 
     public Common getCommon() {
         return common;
     }
 
+  
     public void setCommon(Common common) {
         this.common = common;
     }

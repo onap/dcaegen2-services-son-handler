@@ -21,15 +21,13 @@
 
 package org.onap.dcaegen2.services.sonhms.restclient;
 
-import java.util.List;
-
 public class AsyncResponseBody {
 
     String transactionId = null;
     String requestId = null;
     String requestStatus = null;
     String statusMessage = null;
-    List<Solution> solutions;
+    Solutions solutions;
 
     public String getTransactionId() {
         return transactionId;
@@ -69,11 +67,11 @@ public class AsyncResponseBody {
         this.statusMessage = statusMessage;
     }
 
-    public List<Solution> getSolutions() {
+    public Solutions getSolutions() {
         return solutions;
     }
 
-    public void setSolutions(List<Solution> solutions) {
+    public void setSolutions(Solutions solutions) {
         this.solutions = solutions;
     }
 

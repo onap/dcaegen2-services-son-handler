@@ -21,7 +21,9 @@
 
 package org.onap.dcaegen2.services.sonhms.restclient;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RequestInfo {
     String transactionId = null;
@@ -31,6 +33,16 @@ public class RequestInfo {
     String requestType = null;
     int numSolutions;
     List<String> optimizers = null;
+    protected Map<String, String> callbackHeader = new HashMap<>();
+
+    
+    public Map<String, String> getCallbackHeader() {
+        return callbackHeader;
+    }
+
+    public void setCallbackHeader(Map<String, String> callbackHeader) {
+        this.callbackHeader = callbackHeader;
+    }
 
     public void setOptimizers(List<String> optimizers) {
         this.optimizers = optimizers;

@@ -24,12 +24,15 @@ package org.onap.dcaegen2.services.sonhms.restclient;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.onap.dcaegen2.services.sonhms.ConfigPolicy;
 import org.onap.dcaegen2.services.sonhms.Configuration;
 import org.onap.dcaegen2.services.sonhms.exceptions.OofNotFoundException;
+import org.onap.dcaegen2.services.sonhms.model.AnrInput;
 import org.onap.dcaegen2.services.sonhms.utils.SonHandlerRestTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +54,7 @@ public class OofRestClient {
      */
 
     public static String queryOof(int numSolutions, String transactionId, String requestType, List<String> cellIdList,
-            String networkId, List<String> optimizers) throws OofNotFoundException {
+            String networkId, List<String> optimizers, List<AnrInput> anrInputList) throws OofNotFoundException {
         log.debug("inside queryoof");
 
         Configuration configuration = Configuration.getInstance();
@@ -67,6 +70,9 @@ public class OofRestClient {
         requestInfo.setRequestType(requestType);
         requestInfo.setNumSolutions(numSolutions);
         requestInfo.setOptimizers(optimizers);
+        Map<String,String> callbackHeader = new HashMap<>();
+        callbackHeader.put("Content-Type", "application/json");
+        requestInfo.setCallbackHeader(callbackHeader);
         ConfigPolicy config = ConfigPolicy.getInstance();
         int timeout = 60;
         try {
@@ -75,9 +81,13 @@ public class OofRestClient {
             log.debug("No config policy available. Using default timeout 60 sec");
         }
         requestInfo.setTimeout(timeout);
+        
         CellInfo cellInfo = new CellInfo();
         cellInfo.setCellIdList(cellIdList);
         cellInfo.setNetworkId(networkId);
+        cellInfo.setTrigger("NbrListChange");
+        if(!anrInputList.isEmpty())
+            cellInfo.setAnrInputList(anrInputList);
         OofRequestBody oofRequestBody = new OofRequestBody();
         oofRequestBody.setRequestInfo(requestInfo);
         oofRequestBody.setCellInfo(cellInfo);

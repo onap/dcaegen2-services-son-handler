@@ -28,6 +28,8 @@ num_solutions: 5
 min_collision: 5
 min_confusion: 5
 max_clusters: 5
+bad_threshold: 50
+poor_threshold: 70
 dmaap: message-router
 buffer_time: 60
 cg: sonhms-cg

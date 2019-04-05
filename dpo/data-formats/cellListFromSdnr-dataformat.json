@@ -1,18 +1,18 @@
 {
-    "dataformatversion": "1.0.0", 
-    "jsonschema": {
-        "$schema": "http://json-schema.org/draft-04/schema#", 
-        "description": "", 
-        "items": {
-            "description": "", 
-            "type": "string"
-        }, 
-        "type": "array"
-    }, 
-    "self": {
-        "description": "", 
-        "name": "CELLLIST_FROM_SDNR", 
-        "version": "1.0.0"
-    }
+	"dataformatversion": "1.0.0",
+	"jsonschema": {
+		"$schema": "http://json-schema.org/draft-04/schema#",
+		"description": "",
+		"items": {
+			"description": "",
+			"type": "string"
+		},
+		"type": "array"
+	},
+	"self": {
+		"description": "",
+		"name": "CELLLIST_FROM_SDNR",
+		"version": "1.0.0"
+	}
 }
 

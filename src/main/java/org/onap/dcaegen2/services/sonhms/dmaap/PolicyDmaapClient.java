@@ -22,37 +22,39 @@
 package org.onap.dcaegen2.services.sonhms.dmaap;
 
 import com.att.nsa.cambria.client.CambriaBatchingPublisher;
-import org.onap.dcaegen2.services.sonhms.Configuration;
-import org.onap.dcaegen2.services.sonhms.utils.DmaapUtils;
 
 import java.io.IOException;
 import java.util.Map;
 
+import org.onap.dcaegen2.services.sonhms.Configuration;
+import org.onap.dcaegen2.services.sonhms.utils.DmaapUtils;
+
 public class PolicyDmaapClient {
 
-	DmaapUtils dmaapUtils = new DmaapUtils();
+    private DmaapUtils dmaapUtils;
 
-	/**
-	 * Method stub for sending notification to policy.
-	 */
-	@SuppressWarnings("unchecked")
-	public boolean sendNotificationToPolicy(String msg) {
+    /**
+     * Method stub for sending notification to policy.
+     */
+    @SuppressWarnings("unchecked")
+    public boolean sendNotificationToPolicy(String msg) {
+        dmaapUtils = new DmaapUtils();
+        Map<String, Object> streamsPublishes = Configuration.getInstance().getStreamsPublishes();
+        String policyTopicUrl = ((Map<String, String>) ((Map<String, Object>) streamsPublishes.get("CL_topic"))
+                .get("dmaap_info")).get("topic_url");
+        String[] policyTopicSplit = policyTopicUrl.split("\\/");
+        String policyTopic = policyTopicSplit[policyTopicSplit.length - 1];
+        Configuration configuration = Configuration.getInstance();
+        CambriaBatchingPublisher cambriaBatchingPublisher;
+        try {
 
-		Map<String,Object> streamSubscribes= Configuration.getInstance().getStreamsPublishes();
-		String policyTopicUrl =((Map<String,String>)((Map<String,Object>)streamSubscribes.get("CL_topic")).get("dmaap_info")).get("topic_url");
-		String[] policyTopicSplit=policyTopicUrl.split("\\/");
-		String policyTopic=policyTopicSplit[policyTopicSplit.length-1];
-		Configuration configuration = Configuration.getInstance();
-		CambriaBatchingPublisher cambriaBatchingPublisher;
-		try {
+            cambriaBatchingPublisher = dmaapUtils.buildPublisher(configuration, policyTopic);
 
-			cambriaBatchingPublisher = dmaapUtils.buildPublisher(configuration, policyTopic);
-
-			NotificationProducer notificationProducer = new NotificationProducer(cambriaBatchingPublisher);
-			notificationProducer.sendNotification(msg);
-		} catch (IOException e) {
-			return false;
-		}
-		return true;
-	}
+            NotificationProducer notificationProducer = new NotificationProducer(cambriaBatchingPublisher);
+            notificationProducer.sendNotification(msg);
+        } catch (IOException e) {
+            return false;
+        }
+        return true;
+    }
 }

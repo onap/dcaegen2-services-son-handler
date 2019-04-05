@@ -68,6 +68,14 @@ inputs:
     type: integer
     description: maximum clusters
     default: 5
+  bad_threshold:
+    type: integer
+    description: threshold for bad neighbors
+    default: 50
+  poor_threshold:
+    type: integer
+    description: threshold for poor neighbors
+    default: 70
   dmaap:
     type: string
     description: dmaap server
@@ -179,7 +187,7 @@ node_templates:
               client_id: { get_input: topic02_client_id }
               topic_url: { get_input: topic02_url }
             type: message-router
-        streams__publishes:
+        streams_publishes:
           CL_topic:
             aaf_username: { get_input: aaf_username }
             aaf_password: { get_input: aaf_password }
@@ -199,6 +207,8 @@ node_templates:
         sonhandler.minCollision: { get_input: min_collision }
         sonhandler.minConfusion: { get_input: min_confusion }
         sonhandler.maximumClusters: { get_input: max_clusters }
+        sonhandler.badThreshold: { get_input: bad_threshold }
+        sonhandler.poorThreshold: { get_input: poor_threshold }
         sonhandler.sourceId: SONHMS
         sonhandler.dmaap.server: 
           - { get_input: dmaap }

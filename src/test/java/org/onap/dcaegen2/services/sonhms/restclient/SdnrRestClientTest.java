@@ -37,6 +37,7 @@ import org.mockito.MockitoAnnotations;
 import org.onap.dcaegen2.services.sonhms.Configuration;
 import org.onap.dcaegen2.services.sonhms.exceptions.ConfigDbNotFoundException;
 import org.onap.dcaegen2.services.sonhms.model.CellPciPair;
+import org.onap.dcaegen2.services.sonhms.utils.BeanUtil;
 import org.onap.dcaegen2.services.sonhms.utils.SonHandlerRestTemplate;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -53,7 +54,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 @PrepareForTest({ SonHandlerRestTemplate.class,Configuration.class })
 @SpringBootTest(classes = SdnrRestClientTest.class)
 public class SdnrRestClientTest {
-	
+	    
+    
+    
     Configuration configuration = Configuration.getInstance();
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(SdnrRestClient.class);
     @Before
@@ -68,6 +71,7 @@ public class SdnrRestClientTest {
     			"  \"string\"\n" + 
     			"]";
     	PowerMockito.mockStatic(SonHandlerRestTemplate.class);
+    	PowerMockito.mockStatic(BeanUtil.class);
 		PowerMockito.mockStatic(Configuration.class);
 		PowerMockito.when(Configuration.getInstance()).thenReturn(configuration);
 		PowerMockito.when(SonHandlerRestTemplate.sendGetRequest(Mockito.anyString(),Matchers.<ParameterizedTypeReference<String>>any())) 

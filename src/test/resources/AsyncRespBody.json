@@ -1,0 +1,23 @@
+{
+  "requestId":"9d2d790e-a5f0-11e8-98d0-529269fb1459",
+  "transactionId":"9d2d790e-a5f0-11e8-98d0-529269fb1458",
+  "statusMessage":"accepted",
+  "requestStatus":"success",
+  "solutions":{
+    "networkId":"NTWK005",
+    "pciSolutions":[
+      {
+        "cellId":"EXP001",
+        "pci":"101"
+      },
+      {
+        "cellId":"EXP002",
+        "pci":"102"
+      }
+    ],
+    "anrSolutions":[
+      {"cellId":"EXP003",
+	"removeableNeighbors":["EXP006"]}
+    ]
+  }
+}

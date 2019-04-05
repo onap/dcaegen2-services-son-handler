@@ -40,7 +40,7 @@ public class BufferNotificationComponent {
                 .getBean(BufferedNotificationsRepository.class);
         bufferedNotificationsRepository.save(bufferedNotifications);
 
-    }
+    } 
 
     /**
      * Retrieves buffered notification from the database.

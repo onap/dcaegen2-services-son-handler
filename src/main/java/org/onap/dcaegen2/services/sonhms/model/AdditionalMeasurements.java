@@ -19,57 +19,35 @@
  *  
  *******************************************************************************/
 
-package org.onap.dcaegen2.services.sonhms.restclient;
+package org.onap.dcaegen2.services.sonhms.model;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-public class Solution {
-    String startTime = null;
-    String finishTime = null;
-    String networkId = null;
-    List<SonSolution> pciSolutions = new ArrayList<>();
-
-    public String getStartTime() {
-        return startTime;
+public class AdditionalMeasurements {
+    
+    String name;
+    List<Map<String,String>> arrayOfNamedHashMap;  
+    
+    public AdditionalMeasurements() {
+        
     }
-
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
+    public String getName() {
+        return name;
     }
-
-    public String getFinishTime() {
-        return finishTime;
+    public void setName(String name) {
+        this.name = name;
     }
-
-    public void setFinishTime(String finishTime) {
-        this.finishTime = finishTime;
+    public List<Map<String, String>> getArrayOfNamedHashMap() {
+        return arrayOfNamedHashMap;
     }
-
-    public String getNetworkId() {
-        return networkId;
+    public void setArrayOfNamedHashMap(List<Map<String, String>> arrayOfNamedHashMap) {
+        this.arrayOfNamedHashMap = arrayOfNamedHashMap;
     }
-
-    public void setNetworkId(String networkId) {
-        this.networkId = networkId;
-    }
-
-    public List<SonSolution> getPciSolutions() {
-        return pciSolutions;
-    }
-
-    /**
-     * Sets PciSolutions.
-     */
-    public void setPciSolutions(List<SonSolution> pciSolutions) {
-
-        this.pciSolutions = pciSolutions;
-
-    }
-
     @Override
     public String toString() {
-        return "Solutions [startTime=" + startTime + ", finishTime=" + finishTime + ", networkId=" + networkId
-                + ", pciSolutions=" + pciSolutions + "]";
+        return "AdditionalMeasurements [name=" + name + ", arrayOfNamedHashMap=" + arrayOfNamedHashMap + "]";
     }
+    
+    
 }

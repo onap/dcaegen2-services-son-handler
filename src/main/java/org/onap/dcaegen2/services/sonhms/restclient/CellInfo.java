@@ -24,9 +24,30 @@ package org.onap.dcaegen2.services.sonhms.restclient;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.onap.dcaegen2.services.sonhms.model.AnrInput;
+
 public class CellInfo {
     String networkId = null;
     List<String> cellIdList = new ArrayList<>();
+    protected List<AnrInput> anrInputList = new ArrayList<>();
+    String trigger;
+    
+    
+    public List<AnrInput> getAnrInputList() {
+        return anrInputList;
+    }
+
+    public void setAnrInputList(List<AnrInput> anrInputList) {
+        this.anrInputList = anrInputList;
+    }
+
+    public String getTrigger() {
+        return trigger;
+    }
+
+    public void setTrigger(String trigger) {
+        this.trigger = trigger;
+    }
 
     public String getNetworkId() {
         return networkId;

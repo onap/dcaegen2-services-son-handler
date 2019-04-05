@@ -29,7 +29,7 @@ import org.junit.Test;
 public class PciSolutionsTest {
     @Test
     public void pciSolutionsTest() {
-        SonSolution pciSolutions = new SonSolution();
+        PciSolutions pciSolutions = new PciSolutions();
         pciSolutions.setCellId("EXP001");
         pciSolutions.setPci(101);
         assertEquals("EXP001", pciSolutions.getCellId());

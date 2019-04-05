@@ -52,10 +52,6 @@ public class LteNeighborListInUseLteCell {
 
     }
 
-    /**
-     * Parameterized Constructor.
-     */
-
     public LteNeighborListInUseLteCell(String pnfName, String enable, String alias, String mustInclude, String plmnId,
             String cid, int phyCellId, String blacklisted) {
         super();

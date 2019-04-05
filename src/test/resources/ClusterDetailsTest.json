@@ -1,10 +1,13 @@
-[{"clusterId":"0",
-"clusterInfo":"",
- "childThreadId":986476
-},
-{"clusterId":"1",
-"clusterInfo":"",
- "childThreadId":986475
-}
+[
+	{
+		"clusterId": "0",
+		"clusterInfo": "",
+		"childThreadId": 986476
+	},
+	{
+		"clusterId": "1",
+		"clusterInfo": "",
+		"childThreadId": 986475
+	}
 ]
 

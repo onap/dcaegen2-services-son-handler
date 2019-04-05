@@ -47,11 +47,32 @@ public class Graph {
     // symbol table: key = string vertex, value = set of neighboring vertices
     private Map<CellPciPair, ArrayList<CellPciPair>> cellPciNeighbourMap;
     private UUID graphId;
+   
+    private String networkId;
+
+    public String getNetworkId() {
+        return networkId;
+    }
+
+    public void setNetworkId(String networkId) {
+        this.networkId = networkId;
+    }
+
+   
+    private Map<String, ArrayList<Integer>> collisionConfusionMap;
+
+    public Map<String, ArrayList<Integer>> getCollisionConfusionMap() {
+        return collisionConfusionMap;
+    }
+
+    public void setCollisionConfusionMap(Map<String, ArrayList<Integer>> collisionConfusionMap) {
+        this.collisionConfusionMap = collisionConfusionMap;
+    }
 
     /**
      * Parameterized constructor.
      */
-    public Graph(String clusterInfo) { 
+    public Graph(String clusterInfo) {
         JSONArray cells = new JSONArray(clusterInfo);
 
         Map<CellPciPair, ArrayList<CellPciPair>> cellMap = new HashMap<>();
@@ -62,9 +83,10 @@ public class Graph {
             ArrayList<CellPciPair> neighbours = new ArrayList<>();
             try {
                 neighbours = mapper.readValue(cell.getString("neighbours"),
-                        new TypeReference<ArrayList<CellPciPair>>() { });
+                        new TypeReference<ArrayList<CellPciPair>>() {
+                        });
             } catch (JSONException | IOException e) {
-                log.debug("Error parsing json: {}", e);
+                log.error("Error parsing json: {}", e);
             }
             cellMap.put(cellPciPair, neighbours);
 
@@ -195,7 +217,7 @@ public class Graph {
         try {
             pciNeighbourJson = mapper.writeValueAsString(cells);
         } catch (JsonProcessingException e) {
-            log.debug("Error while processing json: {}", e);
+            log.error("Error while processing json: {}", e);
         }
         return pciNeighbourJson;
     }
@@ -211,31 +233,10 @@ public class Graph {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
         if (obj == null) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        Graph other = (Graph) obj;
-        if (cellPciNeighbourMap == null) {
-            if (other.cellPciNeighbourMap != null) {
-                return false;
-            }
-        } else if (!cellPciNeighbourMap.equals(other.cellPciNeighbourMap)) {
-            return false;
-        }
-        if (graphId == null) {
-            if (other.graphId != null) {
-                return false;
-            }
-        } else if (!graphId.equals(other.graphId)) {
-            return false;
-        }
-        return true;
+        return (this.hashCode() == obj.hashCode());
     }
 
 }

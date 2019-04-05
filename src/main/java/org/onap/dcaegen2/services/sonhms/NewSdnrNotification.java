@@ -19,51 +19,37 @@
  *  
  *******************************************************************************/
 
-package org.onap.dcaegen2.services.sonhms.entity;
+package org.onap.dcaegen2.services.sonhms;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.annotation.PostConstruct;
 
-@Entity
-@Table(name = "PCI_REQUESTS")
-public class PciRequests {
+import org.springframework.stereotype.Component;
 
-    @Id
-    @Column(name = "TRANSACTION_ID")
-    private String transactionId;
+@Component
+public class NewSdnrNotification {
 
-    @Column(name = "CHILD_THREAD_ID")
-    private long childThreadId;
+    private Boolean newNotif;
 
-    public PciRequests() {
-
+    @PostConstruct
+    void init() {
+        newNotif = false;
+    }
+    
+    public Boolean getNewNotif() {
+        return newNotif;
     }
 
-    /**
-     * Parameterised constructor.
-     */
-    public PciRequests(String transactionId, long childThreadId) {
+    public void setNewNotif(Boolean newNotif) {
+        this.newNotif = newNotif;
+    }
+
+    public NewSdnrNotification(Boolean newNotif) {
         super();
-        this.transactionId = transactionId;
-        this.childThreadId = childThreadId;
+        this.newNotif = newNotif;
     }
 
-    public String getTransactionId() {
-        return transactionId;
-    }
+    public NewSdnrNotification() {
 
-    public void setTransactionId(String transactionId) {
-        this.transactionId = transactionId;
-    }
-
-    public long getChildThreadId() {
-        return childThreadId;
-    }
-
-    public void setChildThreadId(long childThreadId) {
-        this.childThreadId = childThreadId;
     }
 
 }

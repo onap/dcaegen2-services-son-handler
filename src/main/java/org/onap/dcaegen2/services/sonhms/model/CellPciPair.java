@@ -30,6 +30,7 @@ public class CellPciPair {
     @JsonProperty("physicalCellId")
     private int physicalCellId;
 
+
     @Override
     public String toString() {
         return "CellPciPair [cellId=" + cellId + ", physicalCellId=" + physicalCellId + "]";

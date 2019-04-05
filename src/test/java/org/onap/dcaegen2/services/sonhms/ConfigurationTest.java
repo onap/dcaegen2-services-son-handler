@@ -24,8 +24,11 @@ package org.onap.dcaegen2.services.sonhms;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.hibernate.sql.ConditionFragment;
 import org.junit.Test;
 
 
@@ -39,15 +42,26 @@ public class ConfigurationTest {
 
         List<String> list = new ArrayList<String>();
         list.add("server");
+        Map<String, Object> subscribes = new HashMap<>();
+        
+        configuration.setStreamsSubscribes(subscribes);
+        configuration.setStreamsPublishes(subscribes);
         configuration.setDmaapServers(list);
         configuration.setCg("cg");
         configuration.setCid("cid");
-
+        configuration.setAafPassword("password");
+        configuration.setAafUsername("user");
+        configuration.setPgHost("pg");
+        configuration.setPgPort(5432);
+        configuration.setPgPassword("password");
+        configuration.setPgUsername("user");
         configuration.setMaximumClusters(5);
         configuration.setMinCollision(5);
         configuration.setMinConfusion(5);
         configuration.setNumSolutions(1);
         configuration.setOofService("oofService");
+        configuration.setBadThreshold(50);
+        configuration.setPoorThreshold(70);
         configuration.setOptimizers(list);
         configuration.setPollingInterval(30);
         configuration.setPollingTimeout(100);
@@ -57,18 +71,26 @@ public class ConfigurationTest {
         assertEquals("/callbackUrl", configuration.getCallbackUrl());
         assertEquals("cg", configuration.getCg());
         assertEquals("cid", configuration.getCid());
-
+        assertEquals("user", configuration.getAafUsername());
+        assertEquals("password", configuration.getAafPassword());
         assertEquals(5, configuration.getMaximumClusters());
         assertEquals(5, configuration.getMinCollision());
         assertEquals(5, configuration.getMinConfusion());
         assertEquals(1, configuration.getNumSolutions());
         assertEquals("oofService", configuration.getOofService());
         assertEquals(list, configuration.getOptimizers());
-
+        assertEquals("user", configuration.getPgUsername());
+        assertEquals("password", configuration.getPgPassword());
+        assertEquals("pg", configuration.getPgHost());
+        assertEquals(5432, configuration.getPgPort());
         assertEquals(30, configuration.getPollingInterval());
         assertEquals(100, configuration.getPollingTimeout());
         assertEquals("sdnrService", configuration.getConfigDbService());
         assertEquals(list, configuration.getDmaapServers());
         assertEquals("sourceId", configuration.getSourceId());
+        assertEquals(50, configuration.getBadThreshold());
+        assertEquals(70, configuration.getPoorThreshold());
+        assertEquals(subscribes, configuration.getStreamsSubscribes());
+        assertEquals(subscribes, configuration.getStreamsPublishes());
     }
 }

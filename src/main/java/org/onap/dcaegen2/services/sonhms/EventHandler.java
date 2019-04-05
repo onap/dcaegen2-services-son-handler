@@ -25,9 +25,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import fj.data.Either;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -39,7 +39,10 @@ import org.onap.dcaegen2.services.sonhms.child.ChildThread;
 import org.onap.dcaegen2.services.sonhms.child.Graph;
 import org.onap.dcaegen2.services.sonhms.entity.ClusterDetails;
 import org.onap.dcaegen2.services.sonhms.exceptions.ConfigDbNotFoundException;
+import org.onap.dcaegen2.services.sonhms.model.CellPciPair;
+import org.onap.dcaegen2.services.sonhms.model.ClusterMap;
 import org.onap.dcaegen2.services.sonhms.model.FapServiceList;
+import org.onap.dcaegen2.services.sonhms.model.LteNeighborListInUseLteCell;
 import org.onap.dcaegen2.services.sonhms.model.Notification;
 import org.onap.dcaegen2.services.sonhms.utils.ClusterUtils;
 import org.onap.dcaegen2.services.sonhms.utils.ThreadUtils;
@@ -59,7 +62,7 @@ public class EventHandler {
     private ExecutorService pool;
 
     private ClusterUtils clusterUtils;
-    
+
     private ThreadUtils threadUtils;
 
     /**
@@ -76,15 +79,152 @@ public class EventHandler {
     }
 
     /**
+     * Handles fault notifications.
+     */
+    public Boolean handleFaultNotification(List<FaultEvent> fmNotification) {
+
+        log.info("Handling Fault notification");
+        log.info("fm notification {}", fmNotification);
+        
+        Set<String> cellIds = new HashSet<>();
+        List<ClusterDetails> clusterDetails = clusterUtils.getAllClusters();
+        String networkId = "";
+        Map<String, ArrayList<Integer>> collisionConfusionMap = new HashMap<>();
+
+        for (FaultEvent faultEvent : fmNotification) {
+            String cellId = faultEvent.getEvent().getCommonEventHeader().getSourceName();
+            cellIds.add(cellId);
+            networkId = faultEvent.getEvent().getFaultFields().getAlarmAdditionalInformation().getNetworkId();
+            ArrayList<Integer> counts = new ArrayList<>();
+            counts.add(faultEvent.getEvent().getFaultFields().getAlarmAdditionalInformation().getCollisions());
+            counts.add(faultEvent.getEvent().getFaultFields().getAlarmAdditionalInformation().getConfusions());
+            collisionConfusionMap.put(cellId, counts);
+        }
+        FaultNotificationtoClusterMapping faultNotificationtoClusterMapping = clusterUtils
+                .getClustersForFmNotification(cellIds, clusterDetails);
+
+        faultNotificationtoClusterMapping.setCollisionConfusionMap(collisionConfusionMap);
+        // matching cells
+        if (faultNotificationtoClusterMapping.getCellsinCluster() != null && !faultNotificationtoClusterMapping.getCellsinCluster().isEmpty()) {
+            try {
+                handleMatchedFmCells(faultNotificationtoClusterMapping, clusterDetails);
+            } catch (ConfigDbNotFoundException e) {
+                log.error("Config DB Exception {}", e);
+            }
+
+        }
+        // unmatched new cells
+        if (faultNotificationtoClusterMapping.getNewCells() != null && !faultNotificationtoClusterMapping.getNewCells().isEmpty()) {
+            handleUnmatchedFmCells(faultNotificationtoClusterMapping, networkId);
+
+        }
+
+        return true;
+    }
+
+    /**
+     * handle matched fm cells.
+     * 
+     */
+    private void handleMatchedFmCells(FaultNotificationtoClusterMapping faultNotificationtoClusterMapping,
+            List<ClusterDetails> clusterDetails) throws ConfigDbNotFoundException {
+        Map<String, String> cellsinCluster = faultNotificationtoClusterMapping.getCellsinCluster();
+        log.info("Handling Matching cells for FM notification");
+
+        for (Entry<String, String> entry : cellsinCluster.entrySet()) {
+
+            String cellId = entry.getKey();
+            String clusterId = entry.getValue();
+            Map<CellPciPair, ArrayList<CellPciPair>> clusterMap = clusterUtils.findClusterMap(cellId);
+
+            Either<ClusterDetails, Integer> clusterDetail = clusterUtils.getClusterDetailsFromClusterId(clusterId,
+                    clusterDetails);
+
+            if (clusterDetail.isRight()) {
+                log.error("Cannot find the cluster for Cluster ID");
+                return;
+            } else {
+                long threadId = clusterDetail.left().value().getChildThreadId();
+
+                if (childStatus.get(threadId).equals("triggeredOof")) {
+                    log.info("OOF triggered for the cluster, buffering notification");
+                    bufferNotification(clusterMap, clusterId);
+                } else {
+                    childThreadMap.get(threadId).putInQueue(clusterMap);
+                }
+            }
+        }
+
+    }
+
+    /**
+     * handle unmatched fm cells.
+     * 
+     * @param networkId2
+     * @param faultNotificationtoClusterMapping
+     */
+    private void handleUnmatchedFmCells(FaultNotificationtoClusterMapping faultNotificationtoClusterMapping,
+            String networkId) {
+        List<String> newCells = faultNotificationtoClusterMapping.getNewCells();
+        log.info("Handle Unmatching cells for FM notificatins newCells{}", newCells);
+        List<Graph> newClusters = new ArrayList<>();
+
+        for (String cellId : newCells) {
+            ArrayList<Integer> collisionConfusionCount = faultNotificationtoClusterMapping.getCollisionConfusionMap()
+                    .get(cellId);
+            log.info("Handle Unmatching cells for FM notificatins,collisionConfusionCount{}", collisionConfusionCount);
+
+            Either<Graph, Integer> existingCluster = clusterUtils.getClusterForFMCell(cellId, newClusters);
+            if (existingCluster.isRight()) {
+                try {
+                    Map<CellPciPair, ArrayList<CellPciPair>> clusterMap = clusterUtils.findClusterMap(cellId);
+                    Graph cluster = clusterUtils.createCluster(clusterMap);
+                    cluster.setNetworkId(networkId);
+                    Map<String, ArrayList<Integer>> collisionConfusionMap = new HashMap<>();
+                    collisionConfusionMap.put(cellId, collisionConfusionCount);
+                    cluster.setCollisionConfusionMap(collisionConfusionMap);
+
+                    newClusters.add(cluster);
+                } catch (ConfigDbNotFoundException e) {
+                    log.error("Error connecting with configDB {}", e);
+                }
+            }
+
+            else {
+                Graph cluster = existingCluster.left().value();
+
+                Graph modifiedCluster = null;
+                try {
+                    modifiedCluster = clusterUtils.modifyCluster(cluster, clusterUtils.findClusterMap(cellId));
+                    Map<String, ArrayList<Integer>> collisionConfusionMap = cluster.getCollisionConfusionMap();
+                    collisionConfusionMap.put(cellId, collisionConfusionCount);
+                    cluster.setCollisionConfusionMap(collisionConfusionMap);
+                } catch (ConfigDbNotFoundException e) {
+                    log.error("Config DB not found {}", e);
+                }
+                newClusters.remove(cluster);
+                newClusters.add(modifiedCluster);
+            }
+
+        }
+
+        // create new child thread
+        log.info("New clusters {}", newClusters);
+
+        threadUtils.createNewThread(newClusters, childStatusQueue, pool, this, null);
+
+    }
+
+    /**
      * handle sdnr notification.
      */
     public Boolean handleSdnrNotification(Notification notification) {
         // Check if notification matches with a cluster
-
+        log.info("Handling SDNR notification");
         try {
             List<ClusterDetails> clusterDetails = clusterUtils.getAllClusters();
 
-            NotificationToClusterMapping mapping = clusterUtils.getClustersForNotification(notification, 
+            NotificationToClusterMapping mapping = clusterUtils.getClustersForNotification(notification,
                     clusterDetails);
 
             // Matching cells
@@ -105,15 +245,22 @@ public class EventHandler {
 
     }
 
-    private void handleUnMatchingCells(List<FapServiceList> newCells) {
+    private void handleUnMatchingCells(List<FapServiceList> newCells) throws ConfigDbNotFoundException {
+
+        log.info("handling unmatched cells");
+
         List<Graph> newClusters = new ArrayList<>();
 
         for (FapServiceList fapService : newCells) {
 
+            Map<CellPciPair, ArrayList<CellPciPair>> clusterMap = clusterUtils.findClusterMap(fapService.getAlias());
             Either<Graph, Integer> existingCluster = clusterUtils.getClusterForCell(fapService, newClusters);
             if (existingCluster.isRight()) {
                 try {
-                    Graph cluster = clusterUtils.createCluster(fapService);
+                    Graph cluster = clusterUtils.createCluster(clusterMap);
+                    cluster.setNetworkId(fapService.getCellConfig().getLte().getRan().getNeighborListInUse()
+                            .getLteNeighborListInUseLteCell().get(0).getPlmnid());
+                    cluster.setCollisionConfusionMap(new HashMap<>());
                     newClusters.add(cluster);
                 } catch (ConfigDbNotFoundException e) {
                     log.error("Error connecting with configDB {}", e);
@@ -122,8 +269,8 @@ public class EventHandler {
 
             else {
                 Graph cluster = existingCluster.left().value();
-
-                Graph modifiedCluster = clusterUtils.modifyCluster(cluster, fapService);
+                Graph modifiedCluster = clusterUtils.modifyCluster(cluster,
+                        clusterUtils.findClusterMap(fapService.getAlias()));
                 newClusters.remove(cluster);
                 newClusters.add(modifiedCluster);
             }
@@ -131,16 +278,33 @@ public class EventHandler {
         }
 
         // create new child thread
-        
-        threadUtils.createNewThread(newClusters, childStatusQueue, pool, this);
+
+        threadUtils.createNewThread(newClusters, childStatusQueue, pool, this, null);
 
     }
 
-    private void handleMatchingCells(Map<FapServiceList, String> cellsInCluster, List<ClusterDetails> clusterDetails) {
+    private void handleMatchingCells(Map<FapServiceList, String> cellsInCluster, List<ClusterDetails> clusterDetails)
+            throws ConfigDbNotFoundException {
+
+        log.info("handling matching cells");
+
         for (Entry<FapServiceList, String> entry : cellsInCluster.entrySet()) {
 
             FapServiceList fapService = entry.getKey();
             String clusterId = entry.getValue();
+            String cellId = fapService.getAlias();
+            int pci = fapService.getX0005b9Lte().getPhyCellIdInUse();
+            ArrayList<CellPciPair> neighbours = new ArrayList<>();
+            for (LteNeighborListInUseLteCell neighbour : fapService.getCellConfig().getLte().getRan()
+                    .getNeighborListInUse().getLteNeighborListInUseLteCell()) {
+                String neighbourCellId = neighbour.getAlias();
+                int neighbourPci = neighbour.getPhyCellId();
+                neighbours.add(new CellPciPair(neighbourCellId, neighbourPci));
+
+            }
+            Map<CellPciPair, ArrayList<CellPciPair>> clusterMap = new HashMap<>();
+            clusterMap.put(new CellPciPair(cellId, pci), neighbours);
+
             Either<ClusterDetails, Integer> clusterDetail = clusterUtils.getClusterDetailsFromClusterId(clusterId,
                     clusterDetails);
 
@@ -152,23 +316,33 @@ public class EventHandler {
 
                 if (childStatus.get(threadId).equals("triggeredOof")) {
                     log.info("OOF triggered for the cluster, buffering notification");
-                    bufferNotification(fapService, clusterId);
+
+                    bufferNotification(clusterMap, clusterId);
                 } else {
-                    childThreadMap.get(threadId).putInQueue(fapService);
+                    log.info("Forwarding notification to child thread {}", threadId);
+                    childThreadMap.get(threadId).putInQueue(clusterMap);
                 }
             }
         }
     }
 
-    private void bufferNotification(FapServiceList fapService, String clusterId) {
+    private void bufferNotification(Map<CellPciPair, ArrayList<CellPciPair>> clusterMap, String clusterId) {
+
+        log.info("Buffering notifications ...");
         ObjectMapper mapper = new ObjectMapper();
-        BufferNotificationComponent bufferNotifComponent = new BufferNotificationComponent();
         String serviceListString = "";
+
+        ClusterMap clusterMapJson = new ClusterMap();
+
+        clusterMapJson.setCell(clusterMap.keySet().iterator().next());
+        clusterMapJson.setNeighbourList(clusterMap.get(clusterMap.keySet().iterator().next()));
+
         try {
-            serviceListString = mapper.writeValueAsString(fapService);
+            serviceListString = mapper.writeValueAsString(clusterMapJson);
         } catch (JsonProcessingException e) {
-            log.debug("JSON processing exception: {}", e);
+            log.error("JSON processing exception: {}", e);
         }
+        BufferNotificationComponent bufferNotifComponent = new BufferNotificationComponent();
         bufferNotifComponent.bufferNotification(serviceListString, clusterId);
 
     }
@@ -178,50 +352,17 @@ public class EventHandler {
      */
     public void handleChildStatusUpdate(List<String> childStatus) {
 
-        // update Child status in data structure
+        log.info("Handling child status update");
+
         Long childThreadId = Long.parseLong(childStatus.get(0));
         addChildStatus(childThreadId, childStatus.get(1));
 
         // if child status is OOF result success, handle buffered notifications
-        if (childStatus.get(1).equals("success")) {
-            BufferNotificationComponent bufferNotificationComponent = new BufferNotificationComponent();
-            ClusterDetailsComponent clusterDetailsComponent = new ClusterDetailsComponent();
-            String clusterId = clusterDetailsComponent.getClusterId(childThreadId);
-            List<String> bufferedNotifications = bufferNotificationComponent.getBufferedNotification(clusterId);
-
-            if (bufferedNotifications == null || bufferedNotifications.isEmpty()) {
-                log.info("No buffered notification for this thread");
-
-                Set<Thread> setOfThread = Thread.getAllStackTraces().keySet();
-                for (Thread thread : setOfThread) {
-                    if (thread.getId() == childThreadId) {
-                        deleteChildStatus(childThreadId);
-                        thread.interrupt();
-                    }
-                }
-            } else {
-                handleBufferedNotifications(childThreadId, bufferedNotifications);
-            }
+        if (childStatus.get(1).equals("done")) {
+            deleteChildStatus(childThreadId);
         }
         // else kill the child thread
 
-    }
-
-    private void handleBufferedNotifications(Long childThreadId, List<String> bufferedNotifications) {
-
-        ObjectMapper mapper = new ObjectMapper();
-        for (String notification : bufferedNotifications) {
-            FapServiceList fapServiceList;
-            try {
-                fapServiceList = mapper.readValue(notification, FapServiceList.class);
-                log.debug("fapServiceList{}", fapServiceList);
-
-                childThreadMap.get(childThreadId).putInQueueWithNotify(fapServiceList);
-
-            } catch (IOException e) {
-                log.error("Error parsing the buffered notification, skipping {}", e);
-            }
-        }
     }
 
     public static void addChildThreadMap(Long childThreadId, ChildThread child) {

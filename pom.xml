@@ -1,357 +1,327 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-     ============LICENSE_START=======================================================
-     son-handler
-     ================================================================================
-      Copyright (C) 2019 Wipro Limited.
-      ==============================================================================
-        Licensed under the Apache License, Version 2.0 (the "License");
-        you may not use this file except in compliance with the License.
-        You may obtain a copy of the License at
-     
-             http://www.apache.org/licenses/LICENSE-2.0
-     
-        Unless required by applicable law or agreed to in writing, software
-        distributed under the License is distributed on an "AS IS" BASIS,
-        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-        See the License for the specific language governing permissions and
-        limitations under the License.
-        ============LICENSE_END=========================================================
-     
- -->
+<!-- ============LICENSE_START======================================================= 
+	son-handler ================================================================================ 
+	Copyright (C) 2019 Wipro Limited. ============================================================================== 
+	Licensed under the Apache License, Version 2.0 (the "License"); you may not 
+	use this file except in compliance with the License. You may obtain a copy 
+	of the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required 
+	by applicable law or agreed to in writing, software distributed under the 
+	License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS 
+	OF ANY KIND, either express or implied. See the License for the specific 
+	language governing permissions and limitations under the License. ============LICENSE_END========================================================= -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>org.onap.dcaegen2.services.son-handler</groupId>
-  <artifactId>son-handler</artifactId>
-  <name>dcaegen2-services-son-handler</name>
-  <version>1.0.0-SNAPSHOT</version>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.onap.dcaegen2.services.son-handler</groupId>
+	<artifactId>son-handler</artifactId>
+	<name>dcaegen2-services-son-handler</name>
+	<version>1.0.0-SNAPSHOT</version>
 
-  <!--parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.0.4.RELEASE</version>
-  </parent-->
-	
-  <parent>
-    <groupId>org.onap.oparent</groupId>
-    <artifactId>oparent</artifactId>
-    <version>1.2.1</version>
-    <relativePath/>
-  </parent>
+	<!--parent> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-parent</artifactId> 
+		<version>2.0.4.RELEASE</version> </parent -->
+
+	<parent>
+		<groupId>org.onap.oparent</groupId>
+		<artifactId>oparent</artifactId>
+		<version>1.2.1</version>
+		<relativePath />
+	</parent>
 
 
-  <properties>
-    <sdk.version>1.1.3</sdk.version>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
-    <docker.image.name>onap/org.onap.dcaegen2.services.son-handler</docker.image.name>
-    <!-- NEXUS RELATED SETTINGS -->
-    <nexusproxy>https://nexus.onap.org</nexusproxy>
-    <snapshots.path>content/repositories/snapshots/</snapshots.path>
-    <releases.path>content/repositories/releases/</releases.path>
-    <site.path>content/sites/site/org/onap/dcaegen2/services/son-handler/${project.artifactId}/${project.version}</site.path>
-    <maven.build.timestamp.format>yyyyMMdd'T'HHmmss</maven.build.timestamp.format>
-  </properties>
+	<properties>
+		<sdk.version>1.1.4-SNAPSHOT</sdk.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<docker.image.name>onap/org.onap.dcaegen2.services.son-handler</docker.image.name>
+		<!-- NEXUS RELATED SETTINGS -->
+		<nexusproxy>https://nexus.onap.org</nexusproxy>
+		<snapshots.path>content/repositories/snapshots/</snapshots.path>
+		<releases.path>content/repositories/releases/</releases.path>
+		<site.path>content/sites/site/org/onap/dcaegen2/services/son-handler/${project.artifactId}/${project.version}</site.path>
+		<maven.build.timestamp.format>yyyyMMdd'T'HHmmss</maven.build.timestamp.format>
+	</properties>
 
-  <dependencies>
-  <!-- cbs client -->
-  <dependency>
-    <groupId>org.onap.dcaegen2.services.sdk.rest.services</groupId>
-    <artifactId>cbs-client</artifactId>
-    <version>${sdk.version}</version>
-  </dependency>
- 
-  <dependency>
-    <groupId>org.onap.dcaegen2.services.sdk.security.crypt</groupId>
-    <artifactId>crypt-password</artifactId>
-    <version>${sdk.version}</version>
-  </dependency>
-  <dependency>
-        <!-- Import dependency management from Spring Boot -->
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-dependencies</artifactId>
-        <version>2.0.4.RELEASE</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-  	<dependency>
-	  <groupId>com.att.nsa</groupId>
-	  <artifactId>cambriaClient</artifactId>
-	  <version>0.0.1</version>
-	</dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-core</artifactId>
-    <version>2.9.8</version>
-	</dependency>
-	<dependency>
-	  <groupId>com.fasterxml.jackson.core</groupId>
-	  <artifactId>jackson-databind</artifactId>
-    <version>2.9.8</version>
-	</dependency>
-<!-- https://mvnrepository.com/artifact/javax.json/javax.json-api -->
-<dependency>
-    <groupId>javax.json</groupId>
-    <artifactId>javax.json-api</artifactId>
-    <version>1.1.2</version>
-    </dependency>
-  	<dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-web</artifactId>
-	<version>2.0.4.RELEASE</version>
-    </dependency>
-    <dependency>
-     <groupId>org.postgresql</groupId>
-     <artifactId>postgresql</artifactId>
-	<version>42.2.5</version>
-     </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-data-jpa</artifactId>
-	<version>2.0.4.RELEASE</version>
-    </dependency>
-<dependency>
-    <groupId>org.springframework.data</groupId>
-    <artifactId>spring-data-commons-core</artifactId>
-    <version>1.4.0.RELEASE</version>
-</dependency>
+	<dependencies>
+		<!-- cbs client -->
+		<dependency>
+			<groupId>org.onap.dcaegen2.services.sdk.rest.services</groupId>
+			<artifactId>cbs-client</artifactId>
+			<version>${sdk.version}</version>
+		</dependency>
 
-
-  
-<!-- https://mvnrepository.com/artifact/org.codehaus.jackson/jackson-mapper-asl -->
-	<dependency>
-      <groupId>org.codehaus.jackson</groupId>
-      <artifactId>jackson-mapper-asl</artifactId>
-      <version>1.9.13</version>
-    </dependency>
-    <dependency>
-        <groupId>org.hibernate.javax.persistence</groupId>
-        <artifactId>hibernate-jpa-2.0-api</artifactId>
-        <version>1.0.1.Final</version>
-    </dependency>
-<!-- https://mvnrepository.com/artifact/org.springframework/spring-beans -->
-<dependency>
-    <groupId>org.springframework</groupId>
-    <artifactId>spring-beans</artifactId>
-    <version>5.0.10.RELEASE</version>
-</dependency>
-
-   <dependency>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-test</artifactId>
-<version>2.0.4.RELEASE</version>
-		<scope>test</scope>
-		<!-- exclusions>
-        <exclusion> 
-          <groupId>org.mockito</groupId>
-          <artifactId>mockito-core</artifactId>
-        </exclusion>
-      </exclusions--> 
-	</dependency>
-	<!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
-	
-<dependency>
-    <groupId>org.mockito</groupId>
-    <artifactId>mockito-core</artifactId>
-    <version>1.10.16</version>
-    <scope>test</scope>
-</dependency>
-	
-	  	
-<dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.12</version>
-      <scope>test</scope>
-    </dependency>
-    <!-- https://mvnrepository.com/artifact/org.powermock/powermock-module-junit4 -->
-<!-- https://mvnrepository.com/artifact/org.powermock/powermock-api-mockito -->
-<dependency>
-    <groupId>org.powermock</groupId>
-    <artifactId>powermock-api-mockito</artifactId>
-    <version>1.6.4</version>
-    <scope>test</scope>
-</dependency>
-<!-- https://mvnrepository.com/artifact/org.powermock/powermock-module-junit4 -->
-<dependency>
-    <groupId>org.powermock</groupId>
-    <artifactId>powermock-module-junit4</artifactId>
-    <version>1.6.4</version>
-    <scope>test</scope>
-</dependency>
-
-<dependency>
-    <groupId>org.functionaljava</groupId>
-    <artifactId>functionaljava</artifactId>
-    <version>3.0</version>
-</dependency>
-
-    
-  </dependencies>
-
-  <build>
-    <plugins>
-            <plugin>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>onap-java-style</id>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                        <phase>process-sources</phase>
-                        <configuration>
-                            <!-- Use Google Java Style Guide:
-                            https://github.com/checkstyle/checkstyle/blob/master/src/main/resources/google_checks.xml
-                            with minor changes -->
-                            <configLocation>onap-checkstyle/onap-java-style.xml</configLocation>
-                            <!-- <sourceDirectory> is needed so that checkstyle ignores the generated sources directory -->
-                            <sourceDirectories>
-                            	<sourceDirectory>${project.build.sourceDirectory}</sourceDirectory>
-                            </sourceDirectories>
-                            <includeResources>true</includeResources>
-                            <includeTestSourceDirectory>false</includeTestSourceDirectory>
-                            <includeTestResources>false</includeTestResources>
-                            <excludes>
-                            </excludes>
-                            <consoleOutput>true</consoleOutput>
-                            <failsOnViolation>false</failsOnViolation>
-                            <violationSeverity>warning</violationSeverity>
-                        </configuration>
-                    </execution>
-                </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.onap.oparent</groupId>
-                        <artifactId>checkstyle</artifactId>
-                        <version>1.2.3</version>
-                        <scope>compile</scope>
-                    </dependency>
-                </dependencies>
-            </plugin>
-                <!--plugin>
-                    <groupId>org.eclipse.m2e</groupId>
-                    <artifactId>lifecycle-mapping</artifactId>
-                    <configuration>
-                        <lifecycleMappingMetadata>
-                            <pluginExecutions>
-                                <pluginExecution>
-                                    <pluginExecutionFilter>
-                                        <groupId>org.apache.maven.plugins</groupId>
-                                        <artifactId>maven-checkstyle-plugin</artifactId>
-                                        <versionRange>2.17,)</versionRange>
-                                        <goals>
-                                            <goal>check</goal>
-                                        </goals>
-                                    </pluginExecutionFilter>
-                                    <action>
-                                        <ignore />
-                                    </action>
-                                </pluginExecution>
-                            </pluginExecutions>
-                        </lifecycleMappingMetadata>
-                    </configuration>
-                </plugin-->
-		<plugin>
+		<dependency>
+			<groupId>org.onap.dcaegen2.services.sdk.security.crypt</groupId>
+			<artifactId>crypt-password</artifactId>
+			<version>${sdk.version}</version>
+		</dependency>
+		<dependency>
+			<!-- Import dependency management from Spring Boot -->
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-maven-plugin</artifactId>
-                	<version>2.0.4.RELEASE</version>
-			<executions>
-                <execution>
-                  		<goals>
-                   			<goal>repackage</goal>
-                  		</goals>
-           		</execution>
-            </executions>
-		</plugin>
-		<plugin>
-                <groupId>com.spotify</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <configuration>
-		    <serverId>${onap.nexus.dockerregistry.daily}</serverId>
+			<artifactId>spring-boot-dependencies</artifactId>
+			<version>2.0.4.RELEASE</version>
+			<type>pom</type>
+			<scope>import</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.att.nsa</groupId>
+			<artifactId>cambriaClient</artifactId>
+			<version>0.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>2.9.8</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.9.8</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/javax.json/javax.json-api -->
+		<dependency>
+			<groupId>javax.json</groupId>
+			<artifactId>javax.json-api</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<version>2.0.4.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.2.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+			<version>2.0.4.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-commons-core</artifactId>
+			<version>1.4.0.RELEASE</version>
+		</dependency>
 
-                    <imageName>${docker.image.name}</imageName>
-                    <imageTags>
-                        <tag>latest</tag>
-                    </imageTags>
-                    <baseImage>java:openjdk-8</baseImage>
-                    <resources>
-                        <resource>
-                            <targetPath>/bin</targetPath>
-                            <directory>${project.build.directory}</directory>
-                            <include>${project.artifactId}-${project.version}.jar</include>
-                        </resource>
-                        <resource>
-                            <targetPath>/bin</targetPath>
-                            <directory>${project.basedir}</directory>
-                            <include>entrypoint.sh</include>
-                        </resource>
-                    </resources>
-                    <runs>
-                        <!-- Maven is loosing file permissions during artifacts copy -->
-                        <run>chmod +x /bin/entrypoint.sh</run>
-                        <run>mv /bin/*.jar /bin/application.jar</run>
-                    </runs>
-                    <exposes>
-                        <expose>8080</expose>
-                    </exposes>
-                    <entryPoint>/bin/entrypoint.sh</entryPoint>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>build-image</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>build</goal>
-                        </goals>
-                    </execution>
-		    <execution>
-			<id>tag-and-push-image-latest</id>
-			<phase>deploy</phase>
-			<goals>
-				<goal>tag</goal>
-			</goals>
-			<configuration>
-				<image>${docker.image.name}:latest</image>
-				<newName>${onap.nexus.dockerregistry.daily}/${docker.image.name}:latest</newName>
-				<pushImage>true</pushImage>
-			</configuration>
-		    </execution>
-		    <execution>
-			<id>tag-and-push-image-with-version</id>
-			<phase>deploy</phase>
-			<goals>
-				<goal>tag</goal>
-			</goals>
-			<configuration>
-				<image>${docker.image.name}:latest</image>
-				<newName>${onap.nexus.dockerregistry.daily}/${docker.image.name}:${project.version}</newName>
-				<pushImage>true</pushImage>
-			</configuration>
-		    </execution>
-		    <execution>
-			<id>tag-and-push-image-with-version-and-date</id>
-			<phase>deploy</phase>
-			<goals>
-				<goal>tag</goal>
-			</goals>
-			<configuration>
-				<image>${docker.image.name}:latest</image>
-				<newName>${onap.nexus.dockerregistry.daily}/${docker.image.name}:${project.version}-${maven.build.timestamp}Z</newName>
-				<pushImage>true</pushImage>
-			</configuration>
-		    </execution>
-                </executions>
-            </plugin>
-	</plugins>
-  </build>
+
+
+		<!-- https://mvnrepository.com/artifact/org.codehaus.jackson/jackson-mapper-asl -->
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>1.9.13</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate.javax.persistence</groupId>
+			<artifactId>hibernate-jpa-2.0-api</artifactId>
+			<version>1.0.1.Final</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-beans -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>5.0.10.RELEASE</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<version>2.0.4.RELEASE</version>
+			<scope>test</scope>
+			<!-- exclusions> <exclusion> <groupId>org.mockito</groupId> <artifactId>mockito-core</artifactId> 
+				</exclusion> </exclusions -->
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
+
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>1.10.16</version>
+			<scope>test</scope>
+		</dependency>
+
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.powermock/powermock-module-junit4 -->
+		<!-- https://mvnrepository.com/artifact/org.powermock/powermock-api-mockito -->
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-api-mockito</artifactId>
+			<version>1.6.4</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.powermock/powermock-module-junit4 -->
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-module-junit4</artifactId>
+			<version>1.6.4</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.functionaljava</groupId>
+			<artifactId>functionaljava</artifactId>
+			<version>3.0</version>
+		</dependency>
+
+
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>onap-java-style</id>
+						<goals>
+							<goal>check</goal>
+						</goals>
+						<phase>process-sources</phase>
+						<configuration>
+							<!-- Use Google Java Style Guide: https://github.com/checkstyle/checkstyle/blob/master/src/main/resources/google_checks.xml 
+								with minor changes -->
+							<configLocation>onap-checkstyle/onap-java-style.xml</configLocation>
+							<!-- <sourceDirectory> is needed so that checkstyle ignores the generated 
+								sources directory -->
+							<sourceDirectories>
+								<sourceDirectory>${project.build.sourceDirectory}</sourceDirectory>
+							</sourceDirectories>
+							<includeResources>true</includeResources>
+							<includeTestSourceDirectory>false</includeTestSourceDirectory>
+							<includeTestResources>false</includeTestResources>
+							<excludes>
+							</excludes>
+							<consoleOutput>true</consoleOutput>
+							<failsOnViolation>false</failsOnViolation>
+							<violationSeverity>warning</violationSeverity>
+						</configuration>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>org.onap.oparent</groupId>
+						<artifactId>checkstyle</artifactId>
+						<version>1.2.3</version>
+						<scope>compile</scope>
+					</dependency>
+				</dependencies>
+			</plugin>
+			<!--plugin> <groupId>org.eclipse.m2e</groupId> <artifactId>lifecycle-mapping</artifactId> 
+				<configuration> <lifecycleMappingMetadata> <pluginExecutions> <pluginExecution> 
+				<pluginExecutionFilter> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-checkstyle-plugin</artifactId> 
+				<versionRange>2.17,)</versionRange> <goals> <goal>check</goal> </goals> </pluginExecutionFilter> 
+				<action> <ignore /> </action> </pluginExecution> </pluginExecutions> </lifecycleMappingMetadata> 
+				</configuration> </plugin -->
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>2.0.4.RELEASE</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<configuration>
+					<serverId>${onap.nexus.dockerregistry.daily}</serverId>
+
+					<imageName>${docker.image.name}</imageName>
+					<imageTags>
+						<tag>latest</tag>
+					</imageTags>
+					<baseImage>java:openjdk-8</baseImage>
+					<user>sonhms</user>
+					<resources>
+						<resource>
+							<targetPath>/bin</targetPath>
+							<directory>${project.build.directory}</directory>
+							<include>${project.artifactId}-${project.version}.jar</include>
+						</resource>
+						<resource>
+							<targetPath>/bin</targetPath>
+							<directory>${project.basedir}</directory>
+							<include>entrypoint.sh</include>
+						</resource>
+					</resources>
+					<runs>
+						<!-- Maven is loosing file permissions during artifacts copy -->
+						<run>chmod +x /bin/entrypoint.sh</run>
+						<run>mv /bin/*.jar /bin/application.jar</run>
+						<run>chmod -R 777 /bin</run>
+						<run>mkdir /var/log/onap</run>
+						<run>chmod -R 777 /var/log/onap</run>
+					</runs>
+					<exposes>
+						<expose>8080</expose>
+					</exposes>
+					<entryPoint>/bin/entrypoint.sh</entryPoint>
+				</configuration>
+				<executions>
+					<execution>
+						<id>build-image</id>
+						<phase>package</phase>
+						<goals>
+							<goal>build</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>tag-and-push-image-latest</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>tag</goal>
+						</goals>
+						<configuration>
+							<image>${docker.image.name}:latest</image>
+							<newName>${onap.nexus.dockerregistry.daily}/${docker.image.name}:latest</newName>
+							<pushImage>true</pushImage>
+						</configuration>
+					</execution>
+					<execution>
+						<id>tag-and-push-image-with-version</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>tag</goal>
+						</goals>
+						<configuration>
+							<image>${docker.image.name}:latest</image>
+							<newName>${onap.nexus.dockerregistry.daily}/${docker.image.name}:${project.version}</newName>
+							<pushImage>true</pushImage>
+						</configuration>
+					</execution>
+					<execution>
+						<id>tag-and-push-image-with-version-and-date</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>tag</goal>
+						</goals>
+						<configuration>
+							<image>${docker.image.name}:latest</image>
+							<newName>${onap.nexus.dockerregistry.daily}/${docker.image.name}:${project.version}-${maven.build.timestamp}Z</newName>
+							<pushImage>true</pushImage>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>
 
 

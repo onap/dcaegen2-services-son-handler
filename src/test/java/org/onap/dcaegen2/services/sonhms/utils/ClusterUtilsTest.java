@@ -67,205 +67,211 @@ import org.springframework.test.context.junit4.SpringRunner;
 @PowerMockRunnerDelegate(SpringRunner.class)
 @PrepareForTest({ SdnrRestClient.class, BeanUtil.class })
 @SpringBootTest(classes = ClusterUtils.class)
-public class ClusterUtilsTest { 
-     
+public class ClusterUtilsTest {
+
     @Mock
     private ClusterDetailsRepository clusterDetailsRepositoryMock;
-     
+
     @InjectMocks
     ClusterUtils clusterUtils;
-    
+
     private static Notification notification1;
     private static Notification notification2;
     private static List<ClusterDetails> clusterDetailsForGetClusterDetailsFromClusterIdTest;
     private static Graph cluster;
     private static List<ClusterDetails> clusterDetails = new ArrayList<>();
-    
+
     @BeforeClass
     public static void setup() {
-        
+
         notification1 = new Notification();
         notification2 = new Notification();
         clusterDetailsForGetClusterDetailsFromClusterIdTest = new ArrayList<ClusterDetails>();
-        
+
         String notificationString1 = readFromFile("/notification1.json");
         String notificationString2 = readFromFile("/notification2.json");
-        String clusterDetailsListString=readFromFile("/ClusterDetailsTest.json");
-        
+        String clusterDetailsListString = readFromFile("/ClusterDetailsTest.json");
+
         String clusterInfo1 = readFromFile("/clusterInfo1.json");
         String clusterInfo2 = readFromFile("/clusterInfo2.json");
         String clusterInfo3 = readFromFile("/clusterInfo3.json");
         String clusterInfo4 = readFromFile("/clusterInfo4.json");
         String clusterInfo = readFromFile("/clusterInfo5.json");
-        cluster=new Graph(clusterInfo);
-        
+        cluster = new Graph(clusterInfo);
+
         clusterDetails.add(new ClusterDetails("1", clusterInfo1, 35));
         clusterDetails.add(new ClusterDetails("2", clusterInfo2, 36));
         clusterDetails.add(new ClusterDetails("3", clusterInfo3, 37));
         clusterDetails.add(new ClusterDetails("4", clusterInfo4, 38));
-        
-        
+
         ObjectMapper mapper = new ObjectMapper();
-        
+
         try {
             notification1 = mapper.readValue(notificationString1, Notification.class);
             notification2 = mapper.readValue(notificationString2, Notification.class);
-            clusterDetailsForGetClusterDetailsFromClusterIdTest=mapper.readValue(clusterDetailsListString,new TypeReference<List<ClusterDetails>>(){});
+            clusterDetailsForGetClusterDetailsFromClusterIdTest = mapper.readValue(clusterDetailsListString,
+                    new TypeReference<List<ClusterDetails>>() {
+                    });
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        
-        
-        
+
     }
-    
+
     @Before
     public void setupTest() {
-        clusterUtils = new ClusterUtils();  
+        clusterUtils = new ClusterUtils();
         MockitoAnnotations.initMocks(this);
-    } 
-    
+    }
+
     @Test
-    public void getClustersForNotificationTest(){ 
-        
+    public void getClustersForNotificationTest() {
+
         NotificationToClusterMapping expected = new NotificationToClusterMapping();
         Map<FapServiceList, String> cellsinCluster = new HashMap<>();
         cellsinCluster.put(notification1.getPayload().getRadioAccess().getFapServiceList().get(0), "2");
         expected.setCellsinCluster(cellsinCluster);
         expected.setNewCells(new ArrayList<FapServiceList>());
-        
+
         NotificationToClusterMapping result = clusterUtils.getClustersForNotification(notification1, clusterDetails);
         assertEquals(expected, result);
-        
+
         expected = new NotificationToClusterMapping();
         List<FapServiceList> newCells = new ArrayList<>();
         newCells.add(notification2.getPayload().getRadioAccess().getFapServiceList().get(0));
         expected.setCellsinCluster(new HashMap<>());
         expected.setNewCells(newCells);
-        
+
         result = clusterUtils.getClustersForNotification(notification2, clusterDetails);
         assertEquals(expected, result);
     }
-    
+
     @Test
     public void createClusterTest() throws ConfigDbNotFoundException {
-         
-        FapServiceList fapServiceList = notification1.getPayload().getRadioAccess().getFapServiceList().get(0);
-        
+
+        Map<CellPciPair, ArrayList<CellPciPair>> clusterMap = new HashMap<CellPciPair, ArrayList<CellPciPair>>();
+
+        List<CellPciPair> firstNbrList = new ArrayList<>();
         List<CellPciPair> nbrList = new ArrayList<>();
-        
+
+        firstNbrList.add(new CellPciPair("48", 0));
         nbrList.add(new CellPciPair("44", 3));
-        
+
         PowerMockito.mockStatic(SdnrRestClient.class);
-        
+
         PowerMockito.when(SdnrRestClient.getNbrList(Mockito.anyString())).thenReturn(nbrList);
-        
-        assertEquals(cluster, clusterUtils.createCluster(fapServiceList));
- 
-        
-        
+
+        clusterMap.put(new CellPciPair("45", 310), (ArrayList<CellPciPair>) firstNbrList);
+
+        assertEquals(cluster, clusterUtils.createCluster(clusterMap));
+
     }
-    
+
     @Test
     public void getClusterDetailsFromClusterIdTest() {
-        ClusterDetails responseValue=null;
+        ClusterDetails responseValue = null;
         Integer responseVal = null;
-        Integer expectedValue=404;
-        Either<ClusterDetails, Integer> response=clusterUtils.getClusterDetailsFromClusterId("0",clusterDetailsForGetClusterDetailsFromClusterIdTest);
+        Integer expectedValue = 404;
+        Either<ClusterDetails, Integer> response = clusterUtils.getClusterDetailsFromClusterId("0",
+                clusterDetailsForGetClusterDetailsFromClusterIdTest);
         assertTrue(response.isLeft());
-        if(response.isLeft()) {
-            responseValue=response.left().value();
+        if (response.isLeft()) {
+            responseValue = response.left().value();
         }
-        assertEquals(clusterDetailsForGetClusterDetailsFromClusterIdTest.get(0),responseValue);
-        response=clusterUtils.getClusterDetailsFromClusterId("1",clusterDetailsForGetClusterDetailsFromClusterIdTest);
+        assertEquals(clusterDetailsForGetClusterDetailsFromClusterIdTest.get(0), responseValue);
+        response = clusterUtils.getClusterDetailsFromClusterId("1",
+                clusterDetailsForGetClusterDetailsFromClusterIdTest);
         assertTrue(response.isLeft());
-        if(response.isLeft()) {
-            responseValue=response.left().value();
+        if (response.isLeft()) {
+            responseValue = response.left().value();
         }
-        assertEquals(clusterDetailsForGetClusterDetailsFromClusterIdTest.get(1),responseValue);
-        response=clusterUtils.getClusterDetailsFromClusterId("9",clusterDetailsForGetClusterDetailsFromClusterIdTest);
+        assertEquals(clusterDetailsForGetClusterDetailsFromClusterIdTest.get(1), responseValue);
+        response = clusterUtils.getClusterDetailsFromClusterId("9",
+                clusterDetailsForGetClusterDetailsFromClusterIdTest);
         assertTrue(response.isRight());
-        if(response.isRight()) {
-            responseVal=response.right().value();
+        if (response.isRight()) {
+            responseVal = response.right().value();
         }
-        assertEquals(expectedValue,responseVal);
+        assertEquals(expectedValue, responseVal);
 
     }
-    
+
     @Test
     public void saveClusterTest() {
-         ClusterDetails details = new ClusterDetails();
-         details.setClusterId("123e4567-e89b-12d3-a456-426655440000");
-         details.setClusterInfo("cellPciNeighbourString");
-         details.setChildThreadId(978668);
-         PowerMockito.mockStatic(BeanUtil.class);
-         PowerMockito.when(BeanUtil.getBean(ClusterDetailsRepository.class))
-                 .thenReturn(clusterDetailsRepositoryMock);
-         Mockito.when(clusterDetailsRepositoryMock.save(details)).thenReturn(details);
-         Long threadId=(long) 978668;
-         clusterUtils.saveCluster(cluster, UUID.fromString("123e4567-e89b-12d3-a456-426655440000"),threadId);
-         assertEquals(details, clusterDetailsRepositoryMock.save(details));
+        ClusterDetails details = new ClusterDetails();
+        details.setClusterId("123e4567-e89b-12d3-a456-426655440000");
+        details.setClusterInfo("cellPciNeighbourString");
+        details.setChildThreadId(978668);
+        PowerMockito.mockStatic(BeanUtil.class);
+        PowerMockito.when(BeanUtil.getBean(ClusterDetailsRepository.class)).thenReturn(clusterDetailsRepositoryMock);
+        Mockito.when(clusterDetailsRepositoryMock.save(details)).thenReturn(details);
+        Long threadId = (long) 978668;
+        clusterUtils.saveCluster(cluster, UUID.fromString("123e4567-e89b-12d3-a456-426655440000"), threadId);
+        assertEquals(details, clusterDetailsRepositoryMock.save(details));
 
     }
-    
+
     @Test
     public void getClusterForCellTest() {
-        FapServiceList fapServiceList= notification1.getPayload().getRadioAccess().getFapServiceList().get(0);
-        String clusterInfo1=readFromFile("/clusterInfo1.json");
-        String clusterInfo2=readFromFile("/clusterInfo2.json");
-        Graph graph1=new Graph(clusterInfo1);
-        Graph graph2=new Graph(clusterInfo2);
-        List<Graph> newClusters=new ArrayList<Graph>();
+        FapServiceList fapServiceList = notification1.getPayload().getRadioAccess().getFapServiceList().get(0);
+        String clusterInfo1 = readFromFile("/clusterInfo1.json");
+        String clusterInfo2 = readFromFile("/clusterInfo2.json");
+        Graph graph1 = new Graph(clusterInfo1);
+        Graph graph2 = new Graph(clusterInfo2);
+        List<Graph> newClusters = new ArrayList<Graph>();
         newClusters.add(graph1);
         newClusters.add(graph2);
-        Either<Graph, Integer> result=clusterUtils.getClusterForCell(fapServiceList, newClusters);
+        Either<Graph, Integer> result = clusterUtils.getClusterForCell(fapServiceList, newClusters);
         assertTrue(result.isLeft());
-        
+
         newClusters = new ArrayList<>();
         newClusters.add(graph1);
-        result=clusterUtils.getClusterForCell(fapServiceList, newClusters);
+        result = clusterUtils.getClusterForCell(fapServiceList, newClusters);
         assertTrue(result.isRight());
-        int resultRight=result.right().value();
+        int resultRight = result.right().value();
         assertEquals(404, resultRight);
-        
-        List<Graph> emptyList=new ArrayList<Graph>();
-        
-        result=clusterUtils.getClusterForCell(fapServiceList, emptyList);
+
+        List<Graph> emptyList = new ArrayList<Graph>();
+
+        result = clusterUtils.getClusterForCell(fapServiceList, emptyList);
         assertTrue(result.isRight());
-        resultRight=result.right().value();
+        resultRight = result.right().value();
         assertEquals(404, resultRight);
-        
+
     }
-    
+
     @Test
     public void modifyClusterTest() {
-        
+
         String clusterInfo = readFromFile("/clusterInfo2.json");
         String clusterInfo2 = readFromFile("/clusterInfo6.json");
-        
+
         Graph cluster = new Graph(clusterInfo);
         Graph expected = new Graph(clusterInfo2);
-        
-        assertEquals(expected, clusterUtils.modifyCluster(cluster, notification1.getPayload().getRadioAccess().getFapServiceList().get(0)));
+        Map<CellPciPair, ArrayList<CellPciPair>> clusterMap = new HashMap<CellPciPair, ArrayList<CellPciPair>>();
+
+        ArrayList<CellPciPair> firstNbrList = new ArrayList<>();
+        firstNbrList.add(new CellPciPair("48",0));
+        clusterMap.put(new CellPciPair("45",310),firstNbrList);
+        assertEquals(expected, clusterUtils.modifyCluster(cluster,clusterMap));
     }
-    
+
     private static String readFromFile(String file) {
-        String content  = new String();
+        String content = new String();
         try {
-            
+
             InputStream is = ClusterUtilsTest.class.getResourceAsStream(file);
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is));
             content = bufferedReader.readLine();
             String temp;
-            while((temp = bufferedReader.readLine()) != null) {
+            while ((temp = bufferedReader.readLine()) != null) {
                 content = content.concat(temp);
             }
             content = content.trim();
             bufferedReader.close();
-        }
-        catch(Exception e) {
-            content  = null;
+        } catch (Exception e) {
+            content = null;
         }
         return content;
     }

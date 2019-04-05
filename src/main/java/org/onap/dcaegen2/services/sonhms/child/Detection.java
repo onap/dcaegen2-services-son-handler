@@ -28,7 +28,6 @@ import java.util.Map;
 import org.onap.dcaegen2.services.sonhms.model.CellPciPair;
 import org.slf4j.Logger;
 
-
 public class Detection {
 
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(Detection.class);
@@ -37,9 +36,9 @@ public class Detection {
      * Returns a map with key as cellid and its value is a list of its collision and
      * confusion.
      */
-
     public Map<String, ArrayList<Integer>> detectCollisionConfusion(Graph cluster) {
 
+        log.info("Finding collision and confusion count");
         Map<CellPciPair, ArrayList<CellPciPair>> clusterMap = cluster.getCellPciNeighbourMap();
         HashMap<String, ArrayList<Integer>> hash = new HashMap<>();
 
@@ -79,7 +78,7 @@ public class Detection {
             hash.put(cellId, counts);
 
         }
-        log.debug("collison and confusion map {}", hash);
+        log.info("collison and confusion map {}", hash);
 
         return hash;
     }

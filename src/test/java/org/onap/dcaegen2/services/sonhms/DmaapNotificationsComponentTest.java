@@ -23,6 +23,7 @@ package org.onap.dcaegen2.services.sonhms;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
 import fj.data.Either;
@@ -37,7 +38,9 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.onap.dcaegen2.services.sonhms.dao.DmaapNotificationsRepository;
+import org.onap.dcaegen2.services.sonhms.dao.PerformanceNotificationsRepository;
 import org.onap.dcaegen2.services.sonhms.model.Notification;
+import org.onap.dcaegen2.services.sonhms.model.PMNotification;
 import org.onap.dcaegen2.services.sonhms.utils.BeanUtil;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -55,16 +58,23 @@ public class DmaapNotificationsComponentTest {
 
 	@Mock
 	DmaapNotificationsRepository dmaapNotificationsRepositoryMock;
+	
+	@Mock
+	PerformanceNotificationsRepository performanceNotificationsRepositoryMock;
 
 	@InjectMocks
 	DmaapNotificationsComponent component;
 
 	static String notificationString;
+	static String pmNotificationString;
+
 
 	@BeforeClass
 	public static void setupTest() {
 
 		notificationString = readFromFile("/notification1.json");
+		pmNotificationString=readFromFile("/pmNotification.json");
+
 	}
 
 	@Test
@@ -75,16 +85,34 @@ public class DmaapNotificationsComponentTest {
 		when(dmaapNotificationsRepositoryMock.getNotificationFromQueue()).thenReturn(notificationString);
 
 
-		Either<Notification, Integer> result = component.getDmaapNotifications();
+		Either<Notification, Integer> result = component.getSdnrNotifications();
 		//assertTrue(result.isLeft());
 		assertNotNull(result.left().value());
 		
 		when(dmaapNotificationsRepositoryMock.getNotificationFromQueue()).thenReturn("notification");
 
-        result = component.getDmaapNotifications();
+        result = component.getSdnrNotifications();
         int resultRight = result.right().value();
         assertEquals(400, resultRight);
 		
+	}
+	
+	@Test
+	public void getPmNotificationsTest() {
+	    PowerMockito.mockStatic(BeanUtil.class);
+        PowerMockito.when(BeanUtil.getBean(PerformanceNotificationsRepository.class))
+                .thenReturn(performanceNotificationsRepositoryMock);
+        when(performanceNotificationsRepositoryMock.getPerformanceNotificationFromQueue()).thenReturn(pmNotificationString);
+        
+        Either<PMNotification,Integer> result = component.getPmNotifications();
+        assertTrue(result.isLeft());
+        assertNotNull(result.left().value());
+        
+        when(performanceNotificationsRepositoryMock.getPerformanceNotificationFromQueue()).thenReturn("pmNotification");
+        result = component.getPmNotifications();
+        int res= result.right().value();
+        assertEquals(400,res);
+        
 	}
 
 	private static String readFromFile(String file) { 

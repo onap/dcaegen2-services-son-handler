@@ -21,15 +21,25 @@
 
 package org.onap.dcaegen2.services.sonhms.controller;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 
 import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.api.CbsClientFactory;
+import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.api.CbsRequests;
+import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.model.CbsRequest;
 import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.model.EnvProperties;
 import org.onap.dcaegen2.services.sdk.rest.services.model.logging.RequestDiagnosticContext;
+import org.onap.dcaegen2.services.sonhms.ConfigPolicy;
 import org.onap.dcaegen2.services.sonhms.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 public class ConfigFetchFromCbs {
 
@@ -38,72 +48,102 @@ public class ConfigFetchFromCbs {
     /**
      * Gets app config from CBS.
      */
-    @SuppressWarnings("unchecked")
-	public void getAppConfig() {
+    public void getAppConfig() {
 
         // Generate RequestID and InvocationID which will be used when logging and in
         // HTTP requests
-    	log.debug("getAppconfig start ..");
+        log.info("getAppconfig start ..");
         RequestDiagnosticContext diagnosticContext = RequestDiagnosticContext.create();
-        log.debug("fiagnostic context : {}",diagnosticContext.toString());
         // Read necessary properties from the environment
         final EnvProperties env = EnvProperties.fromEnvironment();
-        log.debug("environments {}",env.toString());
-        Configuration configuration = Configuration.getInstance();
+        log.debug("environments {}",env);
+        ConfigPolicy configPolicy = ConfigPolicy.getInstance();
         
         // Create the client and use it to get the configuration
-        CbsClientFactory.createCbsClient(env).flatMap(cbsClient -> cbsClient.get(diagnosticContext))
+        final CbsRequest request = CbsRequests.getAll(diagnosticContext);
+        CbsClientFactory.createCbsClient(env).flatMap(cbsClient -> cbsClient.get(request))
                 .subscribe(jsonObject -> {
-                    log.debug("configuration from CBS {}", jsonObject.toString());
-                    final Map<String,Object> streamsSubscribes=(Map<String, Object>) jsonObject.get("streams_subscribes");
-                    final Map<String,Object> streamsPublishes=(Map<String, Object>) jsonObject.get("streams_publishes");
-                    final int pgPort = jsonObject.get("postgres.port").getAsInt();
-                    final int pollingInterval=jsonObject.get("sonhandler.pollingInterval").getAsInt();
-                    final String pgPassword = jsonObject.get("postgres.password").getAsString();
-                    final int numSolutions=jsonObject.get("sonhandler.numSolutions").getAsInt();
-                    final int minConfusion = jsonObject.get("sonhandler.minConfusion").getAsInt();
-                    final int maximumClusters =jsonObject.get("sonhandler.maximumClusters").getAsInt();
-                    final int minCollision = jsonObject.get("sonhandler.minCollision").getAsInt();
-                    final String sourceId = jsonObject.get("sonhandler.sourceId").getAsString();
-                    final String pgUsername = jsonObject.get("postgres.username").getAsString();
-                    final String pgHost = jsonObject.get("postgres.host").getAsString();
-                    final List<String> dmaapServers = (List<String>) jsonObject.get("sonhandler.dmaap.server");
-                    final String cg=jsonObject.get("sonhandler.cg").getAsString();
-                    final int bufferTime=jsonObject.get("sonhandler.bufferTime").getAsInt();
-                    final String cid =jsonObject.get("sonhandler.cid").getAsString();
-                    final String configDbService=jsonObject.get("sonhandler.configDb.service").getAsString();
-                    final String callbackUrl=jsonObject.get("sonhandler.callbackUrl").getAsString();
-                    final List<String> optimizers = (List<String>) jsonObject.get("sonhandler.optimizers");
-                    final String oofService=jsonObject.get("sonhandler.oof.service").getAsString();
-                    final int pollingTimeout=jsonObject.get("sonhandler.pollingTimeout").getAsInt();
-
-                    configuration.setStreamsSubscribes(streamsSubscribes);
-                    configuration.setStreamsPublishes(streamsPublishes);
-                    configuration.setPgPassword(pgPassword);
-                    configuration.setPgPort(pgPort);
-                    configuration.setPollingInterval(pollingInterval);
-                    configuration.setNumSolutions(numSolutions);
-                    configuration.setMinCollision(minCollision);
-                    configuration.setMinConfusion(minConfusion);
-                    configuration.setMaximumClusters(maximumClusters);
-                    configuration.setPgHost(pgHost);
-                    configuration.setPgUsername(pgUsername);
-                    configuration.setSourceId(sourceId);
-                    configuration.setDmaapServers(dmaapServers);
-                    configuration.setCg(cg);
-                    configuration.setCid(cid);
-                    configuration.setBufferTime(bufferTime);
-                    configuration.setConfigDbService(configDbService);
-                    configuration.setCallbackUrl(callbackUrl);
-                    configuration.setOptimizers(optimizers);
-                    configuration.setOofService(oofService);
-                    configuration.setPollingTimeout(pollingTimeout);
+                    log.debug("configuration from CBS {}", jsonObject);
+                    JsonObject config = jsonObject.getAsJsonObject("config");
                     
-                    log.debug("configuration {}", configuration);
-                }, throwable -> {  	
-                log.warn("Ooops", throwable);
-                });
+                    updateConfigurationFromJsonObject(config);
+                    
+                    Type mapType = new TypeToken<Map<String, Object>>() {}.getType();
+                    JsonObject policyJson = jsonObject.getAsJsonObject("policy");
+                    Map<String,Object> policy = new Gson().fromJson(policyJson, mapType);
+                    configPolicy.setConfig(policy);
+                }, throwable -> log.warn("Ooops", throwable)) ;
+
+    }
+
+    private void updateConfigurationFromJsonObject(JsonObject jsonObject) {
         
+        log.info("Updating configuration from CBS");
+        Configuration configuration = Configuration.getInstance();
+        log.debug("configuration from CBS {}", jsonObject);
+        
+        Type mapType = new TypeToken<Map<String, Object>>() {}.getType();
+        
+        JsonObject subscribes = jsonObject.getAsJsonObject("streams_subscribes");
+        Map<String, Object> streamsSubscribes = new Gson().fromJson(subscribes, mapType);
+        
+        JsonObject publishes = jsonObject.getAsJsonObject("streams_publishes");
+        Map<String, Object> streamsPublishes = new Gson().fromJson(publishes, mapType);
+        
+        int pgPort = jsonObject.get("postgres.port").getAsInt();
+        int pollingInterval = jsonObject.get("sonhandler.pollingInterval").getAsInt();
+        String pgPassword = jsonObject.get("postgres.password").getAsString();
+        int numSolutions = jsonObject.get("sonhandler.numSolutions").getAsInt();
+        int minConfusion = jsonObject.get("sonhandler.minConfusion").getAsInt();
+        int maximumClusters = jsonObject.get("sonhandler.maximumClusters").getAsInt();
+        int minCollision = jsonObject.get("sonhandler.minCollision").getAsInt();
+        String sourceId = jsonObject.get("sonhandler.sourceId").getAsString();
+        String pgUsername = jsonObject.get("postgres.username").getAsString();
+        String pgHost = jsonObject.get("postgres.host").getAsString();
+
+        JsonArray servers = jsonObject.getAsJsonArray("sonhandler.dmaap.server");
+        Type listType = new TypeToken<List<String>>() {}.getType();
+        List<String> dmaapServers = new Gson().fromJson(servers, listType);
+        
+        String cg = jsonObject.get("sonhandler.cg").getAsString();
+        int bufferTime = jsonObject.get("sonhandler.bufferTime").getAsInt();
+        String cid = jsonObject.get("sonhandler.cid").getAsString();
+        String configDbService = jsonObject.get("sonhandler.configDb.service").getAsString();
+        
+        String callbackUrl = "http://" + System.getenv("HOSTNAME") + ":8080/callbackUrl";
+        
+        JsonArray optimizersJson = jsonObject.getAsJsonArray("sonhandler.optimizers");
+        List<String> optimizers = new Gson().fromJson(optimizersJson, listType);                   
+        
+        String oofService = jsonObject.get("sonhandler.oof.service").getAsString();
+        int pollingTimeout = jsonObject.get("sonhandler.pollingTimeout").getAsInt();
+
+        int badThreshold = jsonObject.get("sonhandler.badThreshold").getAsInt();
+        int poorThreshold = jsonObject.get("sonhandler.poorThreshold").getAsInt();
+
+        configuration.setStreamsSubscribes(streamsSubscribes);
+        configuration.setStreamsPublishes(streamsPublishes);
+        configuration.setPgPassword(pgPassword);
+        configuration.setPgPort(pgPort);
+        configuration.setPollingInterval(pollingInterval);
+        configuration.setNumSolutions(numSolutions);
+        configuration.setMinCollision(minCollision);
+        configuration.setMinConfusion(minConfusion);
+        configuration.setMaximumClusters(maximumClusters);
+        configuration.setPgHost(pgHost);
+        configuration.setPgUsername(pgUsername);
+        configuration.setSourceId(sourceId);
+        configuration.setDmaapServers(dmaapServers);
+        configuration.setCg(cg);
+        configuration.setCid(cid);
+        configuration.setBufferTime(bufferTime);
+        configuration.setConfigDbService(configDbService);
+        configuration.setCallbackUrl(callbackUrl);
+        configuration.setOptimizers(optimizers);
+        configuration.setOofService(oofService);
+        configuration.setPollingTimeout(pollingTimeout);
+        configuration.setBadThreshold(badThreshold);
+        configuration.setPoorThreshold(poorThreshold);
     }
 
 }

@@ -24,7 +24,6 @@ package org.onap.dcaegen2.services.sonhms.utils;
 import java.util.Collections;
 
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -37,8 +36,6 @@ import org.springframework.web.client.RestTemplate;
 
 @Component
 public class SonHandlerRestTemplate {
-    @Autowired
-    static RestTemplate restTemplate;
 
     private static final String AUTH = "Authorization";
     private static final String EXCEPTION_MSG = "Exception caught during request {}";
@@ -59,6 +56,7 @@ public class SonHandlerRestTemplate {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Object> requestEntity = new HttpEntity<>(requestBody, headers);
         try {
+            RestTemplate restTemplate = BeanUtil.getBean(RestTemplate.class);
             return restTemplate.exchange(requestUrl, HttpMethod.POST, requestEntity, responseType);
         } catch (Exception e) {
             log.debug(EXCEPTION_MSG, e.getMessage());
@@ -66,25 +64,6 @@ public class SonHandlerRestTemplate {
         }
     }
 
-    /**
-     * Send Post Request to policy.
-     */
-    public static <T> ResponseEntity<T> sendPostToPolicy(String requestUrl, String requestBody,
-            ParameterizedTypeReference<T> responseType) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.add("ClientAuth", "cHl0aG9uOnRlc3Q=");
-        headers.add(AUTH, "Basic dGVzdHBkcDphbHBoYTEyMw== ");
-        headers.add("Environment", "TEST");
-        HttpEntity<Object> requestEntity = new HttpEntity<>(requestBody, headers);
-        try {
-            return restTemplate.exchange(requestUrl, HttpMethod.POST, requestEntity, responseType);
-        } catch (Exception e) {
-            log.debug(EXCEPTION_MSG, e.getMessage());
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
 
     /**
      * Send Get Request.
@@ -95,6 +74,7 @@ public class SonHandlerRestTemplate {
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
         try {
+            RestTemplate restTemplate = BeanUtil.getBean(RestTemplate.class);
             return restTemplate.exchange(requestUrl, HttpMethod.GET, requestEntity, responseType);
         } catch (Exception e) {
             log.debug(EXCEPTION_MSG, e.getMessage());
@@ -114,6 +94,7 @@ public class SonHandlerRestTemplate {
         headers.add(AUTH, "Basic SW5mcmFQb3J0YWxDbGllbnQ6cGFzc3dvcmQxJA==");
         HttpEntity<Object> requestEntity = new HttpEntity<>(requestBody, headers);
         try {
+            RestTemplate restTemplate = BeanUtil.getBean(RestTemplate.class);
             return restTemplate.exchange(requestUrl, HttpMethod.POST, requestEntity, responseType);
         } catch (Exception e) {
             log.debug(EXCEPTION_MSG, e.getMessage());
@@ -133,9 +114,10 @@ public class SonHandlerRestTemplate {
         headers.add(AUTH, "Basic cGNpX3Rlc3Q6cGNpX3Rlc3Rwd2Q=");
         HttpEntity<Object> requestEntity = new HttpEntity<>(requestBody, headers);
         try {
+            RestTemplate restTemplate = BeanUtil.getBean(RestTemplate.class);
             return restTemplate.exchange(requestUrl, HttpMethod.POST, requestEntity, responseType);
         } catch (Exception e) {
-            log.debug(EXCEPTION_MSG, e.getMessage());
+            log.debug(EXCEPTION_MSG, e);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }

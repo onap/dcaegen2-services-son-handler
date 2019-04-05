@@ -29,10 +29,10 @@ public class PciRequestsTest {
 
     @Test
     public void pciRequestsTest() {
-        PciRequests pciRequests=new PciRequests();
-        pciRequests.setChildThreadId(1L);
-        pciRequests.setTransactionId("transactionId");
-        assertEquals(1L, pciRequests.getChildThreadId());
-        assertEquals("transactionId", pciRequests.getTransactionId());
+        SonRequests sonRequests=new SonRequests();
+        sonRequests.setChildThreadId(1L);
+        sonRequests.setTransactionId("transactionId");
+        assertEquals(1L, sonRequests.getChildThreadId());
+        assertEquals("transactionId", sonRequests.getTransactionId());
     }
 }

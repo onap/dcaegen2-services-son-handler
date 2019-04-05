@@ -1,0 +1,14 @@
+[
+  {
+    "dstCellId":"Chn0014",
+    "attemptsCount":200,
+    "successCount":190,
+    "successRate":95
+  },
+  {
+    "dstCellId":"Chn0013",
+    "attemptsCount":300,
+    "successCount":210,
+    "successRate":70
+  }
+]

@@ -31,9 +31,9 @@ import org.onap.dcaegen2.services.sonhms.dao.CellInfoRepository;
 import org.onap.dcaegen2.services.sonhms.entity.CellInfo;
 import org.onap.dcaegen2.services.sonhms.exceptions.ConfigDbNotFoundException;
 import org.onap.dcaegen2.services.sonhms.model.CellPciPair;
+import org.onap.dcaegen2.services.sonhms.restclient.PciSolutions;
 import org.onap.dcaegen2.services.sonhms.restclient.SdnrRestClient;
-import org.onap.dcaegen2.services.sonhms.restclient.Solution;
-import org.onap.dcaegen2.services.sonhms.restclient.SonSolution;
+import org.onap.dcaegen2.services.sonhms.restclient.Solutions;
 import org.onap.dcaegen2.services.sonhms.utils.BeanUtil;
 
 
@@ -44,13 +44,11 @@ public class PnfUtils {
      * get pnfs.
      *
      */
-    public Map<String, List<CellPciPair>> getPnfs(List<Solution> solutions) throws ConfigDbNotFoundException {
+    public Map<String, List<CellPciPair>> getPnfs(Solutions solutions) throws ConfigDbNotFoundException {
 
         Map<String, List<CellPciPair>> pnfs = new HashMap<>(); 
-
-        for (Solution solution : solutions) {
-            List<SonSolution> pciSolutions = solution.getPciSolutions();
-            for (SonSolution pciSolution : pciSolutions) {
+        List<PciSolutions> pciSolutions = solutions.getPciSolutions();
+        for (PciSolutions pciSolution : pciSolutions) {
                 String cellId = pciSolution.getCellId();
                 int pci = pciSolution.getPci();
 
@@ -70,7 +68,6 @@ public class PnfUtils {
                     cellPciPairs.add(new CellPciPair(cellId, pci));
                     pnfs.put(pnfName, cellPciPairs);
                 }
-            }
 
         }
         return pnfs;

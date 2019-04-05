@@ -114,7 +114,7 @@ public class EventHandlerTest {
         Mockito.when(clusterutilsMock.getAllClusters()).thenReturn(clusterDetails);
         Mockito.when(clusterutilsMock.getClustersForNotification(notification, clusterDetails)).thenReturn(mapping);
         Mockito.when(clusterutilsMock.getClusterForCell(Mockito.any(), Mockito.any())).thenReturn(existingCluster);
-        Mockito.when(threadUtilsMock.createNewThread(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
+        Mockito.when(threadUtilsMock.createNewThread(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(),Mockito.anyString())).thenReturn(true);
         
         try {
             Mockito.when(clusterutilsMock.createCluster(Mockito.any())).thenReturn(cluster);

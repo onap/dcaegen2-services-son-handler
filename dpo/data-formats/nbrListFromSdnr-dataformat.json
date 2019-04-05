@@ -1,33 +1,33 @@
 {
-    "dataformatversion": "1.0.0", 
-    "jsonschema": {
-        "$schema": "http://json-schema.org/draft-04/schema#", 
-        "description": "", 
-        "items": {
-            "additionalproperties": true, 
-            "description": "", 
-            "properties": {
-                "cellId": {
-                    "description": "", 
-                    "type": "string"
-                }, 
-                "pciValue": {
-                    "description": "", 
-                    "type": "integer"
-                }
-            }, 
-            "required": [
-                "cellId", 
-                "pciValue"
-            ], 
-            "type": "object"
-        }, 
-        "type": "array"
-    }, 
-    "self": {
-        "description": "", 
-        "name": "NBRLST_FROM_SDNR", 
-        "version": "1.0.0"
-    }
+	"dataformatversion": "1.0.0",
+	"jsonschema": {
+		"$schema": "http://json-schema.org/draft-04/schema#",
+		"description": "",
+		"items": {
+			"additionalproperties": true,
+			"description": "",
+			"properties": {
+				"cellId": {
+					"description": "",
+					"type": "string"
+				},
+				"pciValue": {
+					"description": "",
+					"type": "integer"
+				}
+			},
+			"required": [
+				"cellId",
+				"pciValue"
+			],
+			"type": "object"
+		},
+		"type": "array"
+	},
+	"self": {
+		"description": "",
+		"name": "NBRLST_FROM_SDNR",
+		"version": "1.0.0"
+	}
 }
 

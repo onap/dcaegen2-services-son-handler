@@ -1,1 +1,12 @@
-[{"cellId":"82","physicalCellId":32,"neighbours":"[]"},{"cellId":"81","physicalCellId":31,"neighbours":"[{\"physicalCellId\":32,\"cellId\":\"82\"}]"}]
+[
+	{
+		"cellId": "82",
+		"physicalCellId": 32,
+		"neighbours": "[]"
+	},
+	{
+		"cellId": "81",
+		"physicalCellId": 31,
+		"neighbours": "[{\"physicalCellId\":32,\"cellId\":\"82\"}]"
+	}
+]

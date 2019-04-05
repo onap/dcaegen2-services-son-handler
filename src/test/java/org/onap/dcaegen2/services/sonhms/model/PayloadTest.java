@@ -35,7 +35,7 @@ public class PayloadTest {
     public void payloadTest() {
         Common common = new Common("cell1");
 
-        Ran ran = new Ran(common);
+        Ran ran = new Ran(common, null);
 
         Lte lte = new Lte(ran);
 

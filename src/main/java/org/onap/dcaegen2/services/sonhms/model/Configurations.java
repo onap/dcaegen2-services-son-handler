@@ -34,7 +34,6 @@ public class Configurations {
     public Configurations() {
 
     }
-
     /**
      * Parameterized constructor.
      *
@@ -43,13 +42,14 @@ public class Configurations {
         super();
         this.data = data;
     }
-
     public Data getData() {
         return data;
     }
-
     public void setData(Data data) {
         this.data = data;
     }
+
+   
+   
 
 }

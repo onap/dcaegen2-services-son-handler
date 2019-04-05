@@ -34,6 +34,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.onap.dcaegen2.services.sonhms.Configuration;
 import org.onap.dcaegen2.services.sonhms.exceptions.OofNotFoundException;
+import org.onap.dcaegen2.services.sonhms.model.AnrInput;
 import org.onap.dcaegen2.services.sonhms.utils.SonHandlerRestTemplate;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -85,6 +86,7 @@ public class OofRestClientTest {
 	    cellIdList.add("EXP001");
 	    List<String> optimizers=new ArrayList<String>();
 	    optimizers.add("pci"); 
+	    List<AnrInput> anrInputList = new ArrayList<>(); 
         
         PowerMockito.mockStatic(SonHandlerRestTemplate.class);
 		PowerMockito.mockStatic(Configuration.class);
@@ -94,7 +96,8 @@ public class OofRestClientTest {
 	    
 
 	    try {
-			String result=OofRestClient.queryOof(1, "xxx-xxx-xxxx", "create", cellIdList, "NTWK005", optimizers);
+	        
+			String result=OofRestClient.queryOof(1, "xxx-xxx-xxxx", "create", cellIdList, "NTWK005", optimizers, anrInputList);
 			assertEquals(ResponseEntity.ok(responseBody).getBody(), result);
 			
 
@@ -105,9 +108,8 @@ public class OofRestClientTest {
 	    PowerMockito.when(SonHandlerRestTemplate.sendPostRequestToOof(Mockito.anyString(),Mockito.anyString() ,Matchers.<ParameterizedTypeReference<String>>any())) 
         .thenReturn(null);
 	    try {
-			String result=OofRestClient.queryOof(1, "xxx-xxx-xxxx", "create", cellIdList, "NTWK005", optimizers);
-			assertEquals(ResponseEntity.ok(responseBody).getBody(), result);
 			
+	        OofRestClient.queryOof(1, "xxx-xxx-xxxx", "create", cellIdList, "NTWK005", optimizers, new ArrayList<>());
 
 		} catch (OofNotFoundException e) {
 			// TODO Auto-generated catch block

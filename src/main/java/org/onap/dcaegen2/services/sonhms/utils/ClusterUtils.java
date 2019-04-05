@@ -26,12 +26,14 @@ import fj.data.Either;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
 import org.onap.dcaegen2.services.sonhms.ClusterDetailsComponent;
+import org.onap.dcaegen2.services.sonhms.FaultNotificationtoClusterMapping;
 import org.onap.dcaegen2.services.sonhms.NotificationToClusterMapping;
 import org.onap.dcaegen2.services.sonhms.child.Graph;
 import org.onap.dcaegen2.services.sonhms.dao.ClusterDetailsRepository;
@@ -45,17 +47,50 @@ import org.onap.dcaegen2.services.sonhms.restclient.SdnrRestClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+public class ClusterUtils {
 
-
-public class ClusterUtils { 
-    
     private static Logger log = LoggerFactory.getLogger(ClusterUtils.class);
-    
+
     public List<ClusterDetails> getAllClusters() {
         ClusterDetailsComponent clusterDetailsComponent = new ClusterDetailsComponent();
-        return clusterDetailsComponent.getClusterDetails(); 
+        return clusterDetailsComponent.getClusterDetails();
     }
-    
+
+    /**
+     * Get cluster for FM notifications.
+     */
+    public FaultNotificationtoClusterMapping getClustersForFmNotification(Set<String> cellIds,
+            List<ClusterDetails> clusterDetails) {
+        List<String> newCells = new ArrayList<>();
+        Map<String, String> cellsInCluster = new HashMap<String, String>();
+        FaultNotificationtoClusterMapping faultNotificationtoClusterMapping = new FaultNotificationtoClusterMapping();
+        for (String cellId : cellIds) {
+            for (ClusterDetails clusterDetail : clusterDetails) {
+                Graph cluster = new Graph(clusterDetail.getClusterInfo());
+
+                Set<String> clusterCells = getCellsInCluster(cluster);
+                for (String clusterCell : clusterCells) {
+                    if (cellId.equals(clusterCell)) {
+                        cellsInCluster.put(cellId, clusterDetail.getClusterId());
+                        break;
+
+                    }
+
+                }
+
+            }
+            if (!cellsInCluster.containsKey(cellId)) {
+                newCells.add(cellId);
+            }
+
+        }
+
+        faultNotificationtoClusterMapping.setCellsinCluster(cellsInCluster);
+        faultNotificationtoClusterMapping.setNewCells(newCells);
+        return faultNotificationtoClusterMapping;
+
+    }
+
     /**
      * Get clusters for notifications.
      */
@@ -66,23 +101,23 @@ public class ClusterUtils {
 
         Map<FapServiceList, String> cellsInCluster = new HashMap<>();
         List<FapServiceList> newCells = new ArrayList<>();
- 
+
         List<FapServiceList> fapServiceList = notification.getPayload().getRadioAccess().getFapServiceList();
-        
+
         for (FapServiceList fapService : fapServiceList) {
 
             for (ClusterDetails clusterDetail : clusterDetails) {
 
                 Set<String> cellsInNotification = getCellsInNotification(fapService);
-                
+
                 Graph cluster = new Graph(clusterDetail.getClusterInfo());
 
                 Set<String> clusterCells = getCellsInCluster(cluster);
 
                 log.debug("cells in cluster {}", clusterCells);
-                
+
                 cellsInNotification.retainAll(clusterCells);
-                
+
                 if (!cellsInNotification.isEmpty()) {
                     log.debug("cell or it's neighbour in the cluster");
                     cellsInCluster.put(fapService, clusterDetail.getClusterId());
@@ -99,7 +134,7 @@ public class ClusterUtils {
         mapping.setNewCells(newCells);
         return mapping;
     }
-    
+
     /**
      * Get cluster details from cluster ID.
      */
@@ -113,19 +148,18 @@ public class ClusterUtils {
         }
         return Either.right(404);
     }
-    
+
     /**
      * Get clusters for Cell.
      */
     public Either<Graph, Integer> getClusterForCell(FapServiceList fapService, List<Graph> newClusters) {
-        
+
         if (newClusters.isEmpty()) {
             return Either.right(404);
         }
-        
-        
+
         for (Graph cluster : newClusters) {
-            
+
             Set<String> cellsInNotification = getCellsInNotification(fapService);
             Set<String> clusterCells = getCellsInCluster(cluster);
 
@@ -139,7 +173,31 @@ public class ClusterUtils {
 
         return Either.right(404);
     }
-    
+
+    /**
+     * Get clusters for FM Cell.
+     */
+    public Either<Graph, Integer> getClusterForFMCell(String cellId, List<Graph> newClusters) {
+        if (newClusters.isEmpty()) {
+            log.info("getClusterForFMCell 404");
+            return Either.right(404);
+        }
+        for (Graph cluster : newClusters) {
+
+            Set<String> clusterCells = getCellsInCluster(cluster);
+            for (String clusterCell : clusterCells) {
+                if (cellId.equals(clusterCell)) {
+                    return Either.left(cluster);
+
+                }
+
+            }
+
+        }
+        return Either.right(404);
+
+    }
+
     private Set<String> getCellsInNotification(FapServiceList fapService) {
         Set<String> cellsInNotification = new HashSet<>();
         cellsInNotification.add(fapService.getAlias());
@@ -164,38 +222,29 @@ public class ClusterUtils {
 
         return clusterCells;
     }
-    
-    /**
-     * Create cluster from notification.
-     */
-    public Graph createCluster(FapServiceList fapService) throws ConfigDbNotFoundException {
+    // generic create cluster for both fm and sdnr
+
+    public Graph createCluster(Map<CellPciPair, ArrayList<CellPciPair>> clusterMap) throws ConfigDbNotFoundException {
 
         Graph cluster = new Graph();
         log.debug("cluster formation started");
-        int phycellId = fapService.getX0005b9Lte().getPhyCellIdInUse();
-        String cellId = fapService.getCellConfig().getLte().getRan().getCellIdentity();
 
-        CellPciPair val = new CellPciPair();
-        val.setCellId(cellId);
-        val.setPhysicalCellId(phycellId);
-        List<LteNeighborListInUseLteCell> neighbourlist;
-        neighbourlist = fapService.getCellConfig().getLte().getRan().getNeighborListInUse()
-                .getLteNeighborListInUseLteCell();
-        log.debug("Neighbor list size: {}", neighbourlist.size()); 
+        Set<CellPciPair> keySet = clusterMap.keySet();
+        Iterator<CellPciPair> iterate = keySet.iterator();
+        CellPciPair val = (CellPciPair) iterate.next();
 
-        for (int i = 0; i < neighbourlist.size(); i++) {
-            String cell = neighbourlist.get(i).getAlias();
-            int phy = neighbourlist.get(i).getPhyCellId();
+        List<CellPciPair> firstNeighbourlist = clusterMap.get(val);
 
-            log.debug("cellID: {}", cell);
-            log.debug("PCI: {}", phy);
+        for (int i = 0; i < firstNeighbourlist.size(); i++) {
+            String cell = firstNeighbourlist.get(i).getCellId();
+            int phy = firstNeighbourlist.get(i).getPhysicalCellId();
+
             CellPciPair val1 = new CellPciPair();
             val1.setCellId(cell);
             val1.setPhysicalCellId(phy);
             cluster.addEdge(val, val1);
-            log.debug("cluster: {}", cluster);
 
-            List<CellPciPair> nbrList = SdnrRestClient.getNbrList(neighbourlist.get(i).getAlias());
+            List<CellPciPair> nbrList = SdnrRestClient.getNbrList(cell);
 
             for (CellPciPair nbr : nbrList) {
                 String cid = nbr.getCellId();
@@ -211,7 +260,7 @@ public class ClusterUtils {
         log.debug("final cluster: {}", cluster);
         return cluster;
     }
-    
+
     /**
      * Save cluster.
      */
@@ -232,28 +281,52 @@ public class ClusterUtils {
 
         return clusterId.toString();
     }
-    
+
     /**
-     * update cluster.
+     * Update cluster.
      */
-    public Graph modifyCluster(Graph cluster, FapServiceList fapser) {
+    public void updateCluster(Graph cluster) {
+        String cellPciNeighbourString = cluster.getPciNeighbourJson();
+        UUID clusterId = cluster.getGraphId();
+        ClusterDetailsRepository clusterDetailsRepository = BeanUtil.getBean(ClusterDetailsRepository.class);
+        clusterDetailsRepository.updateCluster(cellPciNeighbourString, clusterId.toString());
+    }
 
-        int phycellId = fapser.getX0005b9Lte().getPhyCellIdInUse();
-        String cellId = fapser.getCellConfig().getLte().getRan().getCellIdentity();
-        CellPciPair mainCellPciPair = new CellPciPair();
-        mainCellPciPair.setCellId(cellId);
-        mainCellPciPair.setPhysicalCellId(phycellId);
-        List<LteNeighborListInUseLteCell> newNeighbourList;
-        newNeighbourList = fapser.getCellConfig().getLte().getRan().getNeighborListInUse()
-                .getLteNeighborListInUseLteCell();
+    /**
+     * Find cluster Map.
+     */
+    public Map<CellPciPair, ArrayList<CellPciPair>> findClusterMap(String cellId) throws ConfigDbNotFoundException {
+        log.info("indide clusterMap");
+        int phyCellId = SdnrRestClient.getPci(cellId);
+        CellPciPair main = new CellPciPair();
+        main.setCellId(cellId);
+        main.setPhysicalCellId(phyCellId);
+        ArrayList<CellPciPair> cellPciPairs;
+        cellPciPairs = (ArrayList<CellPciPair>) SdnrRestClient.getNbrList(cellId);
+        Map<CellPciPair, ArrayList<CellPciPair>> clusterMap = new HashMap<>();
+        clusterMap.put(main, cellPciPairs);
+        log.info("clusterMap{}", clusterMap);
 
-        Map<CellPciPair, ArrayList<CellPciPair>> clusterMap;
-        clusterMap = cluster.getCellPciNeighbourMap();
+        return clusterMap;
+    }
 
+    /**
+     * Modify cluster.
+     */
+    public Graph modifyCluster(Graph cluster, Map<CellPciPair, ArrayList<CellPciPair>> clusterMap) {
+
+        Set<CellPciPair> keySet = clusterMap.keySet();
+        Iterator<CellPciPair> iterate = keySet.iterator();
+        CellPciPair mainCellPciPair = (CellPciPair) iterate.next();
+        String cellId = mainCellPciPair.getCellId();
+        List<CellPciPair> newNeighbourList = clusterMap.get(mainCellPciPair);
+
+        Map<CellPciPair, ArrayList<CellPciPair>> existingClusterMap;
+        existingClusterMap = cluster.getCellPciNeighbourMap();
         // coe
 
         List<CellPciPair> tempCellPair = new ArrayList<>();
-        for (Map.Entry<CellPciPair, ArrayList<CellPciPair>> entry : clusterMap.entrySet()) {
+        for (Map.Entry<CellPciPair, ArrayList<CellPciPair>> entry : existingClusterMap.entrySet()) {
             CellPciPair oldClusterKeys = entry.getKey();
             tempCellPair.add(oldClusterKeys);
         }
@@ -276,14 +349,14 @@ public class ClusterUtils {
 
         /////// update cluster with new pci values for the same cell
 
-        if (clusterMap.containsKey(mainCellPciPair)) {
+        if (existingClusterMap.containsKey(mainCellPciPair)) {
             ArrayList<CellPciPair> oldClusterArray;
-            oldClusterArray = clusterMap.get(mainCellPciPair);
+            oldClusterArray = existingClusterMap.get(mainCellPciPair);
             oldClusterArray.clear();
 
             for (int i = 0; i < newNeighbourList.size(); i++) {
-                String cid = newNeighbourList.get(i).getAlias();
-                int phy = newNeighbourList.get(i).getPhyCellId();
+                String cid = newNeighbourList.get(i).getCellId();
+                int phy = newNeighbourList.get(i).getPhysicalCellId();
                 CellPciPair val2 = new CellPciPair();
                 val2.setCellId(cid);
                 val2.setPhysicalCellId(phy);
@@ -299,8 +372,8 @@ public class ClusterUtils {
             mapVal.setCellId(cell);
             mapVal.setPhysicalCellId(physicalCell);
             for (int j = 0; j < newNeighbourList.size(); j++) {
-                String cid1 = newNeighbourList.get(j).getAlias();
-                int phy1 = newNeighbourList.get(j).getPhyCellId();
+                String cid1 = newNeighbourList.get(j).getCellId();
+                int phy1 = newNeighbourList.get(j).getPhysicalCellId();
                 CellPciPair val3 = new CellPciPair();
                 val3.setCellId(cid1);
                 val3.setPhysicalCellId(phy1);
@@ -316,28 +389,29 @@ public class ClusterUtils {
         }
 
         for (int j = 0; j < newNeighbourList.size(); j++) {
-            String cid1 = newNeighbourList.get(j).getAlias();
-            int phy1 = newNeighbourList.get(j).getPhyCellId();
+            String cid1 = newNeighbourList.get(j).getCellId();
+            int phy1 = newNeighbourList.get(j).getPhysicalCellId();
             CellPciPair val3 = new CellPciPair();
             val3.setCellId(cid1);
             val3.setPhysicalCellId(phy1);
-            if (clusterMap.containsKey(val3)) {
+            if (existingClusterMap.containsKey(val3)) {
                 cluster.addEdge(mainCellPciPair, val3);
             }
 
         }
 
         for (int k = 0; k < newNeighbourList.size(); k++) {
-            String cid2 = newNeighbourList.get(k).getAlias();
-            int phy2 = newNeighbourList.get(k).getPhyCellId();
+            String cid2 = newNeighbourList.get(k).getCellId();
+            int phy2 = newNeighbourList.get(k).getPhysicalCellId();
             CellPciPair val5 = new CellPciPair();
             val5.setCellId(cid2);
             val5.setPhysicalCellId(phy2);
             cluster.addEdge(mainCellPciPair, val5);
         }
 
-        log.debug("Modified Cluster {}", cluster);
+        log.info("Modified Cluster {}", cluster);
 
         return cluster;
     }
+
 }
