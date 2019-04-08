@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d7392fc3_d24a1934",
+        "filename": "pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-04-08T20:44:33Z",
+      "side": 1,
+      "message": "Formatting to be fixed",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 151
+      },
+      "revId": "80b0c61808d0958ef7d38a772a206f2c17dfd2a5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "663db638_f5911d60",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/AlarmAdditionalInformation.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-04-08T20:44:33Z",
+      "side": 1,
+      "message": "2019",
+      "range": {
+        "startLine": 5,
+        "startChar": 18,
+        "endLine": 5,
+        "endChar": 22
+      },
+      "revId": "80b0c61808d0958ef7d38a772a206f2c17dfd2a5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4bd5bf50_3edf7fea",
+        "filename": "src/main/resources/logback.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-04-08T20:44:33Z",
+      "side": 1,
+      "message": "Formatting to be fixed",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 151
+      },
+      "revId": "80b0c61808d0958ef7d38a772a206f2c17dfd2a5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
