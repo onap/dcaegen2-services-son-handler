@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9b11fd29_0babfec9",
+        "filename": "README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-04-10T13:48:42Z",
+      "side": 1,
+      "message": "R4",
+      "range": {
+        "startLine": 26,
+        "startChar": 4,
+        "endLine": 26,
+        "endChar": 7
+      },
+      "revId": "2896a24832902865313cd16081bba8b2d079748f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ec5bf2e7_8c020598",
+        "filename": "README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-04-10T13:48:42Z",
+      "side": 1,
+      "message": "provide a link to blueprint",
+      "range": {
+        "startLine": 31,
+        "startChar": 14,
+        "endLine": 31,
+        "endChar": 14
+      },
+      "revId": "2896a24832902865313cd16081bba8b2d079748f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b18849d8_2d35c264",
+        "filename": "README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-04-10T13:48:42Z",
+      "side": 1,
+      "message": "Also if the son-ms can be started standalone (i.e docker run), provide those instruction also.",
+      "revId": "2896a24832902865313cd16081bba8b2d079748f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
