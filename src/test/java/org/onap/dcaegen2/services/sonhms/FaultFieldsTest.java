@@ -38,7 +38,7 @@ public class FaultFieldsTest {
 
         faultFields.setEventSeverity("eventSeverity");
         faultFields.setEventSourceType("eventSourceType");
-        faultFields.setFaultFieldsVersion(0);
+        faultFields.setFaultFieldsVersion(4.0);
         faultFields.setAlarmAdditionalInformation(alarmAdditionalInformation);
 
         faultFields.setSpecificProblem("specificProblem");
@@ -46,7 +46,7 @@ public class FaultFieldsTest {
         assertEquals("alarmCondition", faultFields.getAlarmCondition());
         assertEquals(1, faultFields.getAlarmAdditionalInformation().getCollisions());
         assertEquals(3, faultFields.getAlarmAdditionalInformation().getConfusions());
-        assertEquals(0, faultFields.getFaultFieldsVersion());
+        assertEquals(4.0, faultFields.getFaultFieldsVersion(), 0);
         assertEquals("eventSeverity", faultFields.getEventSeverity());
         assertEquals("eventSourceType", faultFields.getEventSourceType());
         assertEquals("networkId", faultFields.getAlarmAdditionalInformation().getNetworkId());

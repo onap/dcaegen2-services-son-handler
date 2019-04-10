@@ -22,6 +22,7 @@ package org.onap.dcaegen2.services.sonhms.child;
 
 import static org.junit.Assert.assertEquals;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.BufferedReader;
@@ -46,6 +47,7 @@ import org.onap.dcaegen2.services.sonhms.dao.CellInfoRepository;
 import org.onap.dcaegen2.services.sonhms.entity.CellInfo;
 import org.onap.dcaegen2.services.sonhms.exceptions.ConfigDbNotFoundException;
 import org.onap.dcaegen2.services.sonhms.model.CellPciPair;
+import org.onap.dcaegen2.services.sonhms.restclient.AnrSolutions;
 import org.onap.dcaegen2.services.sonhms.restclient.SdnrRestClient;
 import org.onap.dcaegen2.services.sonhms.restclient.Solutions;
 import org.onap.dcaegen2.services.sonhms.utils.BeanUtil;
@@ -69,6 +71,7 @@ public class TestPnfUtils {
     
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(TestPnfUtils.class);
     private static Solutions solutions = new Solutions();
+    private static List<AnrSolutions> anrSolutions = new ArrayList<>();
     private static Optional<CellInfo> cellInfo;
     private static Optional<CellInfo> cellInfoNull;
 
@@ -81,10 +84,13 @@ public class TestPnfUtils {
          
          
          String solutionsString=readFromFile("/solutions.json");
+         String anrSolutionsString = readFromFile("/anrSolutions.json");
          ObjectMapper mapper = new ObjectMapper();
             
             try {
                 solutions=mapper.readValue(solutionsString, Solutions.class);
+                anrSolutions = mapper.readValue(anrSolutionsString, new TypeReference<ArrayList<AnrSolutions>>() {
+                });
             } catch (IOException e) {
                 log.debug("Exception in StateOof Test "+e);
                 e.printStackTrace();
@@ -133,6 +139,33 @@ public class TestPnfUtils {
             log.debug("exception in stateOof test {}", e);
             e.printStackTrace();
         }
+     }
+     
+     @Test
+     public void testGetPnfsForAnrSolutions() {
+         Map<String, List<Map<String,List<String>>>> actual = null ;
+         Map<String, List<Map<String,List<String>>>> expected = new HashMap<>();
+         try {
+             PowerMockito.mockStatic(SdnrRestClient.class);
+            PowerMockito.when(SdnrRestClient.getPnfName(Mockito.anyString())).thenReturn("ncServer1");
+            actual = pnfUtils.getPnfsForAnrSolutions(anrSolutions);
+        } catch (ConfigDbNotFoundException e) {
+            e.printStackTrace();
+        }
+        List<String> remNeighbors1 = new ArrayList<>();
+        List<String> remNeighbors2 = new ArrayList<>();
+        remNeighbors1.add("cell2");
+        remNeighbors1.add("cell3");
+        remNeighbors2.add("cell9");
+        Map<String,List<String>> cellRemNeighborsPair1 = new HashMap<>();
+        Map<String,List<String>> cellRemNeighborsPair2 = new HashMap<>();
+        cellRemNeighborsPair1.put("cell1", remNeighbors1);
+        cellRemNeighborsPair2.put("cell8", remNeighbors2);
+        List<Map<String,List<String>>> list = new ArrayList<>();
+        list.add(cellRemNeighborsPair1);
+        list.add(cellRemNeighborsPair2);
+        expected.put("ncServer1", list);
+        assertEquals(expected, actual);
      }
      private static String readFromFile(String file) {
             String content  = new String();

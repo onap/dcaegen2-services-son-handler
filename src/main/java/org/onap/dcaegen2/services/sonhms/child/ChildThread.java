@@ -49,6 +49,7 @@ import org.onap.dcaegen2.services.sonhms.exceptions.ConfigDbNotFoundException;
 import org.onap.dcaegen2.services.sonhms.model.AnrInput;
 import org.onap.dcaegen2.services.sonhms.model.CellPciPair;
 import org.onap.dcaegen2.services.sonhms.model.ClusterMap;
+import org.onap.dcaegen2.services.sonhms.model.Flag;
 import org.onap.dcaegen2.services.sonhms.model.HoDetails;
 import org.onap.dcaegen2.services.sonhms.model.ThreadId;
 import org.onap.dcaegen2.services.sonhms.restclient.AsyncResponseBody;
@@ -142,7 +143,7 @@ public class ChildThread implements Runnable {
         }
 
         MDC.put("logFileName", Thread.currentThread().getName());
-        log.debug("Starting child thread");
+        log.info("Starting child thread");
 
         StateOof oof = new StateOof(childStatusUpdate);
         ClusterUtils clusterUtils = new ClusterUtils();
@@ -188,9 +189,9 @@ public class ChildThread implements Runnable {
 
                         // update cluster in DB
                         clusterUtils.updateCluster(cluster);
+                        collisionConfusionResult = detect.detectCollisionConfusion(cluster);
 
                     }
-                    collisionConfusionResult = detect.detectCollisionConfusion(cluster);
 
                 }
                 ArrayList<String> cellidList = new ArrayList<>();
@@ -215,15 +216,27 @@ public class ChildThread implements Runnable {
                     cellidList.add(cell);
                 }
                 UUID transactionId;
+                
+                Flag policyTriggerFlag = BeanUtil.getBean(Flag.class);
+                while (policyTriggerFlag.getHolder().equals("PM")) {
+                    Thread.sleep(100);
+                }
+                policyTriggerFlag.setHolder("CHILD");
+                policyTriggerFlag.setNumChilds(policyTriggerFlag.getNumChilds() + 1);
+                
                 Either<List<AnrInput>, Integer> anrTriggerResponse = checkAnrTrigger(cellidList);
                 if (anrTriggerResponse.isRight()) {
-                    if (anrTriggerResponse.right().value() == 404)
+
+                    if (anrTriggerResponse.right().value() == 404) {
                         log.debug("No poor neighbors found");
-                    else if (anrTriggerResponse.right().value() == 500)
+                    } else if (anrTriggerResponse.right().value() == 500) {
                         log.debug("Failed to fetch HO details from DB ");
+                    }
+
                     transactionId = oof.triggerOof(cellidList, networkId, new ArrayList<>());
                 } else {
                     List<AnrInput> anrInputList = anrTriggerResponse.left().value();
+                    log.info("Trigger oof for joint optimization");
                     transactionId = oof.triggerOof(cellidList, networkId, anrInputList);
                 }
                 long childThreadId = Thread.currentThread().getId();
@@ -234,8 +247,16 @@ public class ChildThread implements Runnable {
 
                 AsyncResponseBody asynResponseBody = ChildThread.getResponseMap().get(childThreadId);
 
+                
+
                 try {
                     childUtils.sendToPolicy(asynResponseBody);
+                    policyTriggerFlag.setNumChilds(policyTriggerFlag.getNumChilds() - 1);
+                    if (policyTriggerFlag.getNumChilds() == 0) {
+                        policyTriggerFlag.setHolder("NONE");
+                    }
+                    
+
                 } catch (ConfigDbNotFoundException e1) {
                     log.debug("Config DB is unreachable: {}", e1);
                 }
@@ -379,6 +400,9 @@ public class ChildThread implements Runnable {
         return clusterMapList;
     }
 
+    /**
+     * Check if ANR to be triggered.
+     */
     public Either<List<AnrInput>, Integer> checkAnrTrigger(List<String> cellidList) {
 
         List<AnrInput> anrInputList = new ArrayList<>();

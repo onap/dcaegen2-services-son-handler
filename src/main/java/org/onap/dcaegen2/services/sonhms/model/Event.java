@@ -25,7 +25,7 @@ import org.onap.dcaegen2.services.sonhms.CommonEventHeader;
 
 public class Event {
     CommonEventHeader commonEventHeader;
-    Measurement measurement;
+    MeasurementFields measurementFields;
     
     public Event() {
         
@@ -39,13 +39,15 @@ public class Event {
         this.commonEventHeader = commonEventHeader;
     }
 
-    public Measurement getMeasurement() {
-        return measurement;
+    public MeasurementFields getMeasurementFields() {
+        return measurementFields;
     }
 
-    public void setMeasurement(Measurement measurement) {
-        this.measurement = measurement;
+    public void setMeasurementFields(MeasurementFields measurementFields) {
+        this.measurementFields = measurementFields;
     }
+
+ 
     
     
 }

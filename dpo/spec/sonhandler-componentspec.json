@@ -14,14 +14,14 @@
 				"type": "message router"
 			},
 			{
-				"format": "FM_ALARM_FROM_VES",
-				"version": "1.0.0",
+				"format": "VES_specification",
+				"version": "7.30.1",
 				"config_key": "fault_management_topic",
 				"type": "message router"
 			},
 			{
-				"format": "PM_ALARM_FROM_VES",
-				"version": "1.0.0",
+				"format": "VES_specification",
+				"version": "7.30.1",
 				"config_key": "performance_management_topic",
 				"type": "message router"
 			},

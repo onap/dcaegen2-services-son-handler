@@ -1,22 +1,23 @@
 /*******************************************************************************
- * ============LICENSE_START=======================================================
- * pcims
+ *  ============LICENSE_START=======================================================
+ *  son-handler
  *  ================================================================================
- *  Copyright (C) 2018 Wipro Limited.
- *  ==============================================================================
- *   Licensed under the Apache License, Version 2.0 (the "License");
- *   you may not use this file except in compliance with the License.
- *   You may obtain a copy of the License at
- *
- *        http://www.apache.org/licenses/LICENSE-2.0
- *
- *   Unless required by applicable law or agreed to in writing, software
- *   distributed under the License is distributed on an "AS IS" BASIS,
- *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *   See the License for the specific language governing permissions and
- *   limitations under the License.
- *   ============LICENSE_END=========================================================
- ******************************************************************************/
+ *   Copyright (C) 2019 Wipro Limited.
+ *   ==============================================================================
+ *     Licensed under the Apache License, Version 2.0 (the "License");
+ *     you may not use this file except in compliance with the License.
+ *     You may obtain a copy of the License at
+ *  
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *     Unless required by applicable law or agreed to in writing, software
+ *     distributed under the License is distributed on an "AS IS" BASIS,
+ *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *     See the License for the specific language governing permissions and
+ *     limitations under the License.
+ *     ============LICENSE_END=========================================================
+ *  
+ *******************************************************************************/
 
 package org.onap.dcaegen2.services.sonhms;
 
@@ -24,6 +25,10 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+
+import org.onap.dcaegen2.services.sonhms.child.ChildThreadUtils;
+import org.onap.dcaegen2.services.sonhms.child.PnfUtils;
 import org.onap.dcaegen2.services.sonhms.dao.HandOverMetricsRepository;
 import org.onap.dcaegen2.services.sonhms.dmaap.PolicyDmaapClient;
 import org.onap.dcaegen2.services.sonhms.entity.HandOverMetrics;
@@ -33,6 +38,7 @@ import org.onap.dcaegen2.services.sonhms.model.Common;
 import org.onap.dcaegen2.services.sonhms.model.Configurations;
 import org.onap.dcaegen2.services.sonhms.model.Data;
 import org.onap.dcaegen2.services.sonhms.model.FapService;
+import org.onap.dcaegen2.services.sonhms.model.Flag;
 import org.onap.dcaegen2.services.sonhms.model.HoDetails;
 import org.onap.dcaegen2.services.sonhms.model.Lte;
 import org.onap.dcaegen2.services.sonhms.model.LteCell;
@@ -44,21 +50,21 @@ import org.onap.dcaegen2.services.sonhms.utils.BeanUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class PMNotificationHandler {
+public class PmNotificationHandler {
 
     private static Logger log = LoggerFactory.getLogger(DmaapNotificationsComponent.class);
     PolicyDmaapClient policyDmaapClient;
 
-    public PMNotificationHandler() {
+    public PmNotificationHandler() {
 
     }
 
-    public PMNotificationHandler(PolicyDmaapClient policyDmaapClient) {
+    public PmNotificationHandler(PolicyDmaapClient policyDmaapClient) {
         this.policyDmaapClient = policyDmaapClient;
     }
 
     /**
-     * handle pm notifications.
+     * handle PM notifications.
      */
     public Boolean handlePmNotifications(PMNotification pmNotification, int badThreshold) {
         HandOverMetricsRepository handOverMetricsRepository = BeanUtil.getBean(HandOverMetricsRepository.class);
@@ -67,12 +73,12 @@ public class PMNotificationHandler {
             List<HoDetails> hoDetailsList = new ArrayList<>();
             List<LteCell> lteCellList = new ArrayList<>();
             String srcCellId = pmNotification.getEvent().getCommonEventHeader().getSourceName();
-            for (AdditionalMeasurements additionalMeasurements : pmNotification.getEvent().getMeasurement()
+            for (AdditionalMeasurements additionalMeasurements : pmNotification.getEvent().getMeasurementFields()
                     .getAdditionalMeasurements()) {
                 int attemptsCount = Integer
-                        .parseInt(additionalMeasurements.getArrayOfNamedHashMap().get(1).get("InterEnbOutAtt_X2HO"));
+                        .parseInt(additionalMeasurements.getHashMap().get("InterEnbOutAtt_X2HO"));
                 int successCount = Integer
-                        .parseInt(additionalMeasurements.getArrayOfNamedHashMap().get(2).get("InterEnbOutSucc_X2HO"));
+                        .parseInt(additionalMeasurements.getHashMap().get("InterEnbOutSucc_X2HO"));
                 float successRate = ((float) successCount / attemptsCount) * 100;
                 if (successRate >= badThreshold) {
                     HoDetails hoDetails = new HoDetails();
@@ -81,21 +87,30 @@ public class PMNotificationHandler {
                     hoDetails.setSuccessCount(successCount);
                     hoDetails.setSuccessRate(successRate);
                     hoDetailsList.add(hoDetails);
-                    log.info("not bad  neighbor {}",additionalMeasurements.getName());
+                    log.info("not bad  neighbor {}", additionalMeasurements.getName());
                 } else {
-                    log.info(" bad  neighbor {}",additionalMeasurements.getName());
+                    log.info(" bad  neighbor {}", additionalMeasurements.getName());
                     LteCell lteCell = new LteCell();
                     lteCell.setBlacklisted("true");
                     lteCell.setCid(additionalMeasurements.getName());
-                    lteCell.setPlmnId(additionalMeasurements.getArrayOfNamedHashMap().get(0).get("networkId"));
+                    lteCell.setPlmnId(additionalMeasurements.getHashMap().get("networkId"));
                     lteCell.setPnfName(pmNotification.getEvent().getCommonEventHeader().getReportingEntityName());
                     lteCellList.add(lteCell);
                 }
             }
             if (!lteCellList.isEmpty()) {
                 log.info("triggering policy to remove bad neighbors");
+                Flag policyTriggerFlag = BeanUtil.getBean(Flag.class);
+                
+                while (policyTriggerFlag.getHolder().equals("CHILD")) {
+                    Thread.sleep(100);
+                }
+
+                policyTriggerFlag.setHolder("PM");
                 result = sendAnrUpdateToPolicy(pmNotification, lteCellList);
                 log.info("Sent ANR update to policy {}", result);
+                policyTriggerFlag.setHolder("NONE");
+
                 String hoDetailsString = handOverMetricsRepository.getHandOverMetrics(srcCellId);
                 if (hoDetailsString != null) {
                     ObjectMapper mapper = new ObjectMapper();
@@ -106,7 +121,7 @@ public class PMNotificationHandler {
                         log.error("Error in writing handover metrics json ", e);
                         return false;
                     }
-                    handOverMetricsRepository.updateHoMetrics(newHoDetailsString, srcCellId);            
+                    handOverMetricsRepository.updateHoMetrics(newHoDetailsString, srcCellId);
                 }
             }
             if (!hoDetailsList.isEmpty()) {
@@ -134,11 +149,16 @@ public class PMNotificationHandler {
                             new NeighborListInUse(null, lteCellList, String.valueOf(lteCellList.size()))))))));
             configurations.add(configuration);
             Payload payload = new Payload(configurations);
-            log.info("payload : {}",   payload);
+            log.info("payload : {}", payload);
             String anrUpdateString = mapper.writeValueAsString(payload);
+            ChildThreadUtils childUtils = new ChildThreadUtils(ConfigPolicy.getInstance(), new PnfUtils(),
+                    new PolicyDmaapClient());
+            String notification = childUtils.getNotificationString(pmNotification.getEvent().getCommonEventHeader().getReportingEntityName(), UUID.randomUUID().toString(), anrUpdateString,
+                    System.currentTimeMillis(), "ModifyConfigANR");
+            log.info("Policy Notification: {}", notification);
+            Boolean result = policyDmaapClient.sendNotificationToPolicy(notification);
+            log.info("send notification to policy result {} ", result);
             
-            Boolean result = policyDmaapClient.sendNotificationToPolicy(anrUpdateString);
-            log.debug("send notification to policy result {} ", result);
         } catch (Exception e) {
             log.error("Exception in sending Anr update to policy ", e);
             return false;
@@ -156,14 +176,13 @@ public class PMNotificationHandler {
             log.error("Error in writing handover metrics json ", e);
             return false;
         }
-        
+
         if (handOverMetricsRepository.getHandOverMetrics(srcCellId) == null) {
             HandOverMetrics handOverMetrics = new HandOverMetrics();
             handOverMetrics.setHoDetails(hoDetailsString);
             handOverMetrics.setSrcCellId(srcCellId);
             handOverMetricsRepository.save(handOverMetrics);
-        }
-        else {
+        } else {
             handOverMetricsRepository.updateHoMetrics(hoDetailsString, srcCellId);
         }
         return true;

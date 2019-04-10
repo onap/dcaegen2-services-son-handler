@@ -1,14 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- ============LICENSE_START======================================================= 
-	son-handler ================================================================================ 
-	Copyright (C) 2019 Wipro Limited. ============================================================================== 
-	Licensed under the Apache License, Version 2.0 (the "License"); you may not 
-	use this file except in compliance with the License. You may obtain a copy 
-	of the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required 
-	by applicable law or agreed to in writing, software distributed under the 
-	License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS 
-	OF ANY KIND, either express or implied. See the License for the specific 
-	language governing permissions and limitations under the License. ============LICENSE_END========================================================= -->
+<!-- 
+/*******************************************************************************
+ *  ============LICENSE_START=======================================================
+ *  son-handler
+ *  ================================================================================
+ *   Copyright (C) 2019 Wipro Limited.
+ *   ==============================================================================
+ *     Licensed under the Apache License, Version 2.0 (the "License");
+ *     you may not use this file except in compliance with the License.
+ *     You may obtain a copy of the License at
+ *  
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *     Unless required by applicable law or agreed to in writing, software
+ *     distributed under the License is distributed on an "AS IS" BASIS,
+ *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *     See the License for the specific language governing permissions and
+ *     limitations under the License.
+ *     ============LICENSE_END=========================================================
+ *  
+ *******************************************************************************/
+  -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
@@ -29,7 +41,7 @@
 
 
 	<properties>
-		<sdk.version>1.1.4-SNAPSHOT</sdk.version>
+		<sdk.version>1.1.4</sdk.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
@@ -263,11 +275,10 @@
 					</resources>
 					<runs>
 						<!-- Maven is loosing file permissions during artifacts copy -->
+					    <run>adduser --disabled-password sonhms </run>
 						<run>chmod +x /bin/entrypoint.sh</run>
 						<run>mv /bin/*.jar /bin/application.jar</run>
 						<run>chmod -R 777 /bin</run>
-						<run>mkdir /var/log/onap</run>
-						<run>chmod -R 777 /var/log/onap</run>
 					</runs>
 					<exposes>
 						<expose>8080</expose>

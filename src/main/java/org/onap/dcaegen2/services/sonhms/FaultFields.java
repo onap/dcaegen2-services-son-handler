@@ -31,7 +31,7 @@ public class FaultFields {
                 + alarmAdditionalInformation + "]";
     }
 
-    private int faultFieldsVersion;
+    private double faultFieldsVersion;
 	private String alarmCondition;
 	private String eventSourceType;
 	private String specificProblem;
@@ -48,11 +48,11 @@ public class FaultFields {
         this.alarmAdditionalInformation = alarmAdditionalInformation;
     }
 
-    public int getFaultFieldsVersion() {
+    public double getFaultFieldsVersion() {
 		return faultFieldsVersion;
 	}
 
-	public void setFaultFieldsVersion(int faultFieldsVersion) {
+	public void setFaultFieldsVersion(double faultFieldsVersion) {
 		this.faultFieldsVersion = faultFieldsVersion;
 	}
 

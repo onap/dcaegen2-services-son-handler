@@ -70,7 +70,7 @@ public class OofRestClient {
         requestInfo.setRequestType(requestType);
         requestInfo.setNumSolutions(numSolutions);
         requestInfo.setOptimizers(optimizers);
-        Map<String,String> callbackHeader = new HashMap<>();
+        Map<String, String> callbackHeader = new HashMap<>();
         callbackHeader.put("Content-Type", "application/json");
         requestInfo.setCallbackHeader(callbackHeader);
         ConfigPolicy config = ConfigPolicy.getInstance();
@@ -81,13 +81,14 @@ public class OofRestClient {
             log.debug("No config policy available. Using default timeout 60 sec");
         }
         requestInfo.setTimeout(timeout);
-        
+
         CellInfo cellInfo = new CellInfo();
         cellInfo.setCellIdList(cellIdList);
         cellInfo.setNetworkId(networkId);
         cellInfo.setTrigger("NbrListChange");
-        if(!anrInputList.isEmpty())
+        if (!anrInputList.isEmpty()) {
             cellInfo.setAnrInputList(anrInputList);
+        }
         OofRequestBody oofRequestBody = new OofRequestBody();
         oofRequestBody.setRequestInfo(requestInfo);
         oofRequestBody.setCellInfo(cellInfo);
@@ -98,11 +99,11 @@ public class OofRestClient {
             requestBody = mapper.writeValueAsString(oofRequestBody);
         } catch (JsonProcessingException e) {
             log.error("Exception when forming JSON String {}", e);
-            
-        }
-        log.debug("requestBody{}", requestBody);
 
-        String requestUrl = configuration.getOofService() + "/api/oof/v1/pci";
+        }
+        log.info("requestBody{}", requestBody);
+
+        String requestUrl = configuration.getOofService() + "/api/oof/pci/v1";
         log.debug("requestUrl {}", requestUrl);
         ResponseEntity<String> response = null;
         response = SonHandlerRestTemplate.sendPostRequestToOof(requestUrl, requestBody,
@@ -111,7 +112,7 @@ public class OofRestClient {
         if (response == null) {
             throw new OofNotFoundException("Request to oof failed");
         }
-        log.debug("response {}", response);
+        log.info("response {}", response);
 
         return response.getBody();
     }

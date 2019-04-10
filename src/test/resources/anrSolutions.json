@@ -1,0 +1,15 @@
+[
+  {
+    "cellId":"cell1",
+    "removeableNeighbors":[
+      "cell2",
+      "cell3"
+    ]
+  },
+  {
+    "cellId":"cell8",
+    "removeableNeighbors":[
+      "cell9"
+    ]
+  }
+]

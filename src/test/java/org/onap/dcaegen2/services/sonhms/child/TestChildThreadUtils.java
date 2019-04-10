@@ -55,7 +55,6 @@ import org.onap.dcaegen2.services.sonhms.model.CellPciPair;
 import org.onap.dcaegen2.services.sonhms.model.PolicyNotification;
 import org.onap.dcaegen2.services.sonhms.restclient.AsyncResponseBody;
 import org.onap.dcaegen2.services.sonhms.restclient.SdnrRestClient;
-import org.onap.dcaegen2.services.sonhms.restclient.Solutions;
 import org.onap.dcaegen2.services.sonhms.utils.BeanUtil;
 import org.onap.dcaegen2.services.sonhms.utils.ClusterUtilsTest;
 import org.powermock.api.mockito.PowerMockito;
@@ -153,7 +152,7 @@ public class TestChildThreadUtils {
 		String requestId = "a4130fd5-2291-4a83-8992-04e4c9f32731";
 		Long alarmStart = Long.parseLong("1542445563201");
 
-		String result = childThreadUtils.getNotificationString(pnfName, cellPciPairs, requestId, alarmStart);
+		String result = childThreadUtils.getNotificationString(pnfName, requestId, "payloadString", alarmStart, "action");
 		PolicyNotification actual = new PolicyNotification();
 		try {
 			actual = mapper.readValue(result, PolicyNotification.class);
@@ -188,8 +187,18 @@ public class TestChildThreadUtils {
         pciPairList.add(cell2);
         pciPairList.add(cell3);
         pnfsMap.put("pnf1", pciPairList);
-        when(pnfUtils.getPnfs(Mockito.any(Solutions.class))).thenReturn(pnfsMap);
-        childThreadUtils.sendToPolicy(async);
+        when(pnfUtils.getPnfs(async.getSolutions())).thenReturn(pnfsMap);
+        List<String> remNeighbors = new ArrayList<>();
+        remNeighbors.add("EXP006");
+        Map<String,List<String>> cellRemNeighborsPair = new HashMap<>();
+        cellRemNeighborsPair.put("EXP003", remNeighbors);
+        List<Map<String,List<String>>> list = new ArrayList<>();
+        list.add(cellRemNeighborsPair);
+        Map<String, List<Map<String,List<String>>>> expected = new HashMap<>();
+        expected.put("pnfName", list);
+        when(pnfUtils.getPnfsForAnrSolutions(async.getSolutions().getAnrSolutions())).thenReturn(expected);
+        assertTrue(childThreadUtils2.sendToPolicy(async));
+        
 	}
 
 	private static String readFromFile(String file) {
