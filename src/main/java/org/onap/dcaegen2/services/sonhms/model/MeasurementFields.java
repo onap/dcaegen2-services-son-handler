@@ -21,33 +21,43 @@
 
 package org.onap.dcaegen2.services.sonhms.model;
 
-import java.util.Map;
+import java.util.List;
 
-public class AdditionalMeasurements {
+public class MeasurementFields {
+
+    String measurementInterval;
+    String measurementFieldsVersion;
+   
+    List<AdditionalMeasurements> additionalMeasurements;
     
-    String name;
-    Map<String,String> hashMap ;  
-    
-    public AdditionalMeasurements() {
+    /**
+     * default constructor
+     */
+    public MeasurementFields() {
         
     }
-    public String getName() {
-        return name;
+    public String getMeasurementInterval() {
+        return measurementInterval;
     }
-    public void setName(String name) {
-        this.name = name;
+
+    public void setMeasurementInterval(String measurementInterval) {
+        this.measurementInterval = measurementInterval;
     }
-    public Map<String, String> getHashMap() {
-        return hashMap;
+
+    public List<AdditionalMeasurements> getAdditionalMeasurements() {
+        return additionalMeasurements;
     }
-    public void setHashMap(Map<String, String> hashMap) {
-        this.hashMap = hashMap;
+
+    public void setAdditionalMeasurements(List<AdditionalMeasurements> additionalMeasurements) {
+        this.additionalMeasurements = additionalMeasurements;
     }
-    @Override
-    public String toString() {
-        return "AdditionalMeasurements [name=" + name + ", hashMap=" + hashMap + "]";
+    
+    public String getMeasurementFieldsVersion() {
+        return measurementFieldsVersion;
     }
-  
-  
+    public void setMeasurementFieldsVersion(String measurementFieldsVersion) {
+        this.measurementFieldsVersion = measurementFieldsVersion;
+    }
+
     
 }

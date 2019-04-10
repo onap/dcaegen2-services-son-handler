@@ -21,34 +21,36 @@
 
 package org.onap.dcaegen2.services.sonhms.model;
 
-import java.util.List;
+import javax.annotation.PostConstruct;
 
-public class Measurement {
+import org.springframework.stereotype.Component;
 
-    String measurementInterval;
-    List<AdditionalMeasurements> additionalMeasurements;
+@Component
+public class Flag {
     
-    /**
-     * default constructor
-     */
-    public Measurement() {
-        
-    }
-    public String getMeasurementInterval() {
-        return measurementInterval;
-    }
+    private String holder;
+    private int numChilds;
 
-    public void setMeasurementInterval(String measurementInterval) {
-        this.measurementInterval = measurementInterval;
-    }
-
-    public List<AdditionalMeasurements> getAdditionalMeasurements() {
-        return additionalMeasurements;
-    }
-
-    public void setAdditionalMeasurements(List<AdditionalMeasurements> additionalMeasurements) {
-        this.additionalMeasurements = additionalMeasurements;
+    @PostConstruct
+    void setup() {
+        holder = "NONE";
+        numChilds = 0;
     }
     
+    public String getHolder() {
+        return holder;
+    }
+
+    public void setHolder(String holder) {
+        this.holder = holder;
+    }
+
+    public int getNumChilds() {
+        return numChilds;
+    }
+
+    public void setNumChilds(int numChilds) {
+        this.numChilds = numChilds;
+    }
     
 }

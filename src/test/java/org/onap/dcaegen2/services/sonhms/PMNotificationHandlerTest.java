@@ -1,22 +1,23 @@
 /*******************************************************************************
- * ============LICENSE_START=======================================================
- * pcims
+ *  ============LICENSE_START=======================================================
+ *  son-handler
  *  ================================================================================
- *  Copyright (C) 2018 Wipro Limited.
- *  ==============================================================================
- *   Licensed under the Apache License, Version 2.0 (the "License");
- *   you may not use this file except in compliance with the License.
- *   You may obtain a copy of the License at
- *
- *        http://www.apache.org/licenses/LICENSE-2.0
- *
- *   Unless required by applicable law or agreed to in writing, software
- *   distributed under the License is distributed on an "AS IS" BASIS,
- *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *   See the License for the specific language governing permissions and
- *   limitations under the License.
- *   ============LICENSE_END=========================================================
- ******************************************************************************/
+ *   Copyright (C) 2019 Wipro Limited.
+ *   ==============================================================================
+ *     Licensed under the Apache License, Version 2.0 (the "License");
+ *     you may not use this file except in compliance with the License.
+ *     You may obtain a copy of the License at
+ *  
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *     Unless required by applicable law or agreed to in writing, software
+ *     distributed under the License is distributed on an "AS IS" BASIS,
+ *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *     See the License for the specific language governing permissions and
+ *     limitations under the License.
+ *     ============LICENSE_END=========================================================
+ *  
+ *******************************************************************************/
 
 package org.onap.dcaegen2.services.sonhms;
 
@@ -38,6 +39,7 @@ import org.mockito.Mockito;
 import org.onap.dcaegen2.services.sonhms.dao.HandOverMetricsRepository;
 import org.onap.dcaegen2.services.sonhms.dmaap.PolicyDmaapClient;
 import org.onap.dcaegen2.services.sonhms.entity.HandOverMetrics;
+import org.onap.dcaegen2.services.sonhms.model.Flag;
 import org.onap.dcaegen2.services.sonhms.model.PMNotification;
 import org.onap.dcaegen2.services.sonhms.utils.BeanUtil;
 import org.powermock.api.mockito.PowerMockito;
@@ -56,8 +58,11 @@ public class PMNotificationHandlerTest {
     @Mock
     HandOverMetricsRepository handOverMetricsRepositoryMock;
     
+    @Mock
+    Flag flagMock;
+    
     @InjectMocks
-    PMNotificationHandler pmNotificationHandler;
+    PmNotificationHandler pmNotificationHandler;
     
     @Mock
     PolicyDmaapClient policyDmaapClient;
@@ -88,7 +93,10 @@ public class PMNotificationHandlerTest {
         PowerMockito.mockStatic(BeanUtil.class);
         PowerMockito.when(BeanUtil
                 .getBean(HandOverMetricsRepository.class)).thenReturn(handOverMetricsRepositoryMock);
+        PowerMockito.when(BeanUtil
+                .getBean(Flag.class)).thenReturn(flagMock);
         when(handOverMetricsRepositoryMock.save(new HandOverMetrics())).thenReturn(null);
+        when(flagMock.getHolder()).thenReturn("NONE");
         when(policyDmaapClient.sendNotificationToPolicy(Mockito.anyString())).thenReturn(true);
         assertTrue(pmNotificationHandler.handlePmNotifications(pmNotification, 50));
         assertFalse(pmNotificationHandler.handlePmNotifications(null, 0));

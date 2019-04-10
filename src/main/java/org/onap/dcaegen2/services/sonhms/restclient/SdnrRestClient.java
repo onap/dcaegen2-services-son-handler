@@ -37,8 +37,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.ResponseEntity;
 
-
-
 public class SdnrRestClient {
 
     private static final String DATETIMEFORMAT = "yyyy-MM-dd HH:mm:ss";
@@ -46,20 +44,6 @@ public class SdnrRestClient {
 
     private SdnrRestClient() {
 
-    }
-
-    /**
-     * Method to get cell list from SDNR.
-     *
-     * @throws ConfigDbNotFoundException
-     *             when request to configDB fails
-     */
-    public static String getCellList(String networkId) throws ConfigDbNotFoundException {
-        Configuration configuration = Configuration.getInstance();
-        String ts = new SimpleDateFormat(DATETIMEFORMAT).format(new Time(System.currentTimeMillis()));
-        String requestUrl = configuration.getConfigDbService() + "/SDNCConfigDBAPI/getCellList" + "/" + networkId + "/" 
-                + ts;
-        return sendRequest(requestUrl);
     }
 
     /**
@@ -71,16 +55,19 @@ public class SdnrRestClient {
     public static List<CellPciPair> getNbrList(String cellId) throws ConfigDbNotFoundException {
         Configuration configuration = Configuration.getInstance();
         String ts = new SimpleDateFormat(DATETIMEFORMAT).format(new Time(System.currentTimeMillis()));
-        String requestUrl = configuration.getConfigDbService() + "/SDNCConfigDBAPI/getNbrList" + "/" + cellId + "/"
-                + ts;
+        String requestUrl = configuration.getConfigDbService() + "/api/sdnc-config-db/v3/getNbrList" + "/" + cellId
+                + "/" + ts;
         log.debug("request url: {}", requestUrl);
         String response = sendRequest(requestUrl);
         List<CellPciPair> nbrList = new ArrayList<>();
-        JSONArray nbrListObj = new JSONArray(response);
+        JSONObject responseJson = new JSONObject(response);
+        JSONArray nbrListObj = responseJson.getJSONArray("nbrList");
         for (int i = 0; i < nbrListObj.length(); i++) {
             JSONObject cellObj = nbrListObj.getJSONObject(i);
-            CellPciPair cell = new CellPciPair(cellObj.getString("cellId"), cellObj.getInt("pciValue"));
-            nbrList.add(cell);
+            if (cellObj.getBoolean("ho")) {
+                CellPciPair cell = new CellPciPair(cellObj.getString("targetCellId"), cellObj.getInt("pciValue"));
+                nbrList.add(cell);
+            }
         }
 
         return nbrList;
@@ -95,7 +82,7 @@ public class SdnrRestClient {
     public static int getPci(String cellId) throws ConfigDbNotFoundException {
         Configuration configuration = Configuration.getInstance();
         String ts = new SimpleDateFormat(DATETIMEFORMAT).format(new Time(System.currentTimeMillis()));
-        String requestUrl = configuration.getConfigDbService() + "/SDNCConfigDBAPI/getPCI" + "/" + cellId + "/"
+        String requestUrl = configuration.getConfigDbService() + "/api/sdnc-config-db/v3/getPCI" + "/" + cellId + "/"
                 + ts;
         String response = sendRequest(requestUrl);
         JSONObject respObj = new JSONObject(response);
@@ -111,24 +98,24 @@ public class SdnrRestClient {
     public static String getPnfName(String cellId) throws ConfigDbNotFoundException {
         Configuration configuration = Configuration.getInstance();
         String ts = new SimpleDateFormat(DATETIMEFORMAT).format(new Time(System.currentTimeMillis()));
-        String requestUrl = configuration.getConfigDbService() + "/SDNCConfigDBAPI/getPnfName" + "/" + cellId + "/"
-                + ts; 
+        String requestUrl = configuration.getConfigDbService() + "/api/sdnc-config-db/v3/getPnfId" + "/" + cellId + "/"
+                + ts;
         String response = sendRequest(requestUrl);
         JSONObject responseObject = new JSONObject(response);
         return responseObject.getString("value");
     }
-
 
     /**
      * Method to send request.
      */
     private static String sendRequest(String url) throws ConfigDbNotFoundException {
         ResponseEntity<String> response = SonHandlerRestTemplate.sendGetRequest(url,
-                new ParameterizedTypeReference<String>() {});
+                new ParameterizedTypeReference<String>() {
+                });
         if (response == null) {
             throw new ConfigDbNotFoundException("Cannot reach Config DB");
         }
-        return response.getBody(); 
+        return response.getBody();
     }
 
 }

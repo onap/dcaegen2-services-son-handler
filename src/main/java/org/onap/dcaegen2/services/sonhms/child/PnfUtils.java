@@ -31,14 +31,18 @@ import org.onap.dcaegen2.services.sonhms.dao.CellInfoRepository;
 import org.onap.dcaegen2.services.sonhms.entity.CellInfo;
 import org.onap.dcaegen2.services.sonhms.exceptions.ConfigDbNotFoundException;
 import org.onap.dcaegen2.services.sonhms.model.CellPciPair;
+import org.onap.dcaegen2.services.sonhms.restclient.AnrSolutions;
 import org.onap.dcaegen2.services.sonhms.restclient.PciSolutions;
 import org.onap.dcaegen2.services.sonhms.restclient.SdnrRestClient;
 import org.onap.dcaegen2.services.sonhms.restclient.Solutions;
 import org.onap.dcaegen2.services.sonhms.utils.BeanUtil;
+import org.slf4j.Logger;
 
 
 
 public class PnfUtils {
+
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(ChildThreadUtils.class);
 
     /**
      * get pnfs.
@@ -71,5 +75,33 @@ public class PnfUtils {
 
         }
         return pnfs;
+    }
+    
+    /**
+     * get pnfs for ANR solutions
+     * 
+     */
+    public Map<String, List<Map<String,List<String>>>> getPnfsForAnrSolutions(List<AnrSolutions> anrSolutions) throws ConfigDbNotFoundException {
+        
+        Map<String, List<Map<String,List<String>>>> anrPnfs = new HashMap<>();
+        
+        List<String> removeableNeighbors;
+        for(AnrSolutions anrSolution : anrSolutions) {
+            String cellId = anrSolution.getCellId();
+            String pnfName = SdnrRestClient.getPnfName(cellId);
+            removeableNeighbors = anrSolution.getRemoveableNeighbors();
+            Map<String,List<String>> cellRemNeighborsPair = new HashMap<>();
+            cellRemNeighborsPair.put(cellId, removeableNeighbors);
+            if(anrPnfs.containsKey(pnfName)) {
+                anrPnfs.get(pnfName).add(cellRemNeighborsPair);
+            }else {
+                List<Map<String,List<String>>> anrCells = new ArrayList<>();
+                anrCells.add(cellRemNeighborsPair);
+                anrPnfs.put(pnfName, anrCells);
+            }
+        }
+        log.info("anr Pnfs {}",anrPnfs.toString());
+        return anrPnfs;
+        
     }
 }

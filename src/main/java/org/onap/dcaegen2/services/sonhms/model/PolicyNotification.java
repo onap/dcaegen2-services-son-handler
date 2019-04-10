@@ -62,7 +62,7 @@ public class PolicyNotification {
      * Constructor.
      *
      */
-    public PolicyNotification(String closedLoopControlName, String requestId, Long alarmStartTime, String pnfName) {
+    public PolicyNotification(String closedLoopControlName, String requestId, Long alarmStartTime, String pnfName, String action) {
         this.closedLoopControlName = closedLoopControlName;
         this.requestId = requestId;
         this.closedLoopEventClient = "microservice.PCI";
@@ -70,7 +70,7 @@ public class PolicyNotification {
         this.closedLoopAlarmStart = alarmStartTime;
         this.from = "PCIMS";
         this.version = "1.0.2";
-        this.action = "ModifyConfig";
+        this.action = action;
         this.target = "generic-vnf.vnf-id";
         this.targetType = "VNF";
         this.aai = new HashMap<>();

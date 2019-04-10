@@ -28,24 +28,25 @@ import org.onap.dcaegen2.services.sonhms.model.PMNotification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class PMThread implements Runnable {
+public class PmThread implements Runnable {
 
-    private static Logger log = LoggerFactory.getLogger(PMThread.class);
+    private static Logger log = LoggerFactory.getLogger(PmThread.class);
 
     private NewPmNotification newPmNotification;
+    
 
     private DmaapNotificationsComponent dmaapNotificationsComponent;
 
-    private PMNotificationHandler pmNotificationHandler;
+    private PmNotificationHandler pmNotificationHandler;
 
     /**
      * parameterized constructor.
      */
-    public PMThread(NewPmNotification newPmNotification) {
+    public PmThread(NewPmNotification newPmNotification) {
         super();
         this.newPmNotification = newPmNotification;
         dmaapNotificationsComponent = new DmaapNotificationsComponent();
-        pmNotificationHandler = new PMNotificationHandler(new PolicyDmaapClient());
+        pmNotificationHandler = new PmNotificationHandler(new PolicyDmaapClient());
     }
 
     @Override

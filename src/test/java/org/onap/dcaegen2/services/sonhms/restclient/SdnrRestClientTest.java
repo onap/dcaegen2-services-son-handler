@@ -37,7 +37,6 @@ import org.mockito.MockitoAnnotations;
 import org.onap.dcaegen2.services.sonhms.Configuration;
 import org.onap.dcaegen2.services.sonhms.exceptions.ConfigDbNotFoundException;
 import org.onap.dcaegen2.services.sonhms.model.CellPciPair;
-import org.onap.dcaegen2.services.sonhms.utils.BeanUtil;
 import org.onap.dcaegen2.services.sonhms.utils.SonHandlerRestTemplate;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -64,36 +63,20 @@ public class SdnrRestClientTest {
         MockitoAnnotations.initMocks(this);
     }
     
-    @Test
-	public void getCellListTest() {
-    	
-    	String responseBody="[\n" + 
-    			"  \"string\"\n" + 
-    			"]";
-    	PowerMockito.mockStatic(SonHandlerRestTemplate.class);
-    	PowerMockito.mockStatic(BeanUtil.class);
-		PowerMockito.mockStatic(Configuration.class);
-		PowerMockito.when(Configuration.getInstance()).thenReturn(configuration);
-		PowerMockito.when(SonHandlerRestTemplate.sendGetRequest(Mockito.anyString(),Matchers.<ParameterizedTypeReference<String>>any())) 
-        .thenReturn(ResponseEntity.ok(responseBody));
-		try {
-			String result=SdnrRestClient.getCellList("12345");
-			assertEquals(ResponseEntity.ok(responseBody).getBody(),result);
-		} catch (ConfigDbNotFoundException e) {
-			log.debug("ConfigDbNotFoundException {}",e.toString());;
-		}
-		
-    }
     
     @Test
    	public void getNbrListTest() {
        	
-       	String responseBody="[\n" + 
-       			"  {\n" + 
-       			"    \"cellId\": \"string\",\n" + 
-       			"    \"pciValue\": 0\n" + 
-       			"  }\n" + 
-       			"]";
+       	String responseBody="{\n" + 
+       	        "  \"cellId\": \"string\",\n" + 
+       	        "  \"nbrList\": [\n" + 
+       	        "    {\n" + 
+       	        "      \"ho\": true,\n" + 
+       	        "      \"pciValue\": 0,\n" + 
+       	        "      \"targetCellId\": \"string\"\n" + 
+       	        "    }\n" + 
+       	        "  ]\n" + 
+       	        "}";
        	PowerMockito.mockStatic(SonHandlerRestTemplate.class);
    		PowerMockito.mockStatic(Configuration.class);
    		PowerMockito.when(Configuration.getInstance()).thenReturn(configuration);
@@ -103,11 +86,14 @@ public class SdnrRestClientTest {
    			List<CellPciPair> result=SdnrRestClient.getNbrList("1");
    			List<CellPciPair> nbrList = new ArrayList<>();
    			String response=ResponseEntity.ok(responseBody).getBody();
-   	        JSONArray nbrListObj = new JSONArray(response);
+   			JSONObject responseJson = new JSONObject(response);
+   	        JSONArray nbrListObj = responseJson.getJSONArray("nbrList");
    	        for (int i = 0; i < nbrListObj.length(); i++) {
    	            JSONObject cellObj = nbrListObj.getJSONObject(i);
-   	            CellPciPair cell = new CellPciPair(cellObj.getString("cellId"), cellObj.getInt("pciValue"));
-   	            nbrList.add(cell);
+   	            if (cellObj.getBoolean("ho")) {
+   	                CellPciPair cell = new CellPciPair(cellObj.getString("targetCellId"), cellObj.getInt("pciValue"));
+   	                nbrList.add(cell);
+   	            }
    	        }
    			assertEquals(nbrList,result);
    		} catch (ConfigDbNotFoundException e) {

@@ -18,7 +18,7 @@
  
 pgaas_cluster_name: dcae-pg-primary.onap
 database_name: sonhms
-tag_version: nexus3.onap.org:10001/onap/org.onap.dcaegen2.services.son-handler:latest
+tag_version: nexus3.onap.org:10001/onap/org.onap.dcaegen2.services.son-handler:1.0.0
 replicas: 1
 aaf_username: 
 aaf_password: 
@@ -30,12 +30,13 @@ min_confusion: 5
 max_clusters: 5
 bad_threshold: 50
 poor_threshold: 70
-dmaap: message-router
+namespace: onap
+dmaap: message-router.onap
 buffer_time: 60
 cg: sonhms-cg
 cid: sonhms-cid
-config_db: http://sdnc.onap.svc.cluster.local:8181
-oof: http://oof.onap.svc.cluster.local:8080
+config_db: http://sdnc.onap:8181
+oof: http://oof-osdf.onap:8080
 pci_optimizer: pci
 log_path: /dockerdata-nfs/son-handler
 topic00_location: onap

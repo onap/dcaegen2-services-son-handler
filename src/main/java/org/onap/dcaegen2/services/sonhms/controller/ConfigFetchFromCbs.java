@@ -80,7 +80,7 @@ public class ConfigFetchFromCbs {
         
         log.info("Updating configuration from CBS");
         Configuration configuration = Configuration.getInstance();
-        log.debug("configuration from CBS {}", jsonObject);
+        log.info("configuration from CBS {}", jsonObject);
         
         Type mapType = new TypeToken<Map<String, Object>>() {}.getType();
         
@@ -109,8 +109,8 @@ public class ConfigFetchFromCbs {
         int bufferTime = jsonObject.get("sonhandler.bufferTime").getAsInt();
         String cid = jsonObject.get("sonhandler.cid").getAsString();
         String configDbService = jsonObject.get("sonhandler.configDb.service").getAsString();
-        
-        String callbackUrl = "http://" + System.getenv("HOSTNAME") + ":8080/callbackUrl";
+        String namespace = jsonObject.get("sonhandler.namespace").getAsString();
+        String callbackUrl = "http://" + System.getenv("HOSTNAME") + "." + namespace + ":8080/callbackUrl";
         
         JsonArray optimizersJson = jsonObject.getAsJsonArray("sonhandler.optimizers");
         List<String> optimizers = new Gson().fromJson(optimizersJson, listType);                   
@@ -144,6 +144,8 @@ public class ConfigFetchFromCbs {
         configuration.setPollingTimeout(pollingTimeout);
         configuration.setBadThreshold(badThreshold);
         configuration.setPoorThreshold(poorThreshold);
+        log.info("configuration from CBS {}", configuration.toString());
+
     }
 
 }

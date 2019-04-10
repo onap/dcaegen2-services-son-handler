@@ -29,7 +29,7 @@ inputs:
   tag_version:
     type: string
     description: docker image name and version
-    default: "nexus3.onap.org:10001/onap/org.onap.dcaegen2.services.son-handler:latest"
+    default: "nexus3.onap.org:10001/onap/org.onap.dcaegen2.services.son-handler:1.0.0"
   pgaas_cluster_name:
     type: string
     description: pg cluster
@@ -76,6 +76,10 @@ inputs:
     type: integer
     description: threshold for poor neighbors
     default: 70
+  namespace:
+    type: String
+    description: namespace
+    default: onap
   dmaap:
     type: string
     description: dmaap server
@@ -143,7 +147,7 @@ node_templates:
               - host:
                   path: { get_input: log_path }
                 container:
-                  bind: /var/log/onap
+                  bind: /home/sonhms/logs
                   mode: rw
     properties:
       image:
@@ -209,6 +213,7 @@ node_templates:
         sonhandler.maximumClusters: { get_input: max_clusters }
         sonhandler.badThreshold: { get_input: bad_threshold }
         sonhandler.poorThreshold: { get_input: poor_threshold }
+        sonhandler.namespace: { get_input: namespace }
         sonhandler.sourceId: SONHMS
         sonhandler.dmaap.server: 
           - { get_input: dmaap }

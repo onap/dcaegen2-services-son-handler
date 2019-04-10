@@ -41,6 +41,8 @@ public class MainThreadComponent {
     
     @Autowired
     private NewFmNotification newFmNotification;
+    
+
 
     /**
      * main thread initialization.
@@ -50,7 +52,7 @@ public class MainThreadComponent {
         log.debug("initializing main thread");
         Thread thread = new Thread(new MainThread(newNotification, newFmNotification));
         thread.start();
-        Thread pmThread = new Thread(new PMThread(newPmNotification));
+        Thread pmThread = new Thread(new PmThread(newPmNotification));
         pmThread.start();
     }
 }
