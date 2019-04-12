@@ -187,6 +187,7 @@ public class TestChildThreadUtils {
         pciPairList.add(cell2);
         pciPairList.add(cell3);
         pnfsMap.put("pnf1", pciPairList);
+        when(policyDmaapClient.handlePolicyResponse(Mockito.anyString())).thenReturn(true);
         when(pnfUtils.getPnfs(async.getSolutions())).thenReturn(pnfsMap);
         List<String> remNeighbors = new ArrayList<>();
         remNeighbors.add("EXP006");

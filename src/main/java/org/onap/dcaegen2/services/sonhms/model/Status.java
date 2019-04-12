@@ -19,25 +19,32 @@
  *  
  *******************************************************************************/
 
-package org.onap.dcaegen2.services.sonhms.dao;
+package org.onap.dcaegen2.services.sonhms.model;
 
-import org.onap.dcaegen2.services.sonhms.entity.HandOverMetrics;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-@Repository
-@Transactional
-public interface HandOverMetricsRepository extends CrudRepository<HandOverMetrics, String> {
 
-    @Query(nativeQuery=true, 
-            value="SELECT ho_details FROM handover_metrics WHERE src_cell_id=?1")
-    public String getHandOverMetrics(String srcCellId);
+public class Status {
+    @JsonProperty("Code")
+    private int code;
+    
+    @JsonProperty("Value")
+    private String value;
 
-    @Modifying
-    @Query(nativeQuery=true,
-            value="UPDATE handover_metrics SET ho_details=?1 where src_cell_id=?2")
-    public void updateHoMetrics(String hoDetails, String srcCellId);
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
 }

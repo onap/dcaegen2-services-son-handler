@@ -32,7 +32,7 @@ public class PolicyNotification {
     private long closedLoopAlarmStart;
     private String closedLoopEventClient;
     private String closedLoopEventStatus;
-
+    
     @JsonProperty("target_type")
     private String targetType;
 
@@ -46,6 +46,9 @@ public class PolicyNotification {
 
     private String from;
     private String version;
+    
+    private String policyName;
+    private String policyVersion;
 
     @JsonProperty("Action")
     private String action;
@@ -60,7 +63,6 @@ public class PolicyNotification {
 
     /**
      * Constructor.
-     *
      */
     public PolicyNotification(String closedLoopControlName, String requestId, Long alarmStartTime, String pnfName, String action) {
         this.closedLoopControlName = closedLoopControlName;
@@ -209,6 +211,22 @@ public class PolicyNotification {
             return false;
         }
         return (this.hashCode() == obj.hashCode());
+    }
+
+    public String getPolicyName() {
+        return policyName;
+    }
+
+    public void setPolicyName(String policyName) {
+        this.policyName = policyName;
+    }
+
+    public String getPolicyVersion() {
+        return policyVersion;
+    }
+
+    public void setPolicyVersion(String policyVersion) {
+        this.policyVersion = policyVersion;
     }
     
     

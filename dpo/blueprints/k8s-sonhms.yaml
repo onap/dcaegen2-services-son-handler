@@ -21,6 +21,7 @@ imports:
   - "http://www.getcloudify.org/spec/cloudify/3.4/types.yaml"
   - https://nexus.onap.org/service/local/repositories/raw/content/org.onap.dcaegen2.platform.plugins/R4/k8splugin/1.4.5/k8splugin_types.yaml
   - https://nexus.onap.org/service/local/repositories/raw/content/org.onap.ccsdk.platform.plugins/type_files/pgaas/1.1.0/pgaas_types.yaml
+  - https://nexus.onap.org/service/local/repositories/raw/content/org.onap.dcaegen2.platform.plugins/R4/dcaepolicyplugin/2.3.0/dcaepolicyplugin_types.yaml
 inputs:
   replicas:
     type: integer
@@ -77,7 +78,7 @@ inputs:
     description: threshold for poor neighbors
     default: 70
   namespace:
-    type: String
+    type: string
     description: namespace
     default: onap
   dmaap:
@@ -110,22 +111,30 @@ inputs:
     type: string
     description: log location in host
     default: /dockerdata-nfs/son-handler
+  policy_id:
+    type: string
+    description: policy id for config policy
   topic00_location:
   topic01_location:
   topic02_location:
   topic03_location:
+  topic04_location:
   topic00_client_role:
   topic01_client_role:
   topic02_client_role:
   topic03_client_role:
+  topic04_client_role:
   topic00_client_id:
   topic01_client_id:
   topic02_client_id:
   topic03_client_id:
+  topic04_client_id:
   topic00_url:
   topic01_url:
   topic02_url:
   topic03_url:
+  topic04_url:
+
   
 node_templates:
   pgaasvm:
@@ -191,6 +200,15 @@ node_templates:
               client_id: { get_input: topic02_client_id }
               topic_url: { get_input: topic02_url }
             type: message-router
+          dcae_cl_response_topic:
+            aaf_username: { get_input: aaf_username }
+            aaf_password: { get_input: aaf_password }
+            dmaap_info:
+              location: { get_input: topic04_location }
+              client_role: { get_input: topic04_client_role }
+              client_id: { get_input: topic04_client_id }
+              topic_url: { get_input: topic04_url }
+            type: message-router
         streams_publishes:
           CL_topic:
             aaf_username: { get_input: aaf_username }
@@ -234,7 +252,15 @@ node_templates:
     relationships:
       - type: cloudify.relationships.depends_on
         target: pgaasvm
-        
+      - type: cloudify.relationships.depends_on
+        target: son_policy
+
+  son_policy:
+    type: dcae.nodes.policy
+    properties:
+      policy_id:
+           get_input: policy_id
+       
       
       
         

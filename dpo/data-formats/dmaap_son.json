@@ -42,5 +42,16 @@
 			"location": "onap",
 			"topic_url": "https://HOSTNAME:3905/events/DCAE_CL_OUTPUT"
 		}
-	}
+	},
+        "CL_RSP_topic": {
+                "type": "message_router",
+                "aaf_username": "",
+                "aaf_password": "",
+                "dmaap_info": {
+                        "client_role": "son-subscriber",
+                        "client_id": "policy-son-1",
+                        "location": "onap",
+                        "topic_url": "https://HOSTNAME:3905/events/DCAE_CL_RSP"
+                }
+        }
 }

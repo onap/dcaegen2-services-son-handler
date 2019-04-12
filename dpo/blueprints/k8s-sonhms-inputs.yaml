@@ -36,9 +36,10 @@ buffer_time: 60
 cg: sonhms-cg
 cid: sonhms-cid
 config_db: http://sdnc.onap:8181
-oof: http://oof-osdf.onap:8080
+oof: http://oof-osdf.onap:8699
 pci_optimizer: pci
 log_path: /dockerdata-nfs/son-handler
+policy_id: com.Config_PCIMS_CONFIG_POLICY.1.xml
 topic00_location: onap
 topic00_client_role: son-subscriber
 topic00_client_id: sdnr-son-1
@@ -55,3 +56,7 @@ topic03_location: onap
 topic03_client_role: son-subscriber
 topic03_client_id: sdnr-son-1
 topic03_url: https://message-router.onap.svc.cluster.local:3905/events/DCAE_CL_OUTPUT
+topic04_location: onap
+topic04_client_role: son-subscriber
+topic04_client_id: sdnr-son-1
+topic04_url: https://message-router.onap.svc.cluster.local:3905/events/DCAE_CL_RSP

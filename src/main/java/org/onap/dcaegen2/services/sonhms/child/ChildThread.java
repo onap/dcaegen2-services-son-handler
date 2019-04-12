@@ -167,9 +167,9 @@ public class ChildThread implements Runnable {
 
                 Boolean trigger = childUtils.triggerOrWait(collisionConfusionResult);
                 ConfigPolicy configPolicy = ConfigPolicy.getInstance();
-                int timer = 60;
+                double timer = 60;
                 try {
-                    timer = (int) configPolicy.getConfig().get("PCI_NEIGHBOR_CHANGE_CLUSTER_TIMEOUT_IN_SECS");
+                    timer = (double) configPolicy.getConfig().get("PCI_NEIGHBOR_CHANGE_CLUSTER_TIMEOUT_IN_SECS");
                 } catch (NullPointerException e) {
                     log.info("Policy config not available. Using default timeout - 60 seconds");
                 }

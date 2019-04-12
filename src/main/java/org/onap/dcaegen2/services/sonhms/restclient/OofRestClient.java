@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.onap.dcaegen2.services.sonhms.ConfigPolicy;
 import org.onap.dcaegen2.services.sonhms.Configuration;
 import org.onap.dcaegen2.services.sonhms.exceptions.OofNotFoundException;
 import org.onap.dcaegen2.services.sonhms.model.AnrInput;
@@ -73,13 +72,7 @@ public class OofRestClient {
         Map<String, String> callbackHeader = new HashMap<>();
         callbackHeader.put("Content-Type", "application/json");
         requestInfo.setCallbackHeader(callbackHeader);
-        ConfigPolicy config = ConfigPolicy.getInstance();
         int timeout = 60;
-        try {
-            timeout = (int) config.getConfig().get("PCI_NEIGHBOR_CHANGE_CLUSTER_TIMEOUT_IN_SECS");
-        } catch (NullPointerException e) {
-            log.debug("No config policy available. Using default timeout 60 sec");
-        }
         requestInfo.setTimeout(timeout);
 
         CellInfo cellInfo = new CellInfo();
