@@ -23,7 +23,7 @@ package org.onap.dcaegen2.services.sonhms;
 
 public class FaultFields {
 
-	@Override
+    @Override
     public String toString() {
         return "FaultFields [faultFieldsVersion=" + faultFieldsVersion + ", alarmCondition=" + alarmCondition
                 + ", eventSourceType=" + eventSourceType + ", specificProblem=" + specificProblem + ", eventSeverity="
@@ -32,13 +32,12 @@ public class FaultFields {
     }
 
     private double faultFieldsVersion;
-	private String alarmCondition;
-	private String eventSourceType;
-	private String specificProblem;
-	private String eventSeverity;
-	private String vfStatus;
-	private AlarmAdditionalInformation alarmAdditionalInformation;
-	
+    private String alarmCondition;
+    private String eventSourceType;
+    private String specificProblem;
+    private String eventSeverity;
+    private String vfStatus;
+    private AlarmAdditionalInformation alarmAdditionalInformation;
 
     public AlarmAdditionalInformation getAlarmAdditionalInformation() {
         return alarmAdditionalInformation;
@@ -49,51 +48,51 @@ public class FaultFields {
     }
 
     public double getFaultFieldsVersion() {
-		return faultFieldsVersion;
-	}
+        return faultFieldsVersion;
+    }
 
-	public void setFaultFieldsVersion(double faultFieldsVersion) {
-		this.faultFieldsVersion = faultFieldsVersion;
-	}
+    public void setFaultFieldsVersion(double faultFieldsVersion) {
+        this.faultFieldsVersion = faultFieldsVersion;
+    }
 
-	public String getAlarmCondition() {
-		return alarmCondition;
-	}
+    public String getAlarmCondition() {
+        return alarmCondition;
+    }
 
-	public void setAlarmCondition(String alarmCondition) {
-		this.alarmCondition = alarmCondition;
-	}
+    public void setAlarmCondition(String alarmCondition) {
+        this.alarmCondition = alarmCondition;
+    }
 
-	public String getEventSourceType() {
-		return eventSourceType;
-	}
+    public String getEventSourceType() {
+        return eventSourceType;
+    }
 
-	public void setEventSourceType(String eventSourceType) {
-		this.eventSourceType = eventSourceType;
-	}
+    public void setEventSourceType(String eventSourceType) {
+        this.eventSourceType = eventSourceType;
+    }
 
-	public String getSpecificProblem() {
-		return specificProblem;
-	}
+    public String getSpecificProblem() {
+        return specificProblem;
+    }
 
-	public void setSpecificProblem(String specificProblem) {
-		this.specificProblem = specificProblem;
-	}
+    public void setSpecificProblem(String specificProblem) {
+        this.specificProblem = specificProblem;
+    }
 
-	public String getEventSeverity() {
-		return eventSeverity;
-	}
+    public String getEventSeverity() {
+        return eventSeverity;
+    }
 
-	public void setEventSeverity(String eventSeverity) {
-		this.eventSeverity = eventSeverity;
-	}
+    public void setEventSeverity(String eventSeverity) {
+        this.eventSeverity = eventSeverity;
+    }
 
-	public String getVfStatus() {
-		return vfStatus;
-	}
+    public String getVfStatus() {
+        return vfStatus;
+    }
 
-	public void setVfStatus(String vfStatus) {
-		this.vfStatus = vfStatus;
-	}
+    public void setVfStatus(String vfStatus) {
+        this.vfStatus = vfStatus;
+    }
 
 }

@@ -40,7 +40,7 @@ import org.onap.dcaegen2.services.sonhms.dao.HandOverMetricsRepository;
 import org.onap.dcaegen2.services.sonhms.dmaap.PolicyDmaapClient;
 import org.onap.dcaegen2.services.sonhms.entity.HandOverMetrics;
 import org.onap.dcaegen2.services.sonhms.model.Flag;
-import org.onap.dcaegen2.services.sonhms.model.PMNotification;
+import org.onap.dcaegen2.services.sonhms.model.PmNotification;
 import org.onap.dcaegen2.services.sonhms.utils.BeanUtil;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -69,20 +69,20 @@ public class PMNotificationHandlerTest {
     
     private static String pmNotificationsString ;
     private static String pmNotificationsString1 ;
-    private static PMNotification pmNotification;
-    private static PMNotification pmNotification1;
+    private static PmNotification pmNotification;
+    private static PmNotification pmNotification1;
 
     @BeforeClass
     public static void setup() {
         pmNotificationsString=readFromFile("/pmNotification.json");
         pmNotificationsString1=readFromFile("/pmNotification1.json");
         ObjectMapper mapper = new ObjectMapper();        
-        pmNotification = new PMNotification();
-        pmNotification1 = new PMNotification();
+        pmNotification = new PmNotification();
+        pmNotification1 = new PmNotification();
         
         try {
-            pmNotification = mapper.readValue(pmNotificationsString, PMNotification.class);
-            pmNotification1 = mapper.readValue(pmNotificationsString1, PMNotification.class);
+            pmNotification = mapper.readValue(pmNotificationsString, PmNotification.class);
+            pmNotification1 = mapper.readValue(pmNotificationsString1, PmNotification.class);
         } catch(Exception e) {
             e.printStackTrace();      
             }
@@ -98,6 +98,7 @@ public class PMNotificationHandlerTest {
         when(handOverMetricsRepositoryMock.save(new HandOverMetrics())).thenReturn(null);
         when(flagMock.getHolder()).thenReturn("NONE");
         when(policyDmaapClient.sendNotificationToPolicy(Mockito.anyString())).thenReturn(true);
+        when(policyDmaapClient.handlePolicyResponse(Mockito.anyString())).thenReturn(true);
         assertTrue(pmNotificationHandler.handlePmNotifications(pmNotification, 50));
         assertFalse(pmNotificationHandler.handlePmNotifications(null, 0));
         assertTrue(pmNotificationHandler.handlePmNotifications(pmNotification1, 50));

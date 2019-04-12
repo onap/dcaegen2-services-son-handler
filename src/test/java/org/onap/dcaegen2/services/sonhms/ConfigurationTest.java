@@ -28,7 +28,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hibernate.sql.ConditionFragment;
 import org.junit.Test;
 
 

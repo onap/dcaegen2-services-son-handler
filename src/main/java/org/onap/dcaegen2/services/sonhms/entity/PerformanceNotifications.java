@@ -33,8 +33,8 @@ import org.hibernate.annotations.CreationTimestamp;
 @Entity
 @Table(name = "PERFORMANCE_NOTIFICATIONS")
 public class PerformanceNotifications {
-	
-	@Id
+
+    @Id
     @Column(name = "notification", columnDefinition = "text")
     private String notification;
 
@@ -66,6 +66,5 @@ public class PerformanceNotifications {
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
-
 
 }

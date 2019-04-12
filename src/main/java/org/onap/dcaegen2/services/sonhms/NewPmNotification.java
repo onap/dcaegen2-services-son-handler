@@ -27,29 +27,29 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class NewPmNotification {
-	
+
     private Boolean newNotif;
-	 
+
     @PostConstruct
     public void init() {
-        newNotif=false;
+        newNotif = false;
     }
 
     public Boolean getNewNotif() {
-	     return newNotif;
-	 }
-
-    public void setNewNotif(Boolean newNotif) {
-	     this.newNotif = newNotif;
+        return newNotif;
     }
 
-	public NewPmNotification(Boolean newNotif) {
+    public void setNewNotif(Boolean newNotif) {
+        this.newNotif = newNotif;
+    }
+
+    public NewPmNotification(Boolean newNotif) {
         super();
         this.newNotif = newNotif;
     }
-	    
+
     public NewPmNotification() {
-	    	
+
     }
 
 }

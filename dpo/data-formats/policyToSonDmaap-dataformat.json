@@ -1,0 +1,58 @@
+{
+    "dataformatversion": "1.0.0", 
+    "jsonschema": {
+        "$schema": "http://json-schema.org/draft-04/schema#", 
+        "additionalproperties": true, 
+        "description": "", 
+        "properties": {
+            "closedLoopControlName": {
+                "description": "", 
+                "type": "string"
+            }, 
+            "from": {
+                "description": "", 
+                "type": "string"
+            }, 
+            "payload": {
+                "description": "", 
+                "type": "string"
+            }, 
+            "policyName": {
+                "description": "", 
+                "type": "string"
+            }, 
+            "policyVersion": {
+                "description": "", 
+                "type": "string"
+            }, 
+            "requestID": {
+                "description": "", 
+                "type": "string"
+            }, 
+            "target": {
+                "description": "", 
+                "type": "string"
+            }, 
+            "version": {
+                "description": "", 
+                "type": "string"
+            }
+        }, 
+        "required": [
+            "closedLoopControlName", 
+            "from", 
+            "payload", 
+            "policyName", 
+            "policyVersion", 
+            "requestID", 
+            "target", 
+            "version"
+        ], 
+        "type": "object"
+    }, 
+    "self": {
+        "description": "", 
+        "name": "POLICY_TO_SON_DMAAP", 
+        "version": "1.0.0"
+    }
+}

@@ -40,7 +40,7 @@ import org.mockito.Mock;
 import org.onap.dcaegen2.services.sonhms.dao.DmaapNotificationsRepository;
 import org.onap.dcaegen2.services.sonhms.dao.PerformanceNotificationsRepository;
 import org.onap.dcaegen2.services.sonhms.model.Notification;
-import org.onap.dcaegen2.services.sonhms.model.PMNotification;
+import org.onap.dcaegen2.services.sonhms.model.PmNotification;
 import org.onap.dcaegen2.services.sonhms.utils.BeanUtil;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -104,7 +104,7 @@ public class DmaapNotificationsComponentTest {
                 .thenReturn(performanceNotificationsRepositoryMock);
         when(performanceNotificationsRepositoryMock.getPerformanceNotificationFromQueue()).thenReturn(pmNotificationString);
         
-        Either<PMNotification,Integer> result = component.getPmNotifications();
+        Either<PmNotification,Integer> result = component.getPmNotifications();
         assertTrue(result.isLeft());
         assertNotNull(result.left().value());
         

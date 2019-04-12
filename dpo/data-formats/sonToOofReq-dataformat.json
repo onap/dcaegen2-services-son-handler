@@ -1,97 +1,144 @@
 {
-	"dataformatversion": "1.0.0",
-	"jsonschema": {
-		"$schema": "http://json-schema.org/draft-04/schema#",
-		"additionalproperties": true,
-		"description": "",
-		"properties": {
-			"cellInfo": {
-				"additionalproperties": true,
-				"description": "",
-				"properties": {
-					"cellIdList": {
-						"description": "",
-						"items": {
-							"description": "",
-							"type": "string"
-						},
-						"type": "array"
-					},
-					"networkId": {
-						"description": "",
-						"type": "string"
-					}
-				},
-				"required": [
-					"cellIdList",
-					"networkId"
-				],
-				"type": "object"
-			},
-			"requestInfo": {
-				"additionalproperties": true,
-				"description": "",
-				"properties": {
-					"callbackUrl": {
-						"description": "",
-						"type": "string"
-					},
-					"numSolutions": {
-						"description": "",
-						"type": "integer"
-					},
-					"optimizers": {
-						"description": "",
-						"items": {
-							"description": "",
-							"type": "string"
-						},
-						"type": "array"
-					},
-					"requestId": {
-						"description": "",
-						"type": "string"
-					},
-					"requestType": {
-						"description": "",
-						"type": "string"
-					},
-					"sourceId": {
-						"description": "",
-						"type": "string"
-					},
-					"timeout": {
-						"description": "",
-						"type": "integer"
-					},
-					"transactionId": {
-						"description": "",
-						"type": "string"
-					}
-				},
-				"required": [
-					"callbackUrl",
-					"numSolutions",
-					"optimizers",
-					"requestId",
-					"requestType",
-					"sourceId",
-					"timeout",
-					"transactionId"
-				],
-				"type": "object"
-			}
-		},
-		"required": [
-			"cellInfo",
-			"requestInfo"
-		],
-		"type": "object"
-	},
-	"self": {
-		"description": "",
-		"name": "SON_TO_OOF_REST_REQ",
-		"version": "1.0.0"
-	}
+    "dataformatversion": "1.0.0", 
+    "jsonschema": {
+        "$schema": "http://json-schema.org/draft-04/schema#", 
+        "additionalproperties": true, 
+        "description": "", 
+        "properties": {
+            "cellInfo": {
+                "additionalproperties": true, 
+                "description": "", 
+                "properties": {
+                    "anrInputList": {
+                        "description": "", 
+                        "items": {
+                            "additionalproperties": true, 
+                            "description": "", 
+                            "properties": {
+                                "cellId": {
+                                    "description": "", 
+                                    "type": "string"
+                                }, 
+                                "removeableNeighbors": {
+                                    "description": "", 
+                                    "items": {
+                                        "description": "", 
+                                        "type": "string"
+                                    }, 
+                                    "type": "array"
+                                }
+                            }, 
+                            "required": [
+                                "cellId", 
+                                "removeableNeighbors"
+                            ], 
+                            "type": "object"
+                        }, 
+                        "type": "array"
+                    }, 
+                    "cellIdList": {
+                        "description": "", 
+                        "items": {
+                            "description": "", 
+                            "type": "string"
+                        }, 
+                        "type": "array"
+                    }, 
+                    "networkId": {
+                        "description": "", 
+                        "type": "integer"
+                    }, 
+                    "trigger": {
+                        "description": "", 
+                        "type": "string"
+                    }
+                }, 
+                "required": [
+                    "anrInputList", 
+                    "cellIdList", 
+                    "networkId", 
+                    "trigger"
+                ], 
+                "type": "object"
+            }, 
+            "requestInfo": {
+                "additionalproperties": true, 
+                "description": "", 
+                "properties": {
+                    "callbackHeader": {
+                        "additionalproperties": true, 
+                        "description": "", 
+                        "properties": {
+                            "blob": {
+                                "description": "", 
+                                "type": "string"
+                            }
+                        }, 
+                        "required": [
+                            "blob"
+                        ], 
+                        "type": "object"
+                    }, 
+                    "callbackUrl": {
+                        "description": "", 
+                        "type": "string"
+                    }, 
+                    "numSolutions": {
+                        "description": "", 
+                        "type": "integer"
+                    }, 
+                    "optimizers": {
+                        "description": "", 
+                        "items": {
+                            "description": "", 
+                            "type": "string"
+                        }, 
+                        "type": "array"
+                    }, 
+                    "requestId": {
+                        "description": "", 
+                        "type": "string"
+                    }, 
+                    "requestType": {
+                        "description": "", 
+                        "type": "string"
+                    }, 
+                    "sourceId": {
+                        "description": "", 
+                        "type": "string"
+                    }, 
+                    "timeout": {
+                        "description": "", 
+                        "type": "integer"
+                    }, 
+                    "transactionId": {
+                        "description": "", 
+                        "type": "string"
+                    }
+                }, 
+                "required": [
+                    "callbackHeader", 
+                    "callbackUrl", 
+                    "numSolutions", 
+                    "optimizers", 
+                    "requestId", 
+                    "requestType", 
+                    "sourceId", 
+                    "timeout", 
+                    "transactionId"
+                ], 
+                "type": "object"
+            }
+        }, 
+        "required": [
+            "cellInfo", 
+            "requestInfo"
+        ], 
+        "type": "object"
+    }, 
+    "self": {
+        "description": "", 
+        "name": "SON_TO_OOF_REST_REQ", 
+        "version": "1.0.0"
+    }
 }
-

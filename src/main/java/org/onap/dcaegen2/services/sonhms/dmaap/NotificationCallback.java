@@ -23,6 +23,6 @@ package org.onap.dcaegen2.services.sonhms.dmaap;
 
 public abstract class NotificationCallback {
 
-	public abstract void activateCallBack(String msg);
-	
+    public abstract void activateCallBack(String msg);
+
 }

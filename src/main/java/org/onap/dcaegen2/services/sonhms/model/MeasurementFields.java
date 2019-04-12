@@ -27,15 +27,16 @@ public class MeasurementFields {
 
     String measurementInterval;
     String measurementFieldsVersion;
-   
+
     List<AdditionalMeasurements> additionalMeasurements;
-    
+
     /**
-     * default constructor
+     * default constructor.
      */
     public MeasurementFields() {
-        
+
     }
+
     public String getMeasurementInterval() {
         return measurementInterval;
     }
@@ -51,13 +52,13 @@ public class MeasurementFields {
     public void setAdditionalMeasurements(List<AdditionalMeasurements> additionalMeasurements) {
         this.additionalMeasurements = additionalMeasurements;
     }
-    
+
     public String getMeasurementFieldsVersion() {
         return measurementFieldsVersion;
     }
+
     public void setMeasurementFieldsVersion(String measurementFieldsVersion) {
         this.measurementFieldsVersion = measurementFieldsVersion;
     }
 
-    
 }

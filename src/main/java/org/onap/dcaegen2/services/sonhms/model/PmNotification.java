@@ -21,24 +21,23 @@
 
 package org.onap.dcaegen2.services.sonhms.model;
 
-public class PMNotification {
+public class PmNotification {
 
     Event event;
-    
+
     /**
-     * default constructor
+     * default constructor.
      */
-    public PMNotification() {
-        
+    public PmNotification() {
+
     }
-    
+
     public Event getEvent() {
         return event;
     }
+
     public void setEvent(Event event) {
         this.event = event;
     }
-    
-   
-    
+
 }

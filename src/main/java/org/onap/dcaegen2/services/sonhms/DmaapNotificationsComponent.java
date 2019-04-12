@@ -29,7 +29,7 @@ import java.io.IOException;
 import org.onap.dcaegen2.services.sonhms.dao.DmaapNotificationsRepository;
 import org.onap.dcaegen2.services.sonhms.dao.PerformanceNotificationsRepository;
 import org.onap.dcaegen2.services.sonhms.model.Notification;
-import org.onap.dcaegen2.services.sonhms.model.PMNotification;
+import org.onap.dcaegen2.services.sonhms.model.PmNotification;
 import org.onap.dcaegen2.services.sonhms.utils.BeanUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +39,7 @@ public class DmaapNotificationsComponent {
     private static Logger log = LoggerFactory.getLogger(DmaapNotificationsComponent.class);
     
     /**
-     * Get sdnr notifications
+     * Get sdnr notifications.
      */
     public Either<Notification, Integer> getSdnrNotifications() {
         DmaapNotificationsRepository dmaapNotificationsRepository = BeanUtil
@@ -61,21 +61,22 @@ public class DmaapNotificationsComponent {
     }
     
     /**
-     * Get pm notifications
+     * Get pm notifications.
      */
-    public Either<PMNotification,Integer> getPmNotifications(){
-        PerformanceNotificationsRepository pmNotificationRepository = BeanUtil.getBean(PerformanceNotificationsRepository.class);
+    public Either<PmNotification,Integer> getPmNotifications() {
+        PerformanceNotificationsRepository pmNotificationRepository =
+                BeanUtil.getBean(PerformanceNotificationsRepository.class);
         String pmNotificationString = pmNotificationRepository.getPerformanceNotificationFromQueue();
         if (pmNotificationString == null) {
             return Either.right(404);
         }
         ObjectMapper mapper = new ObjectMapper();        
-        PMNotification pmNotification = new PMNotification();
+        PmNotification pmNotification = new PmNotification();
         
         try {
-            pmNotification = mapper.readValue(pmNotificationString, PMNotification.class);
+            pmNotification = mapper.readValue(pmNotificationString, PmNotification.class);
             return Either.left(pmNotification);
-        } catch(IOException e) {
+        } catch (IOException e)  {
             log.error("Exception in parsing pm notification ",pmNotificationString,e);
             return Either.right(400);
         }

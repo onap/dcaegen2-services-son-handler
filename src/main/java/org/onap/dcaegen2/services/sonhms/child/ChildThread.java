@@ -55,6 +55,7 @@ import org.onap.dcaegen2.services.sonhms.model.ThreadId;
 import org.onap.dcaegen2.services.sonhms.restclient.AsyncResponseBody;
 import org.onap.dcaegen2.services.sonhms.utils.BeanUtil;
 import org.onap.dcaegen2.services.sonhms.utils.ClusterUtils;
+import org.onap.dcaegen2.services.sonhms.utils.DmaapUtils;
 import org.slf4j.Logger;
 import org.slf4j.MDC;
 
@@ -149,7 +150,7 @@ public class ChildThread implements Runnable {
         ClusterUtils clusterUtils = new ClusterUtils();
         Detection detect = new Detection();
         ChildThreadUtils childUtils = new ChildThreadUtils(ConfigPolicy.getInstance(), new PnfUtils(),
-                new PolicyDmaapClient());
+                new PolicyDmaapClient(new DmaapUtils(), Configuration.getInstance()));
 
         try {
             String networkId = cluster.getNetworkId();
@@ -167,9 +168,9 @@ public class ChildThread implements Runnable {
 
                 Boolean trigger = childUtils.triggerOrWait(collisionConfusionResult);
                 ConfigPolicy configPolicy = ConfigPolicy.getInstance();
-                int timer = 60;
+                double timer = 60;
                 try {
-                    timer = (int) configPolicy.getConfig().get("PCI_NEIGHBOR_CHANGE_CLUSTER_TIMEOUT_IN_SECS");
+                    timer = (double) configPolicy.getConfig().get("PCI_NEIGHBOR_CHANGE_CLUSTER_TIMEOUT_IN_SECS");
                 } catch (NullPointerException e) {
                     log.info("Policy config not available. Using default timeout - 60 seconds");
                 }

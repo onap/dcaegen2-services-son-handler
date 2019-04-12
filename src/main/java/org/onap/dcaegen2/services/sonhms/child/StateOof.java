@@ -35,6 +35,7 @@ import org.slf4j.Logger;
 public class StateOof {
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(StateOof.class);
     private BlockingQueue<List<String>> childStatusUpdate;
+
     public StateOof() {
 
     }
@@ -50,13 +51,15 @@ public class StateOof {
 
     /**
      * Triggers OOF for pci.
-     * @throws OofNotFoundException  when trigger oof fails
+     * 
+     * @throws OofNotFoundException
+     *             when trigger oof fails
      */
-    public UUID triggerOof(List<String> cellidList, 
-            String networkId, List<AnrInput> anrInputList) throws OofNotFoundException, InterruptedException {
-        
+    public UUID triggerOof(List<String> cellidList, String networkId, List<AnrInput> anrInputList)
+            throws OofNotFoundException, InterruptedException {
+
         log.info("Triggering oof");
-        
+
         log.debug("the cells triggering the oof are {}", cellidList);
 
         UUID transactionId = UUID.randomUUID();
@@ -79,9 +82,8 @@ public class StateOof {
             Thread.currentThread().interrupt();
 
         }
-        
+
         return transactionId;
     }
-    
 
 }

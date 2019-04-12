@@ -27,8 +27,9 @@ public class PciSolutions {
     int pci;
 
     public PciSolutions() {
-        
+
     }
+
     public String getCellId() {
         return cellId;
     }

@@ -100,7 +100,7 @@ public class DmaapClient {
 
         // create notification consumers for FM
         NotificationConsumer fmNotificationConsumer = new NotificationConsumer(fmNotifCambriaConsumer,
-                new FMNotificationCallback());
+                new FmNotificationCallback());
         // start fm notification consumer threads
         executorPool = Executors.newScheduledThreadPool(10);
         executorPool.scheduleAtFixedRate(fmNotificationConsumer, 0, configuration.getPollingInterval(),
@@ -108,7 +108,7 @@ public class DmaapClient {
 
         // create notification consumers for PM
         NotificationConsumer pmNotificationConsumer = new NotificationConsumer(pmNotifCambriaConsumer,
-                new PMNotificationCallback());
+                new PmNotificationCallback());
         // start pm notification consumer threads
         executorPool = Executors.newScheduledThreadPool(10);
         executorPool.scheduleAtFixedRate(pmNotificationConsumer, 0, configuration.getPollingInterval(),

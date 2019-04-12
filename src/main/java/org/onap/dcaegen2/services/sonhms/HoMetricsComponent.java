@@ -57,7 +57,8 @@ public class HoMetricsComponent {
                 log.error("Exception in parsing HO metrics", hoDetailsString, e);
                 return Either.right(400);
             }
-        } else
+        } else {
             return Either.right(404);
+        }
     }
 }

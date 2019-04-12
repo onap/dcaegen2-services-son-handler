@@ -106,7 +106,8 @@ public class EventHandler {
 
         faultNotificationtoClusterMapping.setCollisionConfusionMap(collisionConfusionMap);
         // matching cells
-        if (faultNotificationtoClusterMapping.getCellsinCluster() != null && !faultNotificationtoClusterMapping.getCellsinCluster().isEmpty()) {
+        if (faultNotificationtoClusterMapping.getCellsinCluster() != null 
+                && !faultNotificationtoClusterMapping.getCellsinCluster().isEmpty()) {
             try {
                 handleMatchedFmCells(faultNotificationtoClusterMapping, clusterDetails);
             } catch (ConfigDbNotFoundException e) {
@@ -115,7 +116,8 @@ public class EventHandler {
 
         }
         // unmatched new cells
-        if (faultNotificationtoClusterMapping.getNewCells() != null && !faultNotificationtoClusterMapping.getNewCells().isEmpty()) {
+        if (faultNotificationtoClusterMapping.getNewCells() != null 
+                && !faultNotificationtoClusterMapping.getNewCells().isEmpty()) {
             handleUnmatchedFmCells(faultNotificationtoClusterMapping, networkId);
 
         }
@@ -161,8 +163,6 @@ public class EventHandler {
     /**
      * handle unmatched fm cells.
      * 
-     * @param networkId2
-     * @param faultNotificationtoClusterMapping
      */
     private void handleUnmatchedFmCells(FaultNotificationtoClusterMapping faultNotificationtoClusterMapping,
             String networkId) {
@@ -175,7 +175,7 @@ public class EventHandler {
                     .get(cellId);
             log.info("Handle Unmatching cells for FM notificatins,collisionConfusionCount{}", collisionConfusionCount);
 
-            Either<Graph, Integer> existingCluster = clusterUtils.getClusterForFMCell(cellId, newClusters);
+            Either<Graph, Integer> existingCluster = clusterUtils.getClusterForFmCell(cellId, newClusters);
             if (existingCluster.isRight()) {
                 try {
                     Map<CellPciPair, ArrayList<CellPciPair>> clusterMap = clusterUtils.findClusterMap(cellId);

@@ -24,7 +24,8 @@ package org.onap.dcaegen2.services.sonhms;
 import fj.data.Either;
 
 import org.onap.dcaegen2.services.sonhms.dmaap.PolicyDmaapClient;
-import org.onap.dcaegen2.services.sonhms.model.PMNotification;
+import org.onap.dcaegen2.services.sonhms.model.PmNotification;
+import org.onap.dcaegen2.services.sonhms.utils.DmaapUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,7 +47,8 @@ public class PmThread implements Runnable {
         super();
         this.newPmNotification = newPmNotification;
         dmaapNotificationsComponent = new DmaapNotificationsComponent();
-        pmNotificationHandler = new PmNotificationHandler(new PolicyDmaapClient());
+        pmNotificationHandler = new PmNotificationHandler(new PolicyDmaapClient(new DmaapUtils(), 
+                Configuration.getInstance()));
     }
 
     @Override
@@ -59,7 +61,7 @@ public class PmThread implements Runnable {
                 Thread.sleep(1000);
                 if (newPmNotification.getNewNotif()) {
                     log.info("New PM notification from Dmaap");
-                    Either<PMNotification, Integer> pmNotification = dmaapNotificationsComponent.getPmNotifications();
+                    Either<PmNotification, Integer> pmNotification = dmaapNotificationsComponent.getPmNotifications();
                     if (pmNotification.isRight()) {
                         if (pmNotification.right().value() == 400) {
                             log.error("error parsing pm notifications");

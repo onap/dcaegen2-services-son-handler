@@ -18,27 +18,32 @@
  *     ============LICENSE_END=========================================================
  *  
  *******************************************************************************/
+
 package org.onap.dcaegen2.services.sonhms;
 
 public class Event {
-	private CommonEventHeader commonEventHeader;
-	private FaultFields faultFields;
-	public CommonEventHeader getCommonEventHeader() {
-		return commonEventHeader;
-	}
-	public void setCommonEventHeader(CommonEventHeader commonEventHeader) {
-		this.commonEventHeader = commonEventHeader;
-	}
-	public FaultFields getFaultFields() {
-		return faultFields;
-	}
-	public void setFaultFields(FaultFields faultFields) {
-		this.faultFields = faultFields;
-	}
+    private CommonEventHeader commonEventHeader;
+    private FaultFields faultFields;
+
+    public CommonEventHeader getCommonEventHeader() {
+        return commonEventHeader;
+    }
+
+    public void setCommonEventHeader(CommonEventHeader commonEventHeader) {
+        this.commonEventHeader = commonEventHeader;
+    }
+
+    public FaultFields getFaultFields() {
+        return faultFields;
+    }
+
+    public void setFaultFields(FaultFields faultFields) {
+        this.faultFields = faultFields;
+    }
+
     @Override
     public String toString() {
         return "Event [commonEventHeader=" + commonEventHeader + ", faultFields=" + faultFields + "]";
     }
-	
-	
+
 }

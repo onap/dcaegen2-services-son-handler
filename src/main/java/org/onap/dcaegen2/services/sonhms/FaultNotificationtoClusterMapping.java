@@ -27,26 +27,26 @@ import java.util.Map;
 
 public class FaultNotificationtoClusterMapping {
     public Map<String, String> getCellsinCluster() {
-		return cellsinCluster;
-	}
+        return cellsinCluster;
+    }
 
-	public void setCellsinCluster(Map<String, String> cellsinCluster) {
-		this.cellsinCluster = cellsinCluster;
-	}
+    public void setCellsinCluster(Map<String, String> cellsinCluster) {
+        this.cellsinCluster = cellsinCluster;
+    }
 
-	public List<String> getNewCells() {
-		return newCells;
-	}
+    public List<String> getNewCells() {
+        return newCells;
+    }
 
-	public void setNewCells(List<String> newCells) {
-		this.newCells = newCells;
-	}
-	
-	private Map<String, ArrayList<Integer>> collisionConfusionMap;
+    public void setNewCells(List<String> newCells) {
+        this.newCells = newCells;
+    }
 
-	//map that returns cellid and its matching cluster id
+    private Map<String, ArrayList<Integer>> collisionConfusionMap;
 
-	public Map<String, ArrayList<Integer>> getCollisionConfusionMap() {
+    // map that returns cellid and its matching cluster id
+
+    public Map<String, ArrayList<Integer>> getCollisionConfusionMap() {
         return collisionConfusionMap;
     }
 
@@ -55,7 +55,7 @@ public class FaultNotificationtoClusterMapping {
     }
 
     private Map<String, String> cellsinCluster;
-    
-	//cells that dont match
+
+    // cells that dont match
     private List<String> newCells;
 }

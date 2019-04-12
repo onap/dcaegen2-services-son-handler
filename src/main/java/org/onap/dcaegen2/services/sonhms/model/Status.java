@@ -19,37 +19,32 @@
  *  
  *******************************************************************************/
 
-package org.onap.dcaegen2.services.sonhms.dmaap;
+package org.onap.dcaegen2.services.sonhms.model;
 
-import org.onap.dcaegen2.services.sonhms.NewFmNotification;
-import org.onap.dcaegen2.services.sonhms.dao.FaultNotificationsRepository;
-import org.onap.dcaegen2.services.sonhms.entity.FaultNotifications;
-import org.onap.dcaegen2.services.sonhms.utils.BeanUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class FMNotificationCallback extends NotificationCallback{
-	
-	private static Logger log = LoggerFactory.getLogger(FMNotificationCallback.class);
-	
-	@Override
-	public void activateCallBack(String msg){
-		handleNotification(msg);
-	}
+
+public class Status {
+    @JsonProperty("Code")
+    private int code;
     
-	private void handleNotification(String msg) {
-		
-		FaultNotificationsRepository faultNotificationsRepository=BeanUtil
-	            .getBean(FaultNotificationsRepository.class);
-		
-		NewFmNotification newNotification=BeanUtil.getBean(NewFmNotification.class);
-		FaultNotifications faultNotification = new FaultNotifications();
-		faultNotification.setNotification(msg);
-		if (log.isDebugEnabled()) {
-			log.debug(faultNotification.toString());
-		}
-		faultNotificationsRepository.save(faultNotification);
-		newNotification.setNewNotif(true);
-	}
+    @JsonProperty("Value")
+    private String value;
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
 
 }

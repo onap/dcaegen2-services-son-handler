@@ -22,18 +22,20 @@
 package org.onap.dcaegen2.services.sonhms.dao;
 
 import org.onap.dcaegen2.services.sonhms.entity.HandOverMetrics;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
+@Transactional
 public interface HandOverMetricsRepository extends CrudRepository<HandOverMetrics, String> {
 
-    @Query(nativeQuery=true, 
-            value="SELECT ho_details FROM handover_metrics WHERE src_cell_id=?1")
+    @Query(nativeQuery = true, value = "SELECT ho_details FROM handover_metrics WHERE src_cell_id=?1")
     public String getHandOverMetrics(String srcCellId);
 
-    @Query(nativeQuery=true,
-            value="UPDATE handover_metrics SET ho_details=?1 where src_cell_id=?2")
+    @Modifying
+    @Query(nativeQuery = true, value = "UPDATE handover_metrics SET ho_details=?1 where src_cell_id=?2")
     public void updateHoMetrics(String hoDetails, String srcCellId);
 }

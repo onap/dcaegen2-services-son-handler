@@ -24,30 +24,33 @@ package org.onap.dcaegen2.services.sonhms.model;
 import java.util.Map;
 
 public class AdditionalMeasurements {
-    
+
     String name;
-    Map<String,String> hashMap ;  
-    
+    Map<String, String> hashMap;
+
     public AdditionalMeasurements() {
-        
+
     }
+
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
+
     public Map<String, String> getHashMap() {
         return hashMap;
     }
+
     public void setHashMap(Map<String, String> hashMap) {
         this.hashMap = hashMap;
     }
+
     @Override
     public String toString() {
         return "AdditionalMeasurements [name=" + name + ", hashMap=" + hashMap + "]";
     }
-  
-  
-    
+
 }

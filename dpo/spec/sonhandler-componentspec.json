@@ -30,7 +30,13 @@
 				"version": "1.0.0",
 				"route": "/callbackUrl",
 				"type": "http"
-			}
+			},
+                        {
+                                "format": "POLICY_TO_SON_DMAAP",
+                                "version": "1.0.0",
+                                "config_key": "CL_RSP_topic",
+                                "type": "message router"
+                        }
 		],
 		"publishes": [
 			{
@@ -267,9 +273,9 @@
 			"designer_editable": false
 		},
 		{
-			"name": "sonhandler.callbackUrl",
-			"value": "http://sonhms.onap:8080/callbackUrl",
-			"description": "sonhms callback url",
+			"name": "sonhandler.namespace",
+			"value": "onap",
+			"description": "namespace where MS will be deployed",
 			"sourced_at_deployment": false,
 			"policy_editable": false,
 			"designer_editable": false

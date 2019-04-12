@@ -25,14 +25,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Solutions {
-    
+
     String networkId = null;
     List<PciSolutions> pciSolutions = new ArrayList<>();
     List<AnrSolutions> anrSolutions = new ArrayList<>();
-    
+
     public Solutions() {
-        
+
     }
+
     public String getNetworkId() {
         return networkId;
     }
@@ -53,6 +54,7 @@ public class Solutions {
         this.pciSolutions = pciSolutions;
 
     }
+
     public List<AnrSolutions> getAnrSolutions() {
         return anrSolutions;
     }
@@ -67,7 +69,4 @@ public class Solutions {
                 + "]";
     }
 
-   
-
-   
 }

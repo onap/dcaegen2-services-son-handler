@@ -24,6 +24,7 @@ package org.onap.dcaegen2.services.sonhms.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class LteNeighborListInUseLteCell {
+    
     @JsonProperty("pnfName")
     private String pnfName;
 
@@ -52,6 +53,9 @@ public class LteNeighborListInUseLteCell {
 
     }
 
+    /**
+     * constructor.
+     */
     public LteNeighborListInUseLteCell(String pnfName, String enable, String alias, String mustInclude, String plmnId,
             String cid, int phyCellId, String blacklisted) {
         super();

@@ -27,10 +27,11 @@ public class AnrInput {
 
     String cellId;
     List<String> removeableNeighbors;
-    
+
     public AnrInput() {
-        
+
     }
+
     /**
      * Parameterized Constructor.
      */
@@ -40,18 +41,21 @@ public class AnrInput {
         this.cellId = cellId;
         this.removeableNeighbors = removeableNeighbors;
     }
+
     public String getCellId() {
         return cellId;
     }
+
     public void setCellId(String cellId) {
         this.cellId = cellId;
     }
+
     public List<String> getRemoveableNeighbors() {
         return removeableNeighbors;
     }
+
     public void setRemoveableNeighbors(List<String> removeableNeighbors) {
         this.removeableNeighbors = removeableNeighbors;
     }
-    
-    
+
 }

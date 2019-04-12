@@ -25,14 +25,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AnrSolutions {
-    
+
     String cellId;
     List<String> removeableNeighbors = new ArrayList<>();
-    
+
     public AnrSolutions() {
-        
+
     }
-    
+
+    /**
+     * constructor.
+     */
     public AnrSolutions(String cellId, List<String> removeableNeighbors) {
         super();
         this.cellId = cellId;
@@ -42,19 +45,22 @@ public class AnrSolutions {
     public String getCellId() {
         return cellId;
     }
+
     public void setCellId(String cellId) {
         this.cellId = cellId;
     }
+
     public List<String> getRemoveableNeighbors() {
         return removeableNeighbors;
     }
+
     public void setRemoveableNeighbors(List<String> removeableNeighbors) {
         this.removeableNeighbors = removeableNeighbors;
     }
+
     @Override
     public String toString() {
         return "AnrSolutions [cellId=" + cellId + ", removeableNeighbors=" + removeableNeighbors + "]";
     }
-    
 
 }

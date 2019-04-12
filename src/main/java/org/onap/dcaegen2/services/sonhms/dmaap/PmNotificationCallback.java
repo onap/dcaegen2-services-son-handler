@@ -19,20 +19,34 @@
  *  
  *******************************************************************************/
 
-package org.onap.dcaegen2.services.sonhms.dao;
+package org.onap.dcaegen2.services.sonhms.dmaap;
 
+import org.onap.dcaegen2.services.sonhms.NewPmNotification;
+import org.onap.dcaegen2.services.sonhms.dao.PerformanceNotificationsRepository;
 import org.onap.dcaegen2.services.sonhms.entity.PerformanceNotifications;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
+import org.onap.dcaegen2.services.sonhms.utils.BeanUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-@Repository
-public interface PerformanceNotificationsRepository extends CrudRepository<PerformanceNotifications, String> {
+public class PmNotificationCallback extends NotificationCallback {
 
-    @Query(nativeQuery = true, value = "DELETE FROM performance_notifications "
-            + "WHERE notification = ( SELECT notification FROM performance_notifications ORDER BY "
-            + "created_at FOR UPDATE SKIP LOCKED LIMIT 1 ) RETURNING notification;")
+    private static Logger log = LoggerFactory.getLogger(PmNotificationCallback.class);
 
-    public String getPerformanceNotificationFromQueue();
+    @Override
+    public void activateCallBack(String msg) {
+        handleNotification(msg);
+    }
+
+    private void handleNotification(String msg) {
+
+        PerformanceNotificationsRepository performanceNotificationsRepository = BeanUtil
+                .getBean(PerformanceNotificationsRepository.class);
+        PerformanceNotifications performanceNotification = new PerformanceNotifications();
+        performanceNotification.setNotification(msg);
+        log.info("Performance notification {}", performanceNotification);
+        NewPmNotification newNotification = BeanUtil.getBean(NewPmNotification.class);
+        performanceNotificationsRepository.save(performanceNotification);
+        newNotification.setNewNotif(true);
+    }
 
 }

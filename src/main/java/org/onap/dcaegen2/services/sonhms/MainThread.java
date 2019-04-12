@@ -55,7 +55,7 @@ public class MainThread implements Runnable {
 
     private EventHandler eventHandler;
 
-    private Map<String, FaultEvent> bufferedFMNotificationCells;
+    private Map<String, FaultEvent> bufferedFmNotificationCells;
 
     private List<String> sdnrNotificationCells;
 
@@ -77,7 +77,7 @@ public class MainThread implements Runnable {
         faultNotificationComponent = new FaultNotificationComponent();
         sdnrNotificationCells = new ArrayList<>();
         fmNotificationToBuffer = new ArrayList<>();
-        bufferedFMNotificationCells = new HashMap<>();
+        bufferedFmNotificationCells = new HashMap<>();
         eventHandler = new EventHandler(childStatusQueue,
                 Executors.newFixedThreadPool(Configuration.getInstance().getMaximumClusters()), new HashMap<>(),
                 new ClusterUtils(), new ThreadUtils());
@@ -101,15 +101,14 @@ public class MainThread implements Runnable {
                 if (difference > 5000) {
                     log.info("FM handling difference > 5000");
 
-                    for (String sdnrCell: sdnrNotificationCells) {
-                        bufferedFMNotificationCells.remove(sdnrCell);
+                    for (String sdnrCell : sdnrNotificationCells) {
+                        bufferedFmNotificationCells.remove(sdnrCell);
                     }
-                    
-                    log.info("FM bufferedFMNotificationCells {}", bufferedFMNotificationCells.values());
-                    List<FaultEvent> fmNotificationsToHandle = new ArrayList<>(
-                            bufferedFMNotificationCells.values());
+
+                    log.info("FM bufferedFMNotificationCells {}", bufferedFmNotificationCells.values());
+                    List<FaultEvent> fmNotificationsToHandle = new ArrayList<>(bufferedFmNotificationCells.values());
                     Boolean result = eventHandler.handleFaultNotification(fmNotificationsToHandle);
-                    bufferedFMNotificationCells = new HashMap<>();
+                    bufferedFmNotificationCells = new HashMap<>();
                     isTimer = false;
                     log.info("FM notification handling {}", result);
                 }
@@ -160,21 +159,21 @@ public class MainThread implements Runnable {
                     } else {
                         for (FaultEvent fmNotification : fmNotifications.left().value()) {
                             faultCellId = fmNotification.getEvent().getCommonEventHeader().getSourceName();
-                            bufferedFMNotificationCells.put(faultCellId, fmNotification);
+                            bufferedFmNotificationCells.put(faultCellId, fmNotification);
                             log.info("Buffered FM cell {}", faultCellId);
                             log.info("fmNotification{}", fmNotification);
 
                         }
                         log.info("bufferedFMNotificationCells before staring timer {}",
-                                bufferedFMNotificationCells.keySet());
+                                bufferedFmNotificationCells.keySet());
 
-                        for (String sdnrCell: sdnrNotificationCells) {
-                                bufferedFMNotificationCells.remove(sdnrCell);
+                        for (String sdnrCell : sdnrNotificationCells) {
+                            bufferedFmNotificationCells.remove(sdnrCell);
                         }
-                        
+
                         startTimer = new Timestamp(System.currentTimeMillis());
                         isTimer = true;
-                        log.info("Buffered FM cell {}", bufferedFMNotificationCells.keySet());
+                        log.info("Buffered FM cell {}", bufferedFmNotificationCells.keySet());
                     }
 
                 }

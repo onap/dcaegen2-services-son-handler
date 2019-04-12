@@ -177,7 +177,7 @@ public class ClusterUtils {
     /**
      * Get clusters for FM Cell.
      */
-    public Either<Graph, Integer> getClusterForFMCell(String cellId, List<Graph> newClusters) {
+    public Either<Graph, Integer> getClusterForFmCell(String cellId, List<Graph> newClusters) {
         if (newClusters.isEmpty()) {
             log.info("getClusterForFMCell 404");
             return Either.right(404);
@@ -222,8 +222,10 @@ public class ClusterUtils {
 
         return clusterCells;
     }
-    // generic create cluster for both fm and sdnr
-
+    
+    /**
+     * Create cluster.
+     */
     public Graph createCluster(Map<CellPciPair, ArrayList<CellPciPair>> clusterMap) throws ConfigDbNotFoundException {
 
         Graph cluster = new Graph();

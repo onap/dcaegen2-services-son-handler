@@ -27,6 +27,9 @@ public class Configurations {
     @JsonProperty("data")
     private Data data;
 
+    @JsonProperty("Status")
+    private Status status;
+
     /**
      * constructor.
      *
@@ -34,22 +37,31 @@ public class Configurations {
     public Configurations() {
 
     }
+
     /**
      * Parameterized constructor.
      *
      */
-    public Configurations(Data data) {
+    public Configurations(Data data, Status status) {
         super();
         this.data = data;
+        this.status = status;
     }
+
     public Data getData() {
         return data;
     }
+
     public void setData(Data data) {
         this.data = data;
     }
 
-   
-   
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 
 }

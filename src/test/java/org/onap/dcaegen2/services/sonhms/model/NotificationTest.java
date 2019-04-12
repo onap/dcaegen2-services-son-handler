@@ -108,8 +108,10 @@ public class NotificationTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        assertNotEquals(notif, notif1);
+        
+        Notification notif2 = new Notification("9d2d790e-a5f0-11e8-98d0-529269fb1459", "{}", "SDNR", "1.0.2", "NeighborListModified", payload) ;
+        assertEquals(notif2.getPayload(), notif.getPayload());
+        assertNotEquals(notif, notif1); 
         assertEquals(notif.getAction(), notif1.getAction());
         assertEquals(notif.getAai().toString(), notif1.getAai().toString());
 

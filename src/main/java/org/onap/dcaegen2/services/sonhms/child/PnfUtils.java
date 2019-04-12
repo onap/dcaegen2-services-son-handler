@@ -38,8 +38,6 @@ import org.onap.dcaegen2.services.sonhms.restclient.Solutions;
 import org.onap.dcaegen2.services.sonhms.utils.BeanUtil;
 import org.slf4j.Logger;
 
-
-
 public class PnfUtils {
 
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(ChildThreadUtils.class);
@@ -50,58 +48,59 @@ public class PnfUtils {
      */
     public Map<String, List<CellPciPair>> getPnfs(Solutions solutions) throws ConfigDbNotFoundException {
 
-        Map<String, List<CellPciPair>> pnfs = new HashMap<>(); 
+        Map<String, List<CellPciPair>> pnfs = new HashMap<>();
         List<PciSolutions> pciSolutions = solutions.getPciSolutions();
         for (PciSolutions pciSolution : pciSolutions) {
-                String cellId = pciSolution.getCellId();
-                int pci = pciSolution.getPci();
+            String cellId = pciSolution.getCellId();
+            int pci = pciSolution.getPci();
 
-                String pnfName = "";
-                CellInfoRepository cellInfoRepository = BeanUtil.getBean(CellInfoRepository.class);
-                Optional<CellInfo> cellInfo = cellInfoRepository.findById(cellId);
-                if (cellInfo.isPresent()) {
-                    pnfName = cellInfo.get().getPnfName();
-                } else {
-                    pnfName = SdnrRestClient.getPnfName(cellId);
-                    cellInfoRepository.save(new CellInfo(cellId, pnfName));
-                }
-                if (pnfs.containsKey(pnfName)) {
-                    pnfs.get(pnfName).add(new CellPciPair(cellId, pci));
-                } else {
-                    List<CellPciPair> cellPciPairs = new ArrayList<>();
-                    cellPciPairs.add(new CellPciPair(cellId, pci));
-                    pnfs.put(pnfName, cellPciPairs);
-                }
+            String pnfName = "";
+            CellInfoRepository cellInfoRepository = BeanUtil.getBean(CellInfoRepository.class);
+            Optional<CellInfo> cellInfo = cellInfoRepository.findById(cellId);
+            if (cellInfo.isPresent()) {
+                pnfName = cellInfo.get().getPnfName();
+            } else {
+                pnfName = SdnrRestClient.getPnfName(cellId);
+                cellInfoRepository.save(new CellInfo(cellId, pnfName));
+            }
+            if (pnfs.containsKey(pnfName)) {
+                pnfs.get(pnfName).add(new CellPciPair(cellId, pci));
+            } else {
+                List<CellPciPair> cellPciPairs = new ArrayList<>();
+                cellPciPairs.add(new CellPciPair(cellId, pci));
+                pnfs.put(pnfName, cellPciPairs);
+            }
 
         }
         return pnfs;
     }
-    
+
     /**
-     * get pnfs for ANR solutions
+     * get pnfs for ANR solutions.
      * 
      */
-    public Map<String, List<Map<String,List<String>>>> getPnfsForAnrSolutions(List<AnrSolutions> anrSolutions) throws ConfigDbNotFoundException {
-        
-        Map<String, List<Map<String,List<String>>>> anrPnfs = new HashMap<>();
-        
+    public Map<String, List<Map<String, List<String>>>> getPnfsForAnrSolutions(List<AnrSolutions> anrSolutions)
+            throws ConfigDbNotFoundException {
+
+        Map<String, List<Map<String, List<String>>>> anrPnfs = new HashMap<>();
+
         List<String> removeableNeighbors;
-        for(AnrSolutions anrSolution : anrSolutions) {
+        for (AnrSolutions anrSolution : anrSolutions) {
             String cellId = anrSolution.getCellId();
             String pnfName = SdnrRestClient.getPnfName(cellId);
             removeableNeighbors = anrSolution.getRemoveableNeighbors();
-            Map<String,List<String>> cellRemNeighborsPair = new HashMap<>();
+            Map<String, List<String>> cellRemNeighborsPair = new HashMap<>();
             cellRemNeighborsPair.put(cellId, removeableNeighbors);
-            if(anrPnfs.containsKey(pnfName)) {
+            if (anrPnfs.containsKey(pnfName)) {
                 anrPnfs.get(pnfName).add(cellRemNeighborsPair);
-            }else {
-                List<Map<String,List<String>>> anrCells = new ArrayList<>();
+            } else {
+                List<Map<String, List<String>>> anrCells = new ArrayList<>();
                 anrCells.add(cellRemNeighborsPair);
                 anrPnfs.put(pnfName, anrCells);
             }
         }
-        log.info("anr Pnfs {}",anrPnfs.toString());
+        log.info("anr Pnfs {}", anrPnfs);
         return anrPnfs;
-        
+
     }
 }
