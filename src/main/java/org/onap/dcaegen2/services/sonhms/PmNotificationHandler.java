@@ -52,7 +52,7 @@ import org.slf4j.LoggerFactory;
 
 public class PmNotificationHandler {
 
-    private static Logger log = LoggerFactory.getLogger(DmaapNotificationsComponent.class);
+    private static Logger log = LoggerFactory.getLogger(PmNotificationHandler.class);
     PolicyDmaapClient policyDmaapClient;
 
     public PmNotificationHandler() {
@@ -75,10 +75,8 @@ public class PmNotificationHandler {
             String srcCellId = pmNotification.getEvent().getCommonEventHeader().getSourceName();
             for (AdditionalMeasurements additionalMeasurements : pmNotification.getEvent().getMeasurementFields()
                     .getAdditionalMeasurements()) {
-                int attemptsCount = Integer
-                        .parseInt(additionalMeasurements.getHashMap().get("InterEnbOutAtt_X2HO"));
-                int successCount = Integer
-                        .parseInt(additionalMeasurements.getHashMap().get("InterEnbOutSucc_X2HO"));
+                int attemptsCount = Integer.parseInt(additionalMeasurements.getHashMap().get("InterEnbOutAtt_X2HO"));
+                int successCount = Integer.parseInt(additionalMeasurements.getHashMap().get("InterEnbOutSucc_X2HO"));
                 float successRate = ((float) successCount / attemptsCount) * 100;
                 if (successRate >= badThreshold) {
                     HoDetails hoDetails = new HoDetails();
@@ -101,7 +99,7 @@ public class PmNotificationHandler {
             if (!lteCellList.isEmpty()) {
                 log.info("triggering policy to remove bad neighbors");
                 Flag policyTriggerFlag = BeanUtil.getBean(Flag.class);
-                
+
                 while (policyTriggerFlag.getHolder().equals("CHILD")) {
                     Thread.sleep(100);
                 }
@@ -145,20 +143,28 @@ public class PmNotificationHandler {
             ArrayList<Configurations> configurations = new ArrayList<>();
             String cellId = pmNotification.getEvent().getCommonEventHeader().getSourceName();
             Configurations configuration = new Configurations(
-                    new Data(new FapService(cellId, null, new CellConfig(new Lte(new Ran(new Common(cellId),
-                            new NeighborListInUse(null, lteCellList, String.valueOf(lteCellList.size()))))))));
+                    new Data(new FapService(cellId, null,
+                            new CellConfig(new Lte(new Ran(new Common(cellId),
+                                    new NeighborListInUse(null, lteCellList, String.valueOf(lteCellList.size()))))))),
+                    null);
             configurations.add(configuration);
             Payload payload = new Payload(configurations);
             log.info("payload : {}", payload);
             String anrUpdateString = mapper.writeValueAsString(payload);
             ChildThreadUtils childUtils = new ChildThreadUtils(ConfigPolicy.getInstance(), new PnfUtils(),
                     new PolicyDmaapClient());
-            String notification = childUtils.getNotificationString(pmNotification.getEvent().getCommonEventHeader().getReportingEntityName(), UUID.randomUUID().toString(), anrUpdateString,
-                    System.currentTimeMillis(), "ModifyConfigANR");
+            String requestId=UUID.randomUUID().toString();
+            String notification = childUtils.getNotificationString(
+                    pmNotification.getEvent().getCommonEventHeader().getReportingEntityName(),
+                    requestId, anrUpdateString, System.currentTimeMillis(), "ModifyConfigANR");
             log.info("Policy Notification: {}", notification);
             Boolean result = policyDmaapClient.sendNotificationToPolicy(notification);
             log.info("send notification to policy result {} ", result);
-            
+            // getting policy response
+            policyDmaapClient.handlePolicyResponse(requestId);
+            log.info("handled policy response");
+
+
         } catch (Exception e) {
             log.error("Exception in sending Anr update to policy ", e);
             return false;

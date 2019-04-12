@@ -111,9 +111,9 @@ public class ChildThreadUtils {
      * get policy notification string from oof result.
      *
      */
-    public String getNotificationString(String pnfName, String requestId, String payloadString,
-            Long alarmStartTime, String action) {
-        
+    public String getNotificationString(String pnfName, String requestId, String payloadString, Long alarmStartTime,
+            String action) {
+
         String closedLoopControlName = "ControlLoop-vPCI-fb41f388-a5f2-11e8-98d0-529269fb1459";
         try {
             closedLoopControlName = (String) configPolicy.getConfig().get("PCI_MODCONFIG_POLICY_NAME");
@@ -127,6 +127,7 @@ public class ChildThreadUtils {
         policyNotification.setClosedLoopControlName(closedLoopControlName);
         policyNotification.setPayload(payloadString);
         ObjectMapper mapper = new ObjectMapper();
+        mapper.setSerializationInclusion(Include.NON_NULL);
 
         String notification = "";
         try {
@@ -161,7 +162,8 @@ public class ChildThreadUtils {
                     String cellId = cellPciPair.getCellId();
                     int pci = cellPciPair.getPhysicalCellId();
                     Configurations configuration = new Configurations(new Data(new FapService(cellId,
-                            new X0005b9Lte(pci, pnfName), new CellConfig(new Lte(new Ran(new Common(cellId), null))))));
+                            new X0005b9Lte(pci, pnfName), new CellConfig(new Lte(new Ran(new Common(cellId), null))))),
+                            null);
                     configurations.add(configuration);
                 }
 
@@ -175,7 +177,9 @@ public class ChildThreadUtils {
                     log.debug("JSON processing exception: {}", e);
                 }
 
-                String notification = getNotificationString(pnfName, UUID.randomUUID().toString(), payloadString,
+                String requestId = UUID.randomUUID().toString();
+
+                String notification = getNotificationString(pnfName, requestId, payloadString,
                         System.currentTimeMillis(), "ModifyConfig");
                 log.info("Policy Notification: {}", notification);
                 boolean status = policyDmaapClient.sendNotificationToPolicy(notification);
@@ -185,34 +189,37 @@ public class ChildThreadUtils {
                 } else {
                     log.debug("Sending notification to policy failed");
                 }
+                policyDmaapClient.handlePolicyResponse(requestId);
+                log.info("handled policy response in ModifyConfig");
 
             }
         }
         if (!solutions.getAnrSolutions().isEmpty()) {
-            Map<String, List<Map<String,List<String>>>> anrPnfs;
+            Map<String, List<Map<String, List<String>>>> anrPnfs;
             List<Configurations> configurations = new ArrayList<>();
             anrPnfs = pnfUtils.getPnfsForAnrSolutions(solutions.getAnrSolutions());
-            for(Map.Entry<String, List<Map<String,List<String>>>> entry : anrPnfs.entrySet()) {
+            for (Map.Entry<String, List<Map<String, List<String>>>> entry : anrPnfs.entrySet()) {
                 String pnfName = entry.getKey();
-                for(Map<String,List<String>> cellRemNeighborsPair : anrPnfs.get(pnfName)) {
-                  for(Map.Entry<String, List<String>> entry1 : cellRemNeighborsPair.entrySet()) {
-                      String cellId = entry1.getKey();
-                      List<LteCell> lteCellList = new ArrayList<>();
-                      for(String removeableNeighbor : entry1.getValue()) {
-                          LteCell lteCell = new LteCell();
-                          lteCell.setBlacklisted("true");
-                          lteCell.setPlmnId(solutions.getNetworkId());
-                          lteCell.setCid(removeableNeighbor);
-                          int pci = SdnrRestClient.getPci(cellId);
-                          lteCell.setPhyCellId(pci);
-                          lteCell.setPnfName(pnfName);
-                          lteCellList.add(lteCell);
-                      }
-                      Configurations configuration = new Configurations(
-                              new Data(new FapService(cellId, null, new CellConfig(new Lte(new Ran(new Common(cellId),
-                                      new NeighborListInUse(null, lteCellList, String.valueOf(lteCellList.size()))))))));
-                      configurations.add(configuration); 
-                  }
+                for (Map<String, List<String>> cellRemNeighborsPair : anrPnfs.get(pnfName)) {
+                    for (Map.Entry<String, List<String>> entry1 : cellRemNeighborsPair.entrySet()) {
+                        String cellId = entry1.getKey();
+                        List<LteCell> lteCellList = new ArrayList<>();
+                        for (String removeableNeighbor : entry1.getValue()) {
+                            LteCell lteCell = new LteCell();
+                            lteCell.setBlacklisted("true");
+                            lteCell.setPlmnId(solutions.getNetworkId());
+                            lteCell.setCid(removeableNeighbor);
+                            int pci = SdnrRestClient.getPci(cellId);
+                            lteCell.setPhyCellId(pci);
+                            lteCell.setPnfName(pnfName);
+                            lteCellList.add(lteCell);
+                        }
+                        Configurations configuration = new Configurations(new Data(new FapService(cellId, null,
+                                new CellConfig(new Lte(new Ran(new Common(cellId), new NeighborListInUse(null,
+                                        lteCellList, String.valueOf(lteCellList.size()))))))),
+                                null);
+                        configurations.add(configuration);
+                    }
                 }
                 Payload payload = new Payload(configurations);
                 ObjectMapper mapper = new ObjectMapper();
@@ -223,13 +230,17 @@ public class ChildThreadUtils {
                 } catch (JsonProcessingException e) {
                     log.error("Exception in writing anrupdate string", e);
                 }
-                String notification = getNotificationString(pnfName, UUID.randomUUID().toString(), payloadString,
+                String requestId = UUID.randomUUID().toString();
+                String notification = getNotificationString(pnfName, requestId, payloadString,
                         System.currentTimeMillis(), "ModifyConfigANR");
                 log.info("Policy Notification: {}", notification);
                 Boolean result = policyDmaapClient.sendNotificationToPolicy(notification);
                 log.info("send notification to policy result {} ", result);
+                policyDmaapClient.handlePolicyResponse(requestId);
+                log.info("handled policy response in ModifyConfigANR");
+
             }
-            
+
         }
         return true;
     }

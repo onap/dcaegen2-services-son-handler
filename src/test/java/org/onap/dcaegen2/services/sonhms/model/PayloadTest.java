@@ -47,7 +47,7 @@ public class PayloadTest {
 
         Data data = new Data(fapService);
 
-        Configurations config = new Configurations(data);
+        Configurations config = new Configurations(data, null);
         ArrayList<Configurations> al = new ArrayList<>();
         al.add(config);
 

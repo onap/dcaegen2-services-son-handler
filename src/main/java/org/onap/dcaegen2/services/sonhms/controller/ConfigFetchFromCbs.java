@@ -40,7 +40,6 @@ import org.onap.dcaegen2.services.sonhms.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 public class ConfigFetchFromCbs {
 
     private static Logger log = LoggerFactory.getLogger(ConfigFetchFromCbs.class);
@@ -56,40 +55,42 @@ public class ConfigFetchFromCbs {
         RequestDiagnosticContext diagnosticContext = RequestDiagnosticContext.create();
         // Read necessary properties from the environment
         final EnvProperties env = EnvProperties.fromEnvironment();
-        log.debug("environments {}",env);
+        log.debug("environments {}", env);
         ConfigPolicy configPolicy = ConfigPolicy.getInstance();
-        
+
         // Create the client and use it to get the configuration
         final CbsRequest request = CbsRequests.getAll(diagnosticContext);
-        CbsClientFactory.createCbsClient(env).flatMap(cbsClient -> cbsClient.get(request))
-                .subscribe(jsonObject -> {
-                    log.debug("configuration from CBS {}", jsonObject);
-                    JsonObject config = jsonObject.getAsJsonObject("config");
-                    
-                    updateConfigurationFromJsonObject(config);
-                    
-                    Type mapType = new TypeToken<Map<String, Object>>() {}.getType();
-                    JsonObject policyJson = jsonObject.getAsJsonObject("policy");
-                    Map<String,Object> policy = new Gson().fromJson(policyJson, mapType);
-                    configPolicy.setConfig(policy);
-                }, throwable -> log.warn("Ooops", throwable)) ;
+        CbsClientFactory.createCbsClient(env).flatMap(cbsClient -> cbsClient.get(request)).subscribe(jsonObject -> {
+            log.info("configuration and policy from CBS {}", jsonObject);
+            JsonObject config = jsonObject.getAsJsonObject("config");
+
+            updateConfigurationFromJsonObject(config);
+
+            Type mapType = new TypeToken<Map<String, Object>>() {
+            }.getType();
+            JsonObject policyJson = jsonObject.getAsJsonObject("policies").getAsJsonArray("items").get(0)
+                    .getAsJsonObject().getAsJsonObject("config");
+            Map<String, Object> policy = new Gson().fromJson(policyJson, mapType);
+            configPolicy.setConfig(policy);
+            log.info("Config policy {}", configPolicy);
+        }, throwable -> log.warn("Ooops", throwable));
 
     }
 
     private void updateConfigurationFromJsonObject(JsonObject jsonObject) {
-        
+
         log.info("Updating configuration from CBS");
         Configuration configuration = Configuration.getInstance();
-        log.info("configuration from CBS {}", jsonObject);
-        
-        Type mapType = new TypeToken<Map<String, Object>>() {}.getType();
-        
+
+        Type mapType = new TypeToken<Map<String, Object>>() {
+        }.getType();
+
         JsonObject subscribes = jsonObject.getAsJsonObject("streams_subscribes");
         Map<String, Object> streamsSubscribes = new Gson().fromJson(subscribes, mapType);
-        
+
         JsonObject publishes = jsonObject.getAsJsonObject("streams_publishes");
         Map<String, Object> streamsPublishes = new Gson().fromJson(publishes, mapType);
-        
+
         int pgPort = jsonObject.get("postgres.port").getAsInt();
         int pollingInterval = jsonObject.get("sonhandler.pollingInterval").getAsInt();
         String pgPassword = jsonObject.get("postgres.password").getAsString();
@@ -102,19 +103,20 @@ public class ConfigFetchFromCbs {
         String pgHost = jsonObject.get("postgres.host").getAsString();
 
         JsonArray servers = jsonObject.getAsJsonArray("sonhandler.dmaap.server");
-        Type listType = new TypeToken<List<String>>() {}.getType();
+        Type listType = new TypeToken<List<String>>() {
+        }.getType();
         List<String> dmaapServers = new Gson().fromJson(servers, listType);
-        
+
         String cg = jsonObject.get("sonhandler.cg").getAsString();
         int bufferTime = jsonObject.get("sonhandler.bufferTime").getAsInt();
         String cid = jsonObject.get("sonhandler.cid").getAsString();
         String configDbService = jsonObject.get("sonhandler.configDb.service").getAsString();
         String namespace = jsonObject.get("sonhandler.namespace").getAsString();
         String callbackUrl = "http://" + System.getenv("HOSTNAME") + "." + namespace + ":8080/callbackUrl";
-        
+
         JsonArray optimizersJson = jsonObject.getAsJsonArray("sonhandler.optimizers");
-        List<String> optimizers = new Gson().fromJson(optimizersJson, listType);                   
-        
+        List<String> optimizers = new Gson().fromJson(optimizersJson, listType);
+
         String oofService = jsonObject.get("sonhandler.oof.service").getAsString();
         int pollingTimeout = jsonObject.get("sonhandler.pollingTimeout").getAsInt();
 

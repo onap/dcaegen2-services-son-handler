@@ -21,9 +21,9 @@ Variables coming from deployment system:
 - CBS_PROTOCOL - Config Binding Service protocol by default set to **http**, if it is need to change it then that can be set to different value
 - CONFIG_BINDING_SERVICE - used with conjunction with CBSPOLLTIMER, should be a name of CBS as it is registered in Consul
 - HOSTNAME - used with conjunction with CBSPOLLTIMER, should be a name of sonhms application as it is registered in CBS catalog
-
+Also if the son-ms can be started standalone (i.e docker run), provide those instruction also.
 ### Release images
-For R1 - image/version  pushed to nexus3 
+For R4 - image/version  pushed to nexus3 
 ```
 nexus3.onap.org:10001/snapshots/onap/org.onap.dcaegen2.services.son-handler   1.0.0
 ```
@@ -32,6 +32,10 @@ nexus3.onap.org:10001/snapshots/onap/org.onap.dcaegen2.services.son-handler   1.
 son handler can be manually deployed in dcae environment using cloudify blueprint.
 
 login to bootstrap container in dcae deployment
+
+Copy the blueprints to the bootstrap container.
+
+The blueprint can be found under dpo/blueprints in the son-handler project.
 
 To install : 
 	cfy install -b sonhms -d sonhms -i <inputs filepath> <blueprint filepath> 
