@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2c57dd43_53e06d89",
+        "filename": "dpo/data-formats/policyToSonDmaap-dataformat.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-04-12T21:13:31Z",
+      "side": 1,
+      "message": "Don\u0027t see the CL action result defined? pls confirm if this is valid.\n\nALso would like to revisit this structure later; would prefer aligning to standard format like VES; pls create separate jira for tracking it.",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 58,
+        "endChar": 1
+      },
+      "revId": "338772913ef7025fafc1527312bf1a7dac56e55d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
