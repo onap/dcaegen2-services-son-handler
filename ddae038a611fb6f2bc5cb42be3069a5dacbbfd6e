@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ac68611e_85537a95",
+        "filename": "pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-04-29T13:28:39Z",
+      "side": 1,
+      "message": "Per clm-report/jira, the expected version is 2.0.14.RELEASE. Also the current report indicates  2.0.9.RELEASE as being used in SON-handler. Please verify/confirm the dependency hierarchy and ensure 2.0.14.RELEASE is being sourced",
+      "range": {
+        "startLine": 117,
+        "startChar": 12,
+        "endLine": 117,
+        "endChar": 25
+      },
+      "revId": "ddae038a611fb6f2bc5cb42be3069a5dacbbfd6e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
