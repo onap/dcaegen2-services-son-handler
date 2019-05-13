@@ -21,6 +21,9 @@
 
 package org.onap.dcaegen2.services.sonhms;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Event {
     private CommonEventHeader commonEventHeader;
     private FaultFields faultFields;

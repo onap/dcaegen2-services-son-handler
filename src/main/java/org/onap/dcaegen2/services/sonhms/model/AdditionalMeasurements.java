@@ -21,8 +21,11 @@
 
 package org.onap.dcaegen2.services.sonhms.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.Map;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class AdditionalMeasurements {
 
     String name;
