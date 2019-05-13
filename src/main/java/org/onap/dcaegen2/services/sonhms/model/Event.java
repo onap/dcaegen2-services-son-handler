@@ -21,8 +21,11 @@
 
 package org.onap.dcaegen2.services.sonhms.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import org.onap.dcaegen2.services.sonhms.CommonEventHeader;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Event {
     CommonEventHeader commonEventHeader;
     MeasurementFields measurementFields;
