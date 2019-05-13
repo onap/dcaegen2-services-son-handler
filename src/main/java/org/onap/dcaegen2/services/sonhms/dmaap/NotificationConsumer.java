@@ -23,8 +23,6 @@ package org.onap.dcaegen2.services.sonhms.dmaap;
 
 import com.att.nsa.cambria.client.CambriaConsumer;
 
-import java.io.IOException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,7 +49,7 @@ public class NotificationConsumer implements Runnable {
                 log.debug(msg);
                 notificationCallback.activateCallBack(msg);
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.debug("exception when fetching msgs from dmaap", e);
         }
 
