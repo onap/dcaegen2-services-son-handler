@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "25ddf6f4_9f9642f9",
+        "filename": "dpo/blueprints/k8s-sonhms-inputs.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-05-20T17:20:51Z",
+      "side": 1,
+      "message": "1.0.2",
+      "range": {
+        "startLine": 21,
+        "startChar": 79,
+        "endLine": 21,
+        "endChar": 84
+      },
+      "revId": "38d788289f5dc03173d27099632f2a07796783eb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "27b4b79f_87832664",
+        "filename": "dpo/blueprints/k8s-sonhms.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-05-20T17:20:51Z",
+      "side": 1,
+      "message": "1.0.2",
+      "range": {
+        "startLine": 33,
+        "startChar": 80,
+        "endLine": 33,
+        "endChar": 85
+      },
+      "revId": "38d788289f5dc03173d27099632f2a07796783eb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
