@@ -21,6 +21,7 @@
 
 package org.onap.dcaegen2.services.sonhms.child;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import fj.data.Either;
@@ -42,9 +43,11 @@ import org.onap.dcaegen2.services.sonhms.ClusterDetailsComponent;
 import org.onap.dcaegen2.services.sonhms.ConfigPolicy;
 import org.onap.dcaegen2.services.sonhms.Configuration;
 import org.onap.dcaegen2.services.sonhms.HoMetricsComponent;
+import org.onap.dcaegen2.services.sonhms.Timer;
 import org.onap.dcaegen2.services.sonhms.dao.ClusterDetailsRepository;
 import org.onap.dcaegen2.services.sonhms.dao.SonRequestsRepository;
 import org.onap.dcaegen2.services.sonhms.dmaap.PolicyDmaapClient;
+import org.onap.dcaegen2.services.sonhms.entity.HandOverMetrics;
 import org.onap.dcaegen2.services.sonhms.exceptions.ConfigDbNotFoundException;
 import org.onap.dcaegen2.services.sonhms.model.AnrInput;
 import org.onap.dcaegen2.services.sonhms.model.CellPciPair;
@@ -150,7 +153,7 @@ public class ChildThread implements Runnable {
         ClusterUtils clusterUtils = new ClusterUtils();
         Detection detect = new Detection();
         ChildThreadUtils childUtils = new ChildThreadUtils(ConfigPolicy.getInstance(), new PnfUtils(),
-                new PolicyDmaapClient(new DmaapUtils(), Configuration.getInstance()));
+                new PolicyDmaapClient(new DmaapUtils(), Configuration.getInstance()), new HoMetricsComponent());
 
         try {
             String networkId = cluster.getNetworkId();
@@ -217,7 +220,7 @@ public class ChildThread implements Runnable {
                     cellidList.add(cell);
                 }
                 UUID transactionId;
-                
+
                 Flag policyTriggerFlag = BeanUtil.getBean(Flag.class);
                 while (policyTriggerFlag.getHolder().equals("PM")) {
                     Thread.sleep(100);
@@ -225,21 +228,55 @@ public class ChildThread implements Runnable {
                 policyTriggerFlag.setHolder("CHILD");
                 policyTriggerFlag.setNumChilds(policyTriggerFlag.getNumChilds() + 1);
                 
-                Either<List<AnrInput>, Integer> anrTriggerResponse = checkAnrTrigger(cellidList);
-                if (anrTriggerResponse.isRight()) {
+                Timer timerOof = BeanUtil.getBean(Timer.class);
+                if (!timerOof.getIsTimer()) {
+                    log.info("Starting timer");
+                    timerOof.setIsTimer(true);
+                    Timestamp startTime = new Timestamp(System.currentTimeMillis());
+                    timerOof.setStartTime(startTime);
+                    timerOof.setCount(0);
+                    log.info("startTime {}", startTime);
 
-                    if (anrTriggerResponse.right().value() == 404) {
-                        log.debug("No poor neighbors found");
-                    } else if (anrTriggerResponse.right().value() == 500) {
-                        log.debug("Failed to fetch HO details from DB ");
+                }
+                Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+                Long difference = currentTime.getTime() - timerOof.getStartTime().getTime();
+                int timerThreshold = (Configuration.getInstance().getOofTriggerCountTimer() * 60000);
+                int triggerCountThreshold = Configuration.getInstance().getOofTriggerCountThreshold();
+                log.info("Time threshold {}, triggerCountThreshold {}", timerThreshold, triggerCountThreshold);
+                log.info("oof trigger count {}", timerOof.getCount());
+                timerOof.setCount(timerOof.getCount()+1);
+                if (difference < timerThreshold && timerOof.getCount() > triggerCountThreshold) {
+                    log.info("difference {}", difference);
+
+                    Either<List<AnrInput>, Integer> anrTriggerResponse = checkAnrTrigger();
+                    if (anrTriggerResponse.isRight()) {
+                        log.info("ANR trigger response right {}", anrTriggerResponse.right().value());
+                        if (anrTriggerResponse.right().value() == 404) {
+                            log.info("No poor neighbors found");
+                        } else if (anrTriggerResponse.right().value() == 500) {
+                            log.info("Failed to fetch HO details from DB ");
+                        }
+                        transactionId = oof.triggerOof(cellidList, networkId, new ArrayList<>());
+
+
+                    } else {
+                        log.info("ANR trigger response left {}", anrTriggerResponse.left().value());
+                        List<AnrInput> anrInputList = anrTriggerResponse.left().value();
+                        log.info("Trigger oof for joint optimization");
+                        transactionId = oof.triggerOof(cellidList, networkId, anrInputList);
+
                     }
 
-                    transactionId = oof.triggerOof(cellidList, networkId, new ArrayList<>());
                 } else {
-                    List<AnrInput> anrInputList = anrTriggerResponse.left().value();
-                    log.info("Trigger oof for joint optimization");
-                    transactionId = oof.triggerOof(cellidList, networkId, anrInputList);
+                    
+                    transactionId = oof.triggerOof(cellidList, networkId, new ArrayList<>());
+                    
+                    if (difference > timerThreshold) {
+                        timerOof.setIsTimer(false);
+                        timerOof.setCount(0);
+                    }
                 }
+
                 long childThreadId = Thread.currentThread().getId();
                 childUtils.saveRequest(transactionId.toString(), childThreadId);
                 while (!ChildThread.getResponseMap().containsKey(childThreadId)) {
@@ -248,15 +285,12 @@ public class ChildThread implements Runnable {
 
                 AsyncResponseBody asynResponseBody = ChildThread.getResponseMap().get(childThreadId);
 
-                
-
                 try {
                     childUtils.sendToPolicy(asynResponseBody);
                     policyTriggerFlag.setNumChilds(policyTriggerFlag.getNumChilds() - 1);
                     if (policyTriggerFlag.getNumChilds() == 0) {
                         policyTriggerFlag.setHolder("NONE");
                     }
-                    
 
                 } catch (ConfigDbNotFoundException e1) {
                     log.debug("Config DB is unreachable: {}", e1);
@@ -404,34 +438,38 @@ public class ChildThread implements Runnable {
     /**
      * Check if ANR to be triggered.
      */
-    public Either<List<AnrInput>, Integer> checkAnrTrigger(List<String> cellidList) {
+    public Either<List<AnrInput>, Integer> checkAnrTrigger() {
 
         List<AnrInput> anrInputList = new ArrayList<>();
         Configuration configuration = Configuration.getInstance();
-        int poorThreshold = configuration.getPoorThreshold();
         List<HoDetails> hoDetailsList;
-        Either<List<HoDetails>, Integer> response;
-        for (String cellId : cellidList) {
-            response = hoMetricsComponent.getHoMetrics(cellId);
+        Either<List<HandOverMetrics>, Integer> hoMetrics = hoMetricsComponent.getAll();
+        if(hoMetrics.isRight()) {
+            log.error("Error in getting HO details from db");
+            return Either.right(500);
+        }
+        List<HandOverMetrics> hoMetricsList = hoMetrics.left().value();
+        for (HandOverMetrics hoMetric : hoMetricsList) {
+            String hoDetailsListString = hoMetric.getHoDetails();
+            ObjectMapper mapper = new ObjectMapper();
+            try {
+                hoDetailsList = mapper.readValue(hoDetailsListString, new TypeReference<ArrayList<HoDetails>>() {
+                });
+            } catch (Exception e) {
+                log.error("Exception in parsing HO metrics", hoDetailsListString, e);
+                continue;
+            }
             List<String> removeableNeighbors = new ArrayList<>();
-            if (response.isLeft()) {
-                hoDetailsList = response.left().value();
-                for (HoDetails hoDetail : hoDetailsList) {
-                    if (hoDetail.getSuccessRate() < poorThreshold) {
+            log.info("Checking poor count for src cell {}", hoMetric.getSrcCellId());
+            for (HoDetails hoDetail : hoDetailsList) {
+                    if (hoDetail.getPoorCount() >= configuration.getPoorCountThreshold()) {
                         removeableNeighbors.add(hoDetail.getDstCellId());
                     }
                 }
-            } else {
-                if (response.right().value() == 400) {
-                    log.error("Error in getting HO details from db");
-                    return Either.right(500);
-                } else {
-                    log.info("no HO metrics found");
-                }
-            }
+         
 
             if (!removeableNeighbors.isEmpty()) {
-                AnrInput anrInput = new AnrInput(cellId, removeableNeighbors);
+                AnrInput anrInput = new AnrInput(hoMetric.getSrcCellId(), removeableNeighbors);
                 anrInputList.add(anrInput);
             }
         }

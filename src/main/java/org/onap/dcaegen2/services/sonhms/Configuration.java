@@ -42,7 +42,8 @@ public class Configuration {
     private int minConfusion;
     private String sourceId;
     private String callbackUrl;
-    private List<String> optimizers;
+    private String pciOptimizer;
+    private String pciAnrOptimizer;
     private int numSolutions;
     private int bufferTime;
     private int maximumClusters;
@@ -52,7 +53,53 @@ public class Configuration {
     private Map<String, Object> streamsPublishes;
     private int badThreshold;
     private int poorThreshold;
+    private int poorCountThreshold;
+    private int badCountThreshold;
+    private int oofTriggerCountTimer;
+    private int oofTriggerCountThreshold;
+    private int policyRespTimer;
     
+    
+    public int getPoorCountThreshold() {
+        return poorCountThreshold;
+    }
+
+    public void setPoorCountThreshold(int poorCountThreshold) {
+        this.poorCountThreshold = poorCountThreshold;
+    }
+
+    public int getBadCountThreshold() {
+        return badCountThreshold;
+    }
+
+    public void setBadCountThreshold(int badCountThreshold) {
+        this.badCountThreshold = badCountThreshold;
+    }
+
+    public int getOofTriggerCountTimer() {
+        return oofTriggerCountTimer;
+    }
+
+    public void setOofTriggerCountTimer(int oofTriggerCountTimer) {
+        this.oofTriggerCountTimer = oofTriggerCountTimer;
+    }
+
+    public int getOofTriggerCountThreshold() {
+        return oofTriggerCountThreshold;
+    }
+
+    public void setOofTriggerCountThreshold(int oofTriggerCountThreshold) {
+        this.oofTriggerCountThreshold = oofTriggerCountThreshold;
+    }
+
+    public int getPolicyRespTimer() {
+        return policyRespTimer;
+    }
+
+    public void setPolicyRespTimer(int policyRespTimer) {
+        this.policyRespTimer = policyRespTimer;
+    }
+
     public int getBadThreshold() {
         return badThreshold;
     }
@@ -203,14 +250,6 @@ public class Configuration {
         this.callbackUrl = callbackUrl;
     }
 
-    public List<String> getOptimizers() {
-        return optimizers;
-    }
-
-    public void setOptimizers(List<String> optimizers) {
-        this.optimizers = optimizers;
-    }
-
     public int getNumSolutions() {
         return numSolutions;
     }
@@ -275,16 +314,38 @@ public class Configuration {
         this.configDbService = configDbService;
     }
 
+    public String getPciOptimizer() {
+        return pciOptimizer;
+    }
+
+    public void setPciOptimizer(String pciOptimizer) {
+        this.pciOptimizer = pciOptimizer;
+    }
+
+    public String getPciAnrOptimizer() {
+        return pciAnrOptimizer;
+    }
+
+    public void setPciAnrOptimizer(String pciAnrOptimizer) {
+        this.pciAnrOptimizer = pciAnrOptimizer;
+    }
+
     @Override
     public String toString() {
         return "Configuration [pgHost=" + pgHost + ", pgPort=" + pgPort + ", pgUsername=" + pgUsername + ", pgPassword="
                 + pgPassword + ", dmaapServers=" + dmaapServers + ", configDbService=" + configDbService
                 + ", oofService=" + oofService + ", cg=" + cg + ", cid=" + cid + ", pollingInterval=" + pollingInterval
                 + ", pollingTimeout=" + pollingTimeout + ", minCollision=" + minCollision + ", minConfusion="
-                + minConfusion + ", sourceId=" + sourceId + ", callbackUrl=" + callbackUrl + ", optimizers="
-                + optimizers + ", numSolutions=" + numSolutions + ", bufferTime=" + bufferTime + ", maximumClusters="
-                + maximumClusters + ", aafUsername=" + aafUsername + ", aafPassword=" + aafPassword
-                + ", streamsSubscribes=" + streamsSubscribes + ", streamsPublishes=" + streamsPublishes + "]";
+                + minConfusion + ", sourceId=" + sourceId + ", callbackUrl=" + callbackUrl + ", pciOptimizer="
+                + pciOptimizer + ", pciAnrOptimizer=" + pciAnrOptimizer + ", numSolutions=" + numSolutions
+                + ", bufferTime=" + bufferTime + ", maximumClusters=" + maximumClusters + ", aafUsername=" + aafUsername
+                + ", aafPassword=" + aafPassword + ", streamsSubscribes=" + streamsSubscribes + ", streamsPublishes="
+                + streamsPublishes + ", badThreshold=" + badThreshold + ", poorThreshold=" + poorThreshold
+                + ", poorCountThreshold=" + poorCountThreshold + ", badCountThreshold=" + badCountThreshold
+                + ", oofTriggerCountTimer=" + oofTriggerCountTimer + ", oofTriggerCountThreshold="
+                + oofTriggerCountThreshold + ", policyRespTimer=" + policyRespTimer + "]";
     }
+    
+    
 
 }

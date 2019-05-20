@@ -61,7 +61,8 @@ public class ConfigurationTest {
         configuration.setOofService("oofService");
         configuration.setBadThreshold(50);
         configuration.setPoorThreshold(70);
-        configuration.setOptimizers(list);
+        configuration.setPciOptimizer("pci");
+        configuration.setPciAnrOptimizer("pci-anr");
         configuration.setPollingInterval(30);
         configuration.setPollingTimeout(100);
         configuration.setConfigDbService("sdnrService");
@@ -77,7 +78,8 @@ public class ConfigurationTest {
         assertEquals(5, configuration.getMinConfusion());
         assertEquals(1, configuration.getNumSolutions());
         assertEquals("oofService", configuration.getOofService());
-        assertEquals(list, configuration.getOptimizers());
+        assertEquals("pci", configuration.getPciOptimizer());
+        assertEquals("pci-anr", configuration.getPciAnrOptimizer());
         assertEquals("user", configuration.getPgUsername());
         assertEquals("password", configuration.getPgPassword());
         assertEquals("pg", configuration.getPgHost());
