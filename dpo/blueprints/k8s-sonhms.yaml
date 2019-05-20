@@ -30,7 +30,7 @@ inputs:
   tag_version:
     type: string
     description: docker image name and version
-    default: "nexus3.onap.org:10001/onap/org.onap.dcaegen2.services.son-handler:1.0.0"
+    default: "nexus3.onap.org:10001/onap/org.onap.dcaegen2.services.son-handler:1.0.2"
   pgaas_cluster_name:
     type: string
     description: pg cluster
@@ -107,10 +107,34 @@ inputs:
     type: string
     description: pci optimizer name in oof
     default: pci
+  pci_anr_optimizer:
+    type: string
+    description: pci and anr optimizer name in oof
+    default: pci_anr
   log_path:
     type: string
     description: log location in host
     default: /dockerdata-nfs/son-handler
+  poorCountThreshold:
+    type: integer
+    description: poor neighbor count threshold
+    default: 3
+  badCountThreshold:
+    type: integer
+    description: bad neighbor count threshold
+    default: 3
+  oofTriggerCountTimer:
+    type: integer
+    description: timer for oof triggered count in minutes
+    default: 30
+  oofTriggerCountThreshold:
+    type: integer
+    description: Threshold for oof trigger count
+    default: 5
+  policyRespTimer:
+    type: integer
+    description: policy response wait timer in seconds
+    default: 10
   policy_id:
     type: string
     description: policy id for config policy
@@ -240,8 +264,13 @@ node_templates:
         sonhandler.cid: { get_input: cid }
         sonhandler.configDb.service: { get_input: config_db }
         sonhandler.oof.service: { get_input: oof }
-        sonhandler.optimizers: 
-          - { get_input: pci_optimizer }
+        sonhandler.pciOptimizer: { get_input: pci_optimizer }
+        sonhandler.pciAnrOptimizer: { get_input: pci_anr_optimizer }
+        sonhandler.poorCountThreshold: { get_input: poorCountThreshold}
+        sonhandler.badCountThreshold: { get_input: badCountThreshold}
+        sonhandler.oofTriggerCountTimer: { get_input: oofTriggerCountTimer}
+        sonhandler.oofTriggerCountThreshold: { get_input: oofTriggerCountThreshold}
+        sonhandler.policyRespTimer: { get_input: policyRespTimer}
         service_calls:
           sdnr-getpnfname: []
           sdnr-getpci: []

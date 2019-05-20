@@ -72,7 +72,8 @@ public class PmThread implements Runnable {
                     } else if (pmNotification.isLeft()) {
                         Configuration configuration = Configuration.getInstance();
                         Boolean result = pmNotificationHandler.handlePmNotifications(pmNotification.left().value(),
-                                configuration.getBadThreshold());
+                                configuration.getBadThreshold(), configuration.getPoorThreshold(), 
+                                configuration.getBadCountThreshold());
                         log.info("pm notification handler result {}", result);
                     }
 

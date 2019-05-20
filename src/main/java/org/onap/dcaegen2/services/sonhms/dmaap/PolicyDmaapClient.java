@@ -90,8 +90,8 @@ public class PolicyDmaapClient {
 
         Timestamp currentTime = new Timestamp(System.currentTimeMillis());
         Long difference = currentTime.getTime() - startTimer.getTime();
-
-        while (difference < 10000) {
+        int policyRespTimer = configuration.getPolicyRespTimer(); // Timer in seconds
+        while (difference < (policyRespTimer*1000)) {
             Iterable<String> policyResponseMessages;
             try {
                 policyResponseMessages = policyResponseCambriaConsumer.fetch();

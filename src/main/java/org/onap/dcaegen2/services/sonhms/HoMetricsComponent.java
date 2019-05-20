@@ -27,9 +27,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fj.data.Either;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.onap.dcaegen2.services.sonhms.dao.HandOverMetricsRepository;
+import org.onap.dcaegen2.services.sonhms.entity.HandOverMetrics;
 import org.onap.dcaegen2.services.sonhms.model.HoDetails;
 import org.onap.dcaegen2.services.sonhms.utils.BeanUtil;
 import org.slf4j.Logger;
@@ -59,6 +61,32 @@ public class HoMetricsComponent {
             }
         } else {
             return Either.right(404);
+        }
+    }
+
+    public Boolean update(String hoDetails, String srcCellId) {
+        try {
+        HandOverMetricsRepository handOverMetricsRepository = BeanUtil.getBean(HandOverMetricsRepository.class);
+        handOverMetricsRepository.updateHoMetrics(hoDetails, srcCellId);
+        return true;
+        }catch(Exception e) {
+            log.info("Exception in updating ho metrics {}",e);
+            return false;
+        }
+    }
+    public Either<List<HandOverMetrics>, Integer> getAll() {
+        HandOverMetricsRepository handOverMetricsRepository = BeanUtil.getBean(HandOverMetricsRepository.class);
+        try {
+            Iterable<HandOverMetrics> hoMetrics = handOverMetricsRepository.findAll();
+            List<HandOverMetrics> hoMetricsList = new ArrayList<>();
+            Iterator<HandOverMetrics> hoMetricsIterator = hoMetrics.iterator();
+            while (hoMetricsIterator.hasNext()) {
+                hoMetricsList.add(hoMetricsIterator.next());
+            }
+            return Either.left(hoMetricsList);
+        } catch (Exception e) {
+            log.info("error in getAll() hoMetrics");
+            return Either.right(500);
         }
     }
 }

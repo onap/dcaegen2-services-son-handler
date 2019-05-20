@@ -18,7 +18,7 @@
  
 pgaas_cluster_name: dcae-pg-primary.onap
 database_name: sonhms
-tag_version: nexus3.onap.org:10001/onap/org.onap.dcaegen2.services.son-handler:1.0.0
+tag_version: nexus3.onap.org:10001/onap/org.onap.dcaegen2.services.son-handler:1.0.2
 replicas: 1
 aaf_username: 
 aaf_password: 
@@ -38,7 +38,13 @@ cid: sonhms-cid
 config_db: http://sdnc.onap:8181
 oof: http://oof-osdf.onap:8699
 pci_optimizer: pci
+pci_anr_optimizer: pci_anr
 log_path: /dockerdata-nfs/son-handler
+poorCountThreshold: 3
+badCountThreshold: 3
+oofTriggerCountTimer: 30
+oofTriggerCountThreshold: 5
+policyRespTimer: 10
 policy_id: com.Config_PCIMS_CONFIG_POLICY.1.xml
 topic00_location: onap
 topic00_client_role: son-subscriber

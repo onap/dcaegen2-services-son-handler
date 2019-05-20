@@ -66,10 +66,20 @@ public class StateOof {
 
         Configuration config = Configuration.getInstance();
         int numSolutions = config.getNumSolutions();
-        List<String> optimizers = config.getOptimizers();
+        List<String> pciOptimizerList = new ArrayList<>();
+        List<String> pciAnrOptimizerList = new ArrayList<>();
 
-        String oofResponse = OofRestClient.queryOof(numSolutions, transactionId.toString(), "create", cellidList,
-                networkId, optimizers, anrInputList);
+        pciOptimizerList.add(config.getPciOptimizer());
+        pciAnrOptimizerList.add(config.getPciAnrOptimizer());
+        
+        String oofResponse =null;
+        if(!anrInputList.isEmpty()) {
+            oofResponse = OofRestClient.queryOof(numSolutions, transactionId.toString(), "create", cellidList,
+                    networkId, pciAnrOptimizerList, anrInputList);
+        }else {
+            oofResponse = OofRestClient.queryOof(numSolutions, transactionId.toString(), "create", cellidList,
+                    networkId, pciOptimizerList, anrInputList);
+        }
         log.info("Synchronous Response {}", oofResponse);
 
         List<String> childStatus = new ArrayList<>();

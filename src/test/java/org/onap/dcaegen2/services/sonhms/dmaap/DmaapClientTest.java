@@ -76,7 +76,6 @@ public class DmaapClientTest {
 		configuration.setMinConfusion(5);
 		configuration.setNumSolutions(1);
 		configuration.setOofService("oofService");
-		configuration.setOptimizers(list);
 		configuration.setPollingInterval(30);
 		configuration.setPollingTimeout(100);
 		configuration.setConfigDbService("sdnrService");
