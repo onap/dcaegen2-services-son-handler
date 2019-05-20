@@ -27,6 +27,8 @@ public class HoDetails {
     private int attemptsCount;
     private int successCount;
     private float successRate;
+    private int poorCount;
+    private int badCount;
 
     /**
      * default constructor.
@@ -34,6 +36,27 @@ public class HoDetails {
     public HoDetails() {
 
     }
+
+    
+    public int getPoorCount() {
+        return poorCount;
+    }
+
+
+    public void setPoorCount(int poorCount) {
+        this.poorCount = poorCount;
+    }
+
+
+    public int getBadCount() {
+        return badCount;
+    }
+
+
+    public void setBadCount(int badCount) {
+        this.badCount = badCount;
+    }
+
 
     public String getDstCellId() {
         return dstCellId;
