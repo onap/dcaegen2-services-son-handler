@@ -25,6 +25,8 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import fj.data.Either;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +34,7 @@ import java.util.UUID;
 
 import org.onap.dcaegen2.services.sonhms.ConfigPolicy;
 import org.onap.dcaegen2.services.sonhms.Configuration;
+import org.onap.dcaegen2.services.sonhms.HoMetricsComponent;
 import org.onap.dcaegen2.services.sonhms.dao.SonRequestsRepository;
 import org.onap.dcaegen2.services.sonhms.dmaap.PolicyDmaapClient;
 import org.onap.dcaegen2.services.sonhms.entity.SonRequests;
@@ -42,6 +45,7 @@ import org.onap.dcaegen2.services.sonhms.model.Common;
 import org.onap.dcaegen2.services.sonhms.model.Configurations;
 import org.onap.dcaegen2.services.sonhms.model.Data;
 import org.onap.dcaegen2.services.sonhms.model.FapService;
+import org.onap.dcaegen2.services.sonhms.model.HoDetails;
 import org.onap.dcaegen2.services.sonhms.model.Lte;
 import org.onap.dcaegen2.services.sonhms.model.LteCell;
 import org.onap.dcaegen2.services.sonhms.model.NeighborListInUse;
@@ -61,14 +65,16 @@ public class ChildThreadUtils {
     private ConfigPolicy configPolicy;
     private PnfUtils pnfUtils;
     private PolicyDmaapClient policyDmaapClient;
+    private HoMetricsComponent hoMetricsComponent;
 
     /**
      * Parameterized constructor.
      */
-    public ChildThreadUtils(ConfigPolicy configPolicy, PnfUtils pnfUtils, PolicyDmaapClient policyDmaapClient) {
+    public ChildThreadUtils(ConfigPolicy configPolicy, PnfUtils pnfUtils, PolicyDmaapClient policyDmaapClient, HoMetricsComponent hoMetricsComponent) {
         this.configPolicy = configPolicy;
         this.pnfUtils = pnfUtils;
         this.policyDmaapClient = policyDmaapClient;
+        this.hoMetricsComponent = hoMetricsComponent;
     }
 
     /**
@@ -219,7 +225,29 @@ public class ChildThreadUtils {
                                         lteCellList, String.valueOf(lteCellList.size()))))))),
                                 null);
                         configurations.add(configuration);
+                        Either<List<HoDetails>, Integer> hoMetrics = hoMetricsComponent.getHoMetrics(cellId);
+                        if(hoMetrics.isLeft()) {
+                            List<HoDetails> hoDetailsList = hoMetrics.left().value();
+                            for(LteCell lteCell:lteCellList) {
+                                String removedNbr = lteCell.getCid();
+                                for(HoDetails hoDetail:hoDetailsList) {
+                                    if(removedNbr.equals(hoDetail.getDstCellId())) {
+                                        hoDetailsList.remove(hoDetail);
+                                        break;
+                                    }
+                                }
+                            }
+                            String hoDetailsString = null;
+                            ObjectMapper mapper = new ObjectMapper();
+                            try {
+                                hoDetailsString = mapper.writeValueAsString(hoDetailsList);
+                            } catch (Exception e) {
+                                log.error("Error in writing handover metrics json ", e);
+                                return false;
+                            }
+                            hoMetricsComponent.update(hoDetailsString, cellId);
                     }
+                    
                 }
                 Payload payload = new Payload(configurations);
                 ObjectMapper mapper = new ObjectMapper();
@@ -238,6 +266,8 @@ public class ChildThreadUtils {
                 log.info("send notification to policy result {} ", result);
                 policyDmaapClient.handlePolicyResponse(requestId);
                 log.info("handled policy response in ModifyConfigANR");
+                
+                }
 
             }
 

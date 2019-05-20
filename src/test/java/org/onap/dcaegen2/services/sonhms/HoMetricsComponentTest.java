@@ -23,6 +23,7 @@ package org.onap.dcaegen2.services.sonhms;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
 import fj.data.Either;
@@ -30,6 +31,7 @@ import fj.data.Either;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.BeforeClass;
@@ -38,6 +40,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.onap.dcaegen2.services.sonhms.dao.HandOverMetricsRepository;
+import org.onap.dcaegen2.services.sonhms.entity.HandOverMetrics;
 import org.onap.dcaegen2.services.sonhms.model.HoDetails;
 import org.onap.dcaegen2.services.sonhms.utils.BeanUtil;
 import org.powermock.api.mockito.PowerMockito;
@@ -80,6 +83,22 @@ public class HoMetricsComponentTest {
         assertEquals(400,res);
     }
     
+    @Test
+    public void getAllTest() {
+        PowerMockito.mockStatic(BeanUtil.class);
+        PowerMockito.when(BeanUtil
+                .getBean(HandOverMetricsRepository.class)).thenReturn(handOverMetricsRepositoryMock);
+        HandOverMetrics hoMetrics = new HandOverMetrics();
+        hoMetrics.setHoDetails("hoDetails");
+        hoMetrics.setSrcCellId("cell1");
+        List<HandOverMetrics> hoList = new ArrayList<>();
+        hoList.add(hoMetrics);
+        Iterable<HandOverMetrics> response = hoList;
+        when(handOverMetricsRepositoryMock.findAll()).thenReturn(response);
+        assertTrue(hoMetricsComponent.getAll().isLeft());
+        when(handOverMetricsRepositoryMock.findAll()).thenReturn(null);
+        assertTrue(hoMetricsComponent.getAll().isRight());
+    }
     private static String readFromFile(String file) { 
         String content = new String();
         try {
