@@ -99,9 +99,9 @@ public class PMNotificationHandlerTest {
         when(flagMock.getHolder()).thenReturn("NONE");
         when(policyDmaapClient.sendNotificationToPolicy(Mockito.anyString())).thenReturn(true);
         when(policyDmaapClient.handlePolicyResponse(Mockito.anyString())).thenReturn(true);
-        assertTrue(pmNotificationHandler.handlePmNotifications(pmNotification, 50));
-        assertFalse(pmNotificationHandler.handlePmNotifications(null, 0));
-        assertTrue(pmNotificationHandler.handlePmNotifications(pmNotification1, 50));
+        assertTrue(pmNotificationHandler.handlePmNotifications(pmNotification, 50, 70, 1));
+        assertFalse(pmNotificationHandler.handlePmNotifications(null, 0, 0,0));
+        assertTrue(pmNotificationHandler.handlePmNotifications(pmNotification1, 50, 70, 1));
     }
 
     private static String readFromFile(String file) { 

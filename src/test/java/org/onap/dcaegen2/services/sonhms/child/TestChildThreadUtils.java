@@ -28,6 +28,8 @@ import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import fj.data.Either;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,11 +49,14 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.onap.dcaegen2.services.sonhms.ConfigPolicy;
 import org.onap.dcaegen2.services.sonhms.Configuration;
+import org.onap.dcaegen2.services.sonhms.HoMetricsComponent;
+import org.onap.dcaegen2.services.sonhms.dao.HandOverMetricsRepository;
 import org.onap.dcaegen2.services.sonhms.dao.SonRequestsRepository;
 import org.onap.dcaegen2.services.sonhms.dmaap.PolicyDmaapClient;
 import org.onap.dcaegen2.services.sonhms.entity.SonRequests;
 import org.onap.dcaegen2.services.sonhms.exceptions.ConfigDbNotFoundException;
 import org.onap.dcaegen2.services.sonhms.model.CellPciPair;
+import org.onap.dcaegen2.services.sonhms.model.HoDetails;
 import org.onap.dcaegen2.services.sonhms.model.PolicyNotification;
 import org.onap.dcaegen2.services.sonhms.restclient.AsyncResponseBody;
 import org.onap.dcaegen2.services.sonhms.restclient.SdnrRestClient;
@@ -79,6 +84,12 @@ public class TestChildThreadUtils {
 	@Mock
 	private PolicyDmaapClient policyDmaapClient;
 	
+	@Mock
+	private HandOverMetricsRepository hoMetricRepository;
+	
+	@Mock
+	private HoMetricsComponent hoMetricsComponent;
+	
 	@InjectMocks
 	private ChildThreadUtils childThreadUtils2;
 
@@ -92,7 +103,7 @@ public class TestChildThreadUtils {
 		Map<String, Object> configPolicyMap = new HashMap<>();
 		configPolicyMap.put("PCI_MODCONFIG_POLICY_NAME", "ControlLoop-vPCI-fb41f388-a5f2-11e8-98d0-529269fb1459");
 		configPolicy.setConfig(configPolicyMap);
-		childThreadUtils = new ChildThreadUtils(configPolicy, pnfUtils,  policyDmaapClient);
+		childThreadUtils = new ChildThreadUtils(configPolicy, pnfUtils,  policyDmaapClient, hoMetricsComponent);
 		MockitoAnnotations.initMocks(this);
 		
 	}
@@ -167,6 +178,8 @@ public class TestChildThreadUtils {
 	public void sendToPolicyTest() throws ConfigDbNotFoundException {
 	    
 	    PowerMockito.mockStatic(SdnrRestClient.class);
+	    PowerMockito.mockStatic(BeanUtil.class);
+
 	    String asyncRspBodyString = readFromFile("/AsyncRespBody.json");
 	    ObjectMapper mapper = new ObjectMapper();
 	    AsyncResponseBody async = new AsyncResponseBody ();
@@ -198,6 +211,13 @@ public class TestChildThreadUtils {
         Map<String, List<Map<String,List<String>>>> expected = new HashMap<>();
         expected.put("pnfName", list);
         when(pnfUtils.getPnfsForAnrSolutions(async.getSolutions().getAnrSolutions())).thenReturn(expected);
+        HoDetails hoDetails = new HoDetails();
+        hoDetails.setDstCellId("EXP006");
+        List<HoDetails> hoDetailsList = new ArrayList<>();
+        hoDetailsList.add(hoDetails);
+        Either<List<HoDetails>, Integer> hoMetrics = Either.left(hoDetailsList);
+        when(hoMetricsComponent.getHoMetrics(Mockito.anyString())).thenReturn(hoMetrics);
+        when(hoMetricsComponent.update(Mockito.anyString(), Mockito.anyString())).thenReturn(true);
         assertTrue(childThreadUtils2.sendToPolicy(async));
         
 	}

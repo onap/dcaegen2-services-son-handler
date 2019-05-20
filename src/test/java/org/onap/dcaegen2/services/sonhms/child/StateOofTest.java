@@ -73,7 +73,7 @@ public class StateOofTest {
 		}
 
 		try {
-			transactionId = oof.triggerOof(cellList, "networkId", null);
+			transactionId = oof.triggerOof(cellList, "networkId", new ArrayList<>());
 		} catch (OofNotFoundException | InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

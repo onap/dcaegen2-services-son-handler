@@ -114,14 +114,20 @@ public class ConfigFetchFromCbs {
         String namespace = jsonObject.get("sonhandler.namespace").getAsString();
         String callbackUrl = "http://" + System.getenv("HOSTNAME") + "." + namespace + ":8080/callbackUrl";
 
-        JsonArray optimizersJson = jsonObject.getAsJsonArray("sonhandler.optimizers");
-        List<String> optimizers = new Gson().fromJson(optimizersJson, listType);
+        String pciOptimizer = jsonObject.get("sonhandler.pciOptimizer").getAsString();
+        String pciAnrOptimizer = jsonObject.get("sonhandler.pciAnrOptimizer").getAsString();
 
         String oofService = jsonObject.get("sonhandler.oof.service").getAsString();
         int pollingTimeout = jsonObject.get("sonhandler.pollingTimeout").getAsInt();
 
         int badThreshold = jsonObject.get("sonhandler.badThreshold").getAsInt();
         int poorThreshold = jsonObject.get("sonhandler.poorThreshold").getAsInt();
+
+        int poorCountThreshold = jsonObject.get("sonhandler.poorCountThreshold").getAsInt();
+        int badCountThreshold = jsonObject.get("sonhandler.badCountThreshold").getAsInt();
+        int oofTriggerCountTimer = jsonObject.get("sonhandler.oofTriggerCountTimer").getAsInt();
+        int oofTriggerCountThreshold = jsonObject.get("sonhandler.oofTriggerCountThreshold").getAsInt();
+        int policyRespTimer = jsonObject.get("sonhandler.policyRespTimer").getAsInt();
 
         configuration.setStreamsSubscribes(streamsSubscribes);
         configuration.setStreamsPublishes(streamsPublishes);
@@ -141,11 +147,18 @@ public class ConfigFetchFromCbs {
         configuration.setBufferTime(bufferTime);
         configuration.setConfigDbService(configDbService);
         configuration.setCallbackUrl(callbackUrl);
-        configuration.setOptimizers(optimizers);
+        configuration.setPciOptimizer(pciOptimizer);
+        configuration.setPciAnrOptimizer(pciAnrOptimizer);
         configuration.setOofService(oofService);
         configuration.setPollingTimeout(pollingTimeout);
         configuration.setBadThreshold(badThreshold);
         configuration.setPoorThreshold(poorThreshold);
+        configuration.setPoorCountThreshold(poorCountThreshold);
+        configuration.setBadCountThreshold(badCountThreshold);
+        configuration.setOofTriggerCountTimer(oofTriggerCountTimer);
+        configuration.setOofTriggerCountThreshold(oofTriggerCountThreshold);
+        configuration.setPolicyRespTimer(policyRespTimer);
+        
         log.info("configuration from CBS {}", configuration.toString());
 
     }
