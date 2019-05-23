@@ -38,16 +38,15 @@ import org.slf4j.Logger;
 public class PolicyDmaapClient {
 
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(PolicyDmaapClient.class);
-    
+
     private DmaapUtils dmaapUtils;
-    
+
     private Configuration configuration;
-    
-    
+
     public PolicyDmaapClient(DmaapUtils dmaapUtils, Configuration configuration) {
         this.dmaapUtils = dmaapUtils;
         this.configuration = configuration;
-    } 
+    }
 
     /**
      * Method stub for sending notification to policy.
@@ -71,7 +70,7 @@ public class PolicyDmaapClient {
         }
         return true;
     }
-    
+
     /**
      * Handles policy response.
      */
@@ -91,7 +90,7 @@ public class PolicyDmaapClient {
         Timestamp currentTime = new Timestamp(System.currentTimeMillis());
         Long difference = currentTime.getTime() - startTimer.getTime();
         int policyRespTimer = configuration.getPolicyRespTimer(); // Timer in seconds
-        while (difference < (policyRespTimer*1000)) {
+        while (difference < (policyRespTimer * 1000)) {
             Iterable<String> policyResponseMessages;
             try {
                 policyResponseMessages = policyResponseCambriaConsumer.fetch();

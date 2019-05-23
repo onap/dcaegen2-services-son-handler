@@ -118,6 +118,7 @@ public class ConfigFetchFromCbs {
         String pciAnrOptimizer = jsonObject.get("sonhandler.pciAnrOptimizer").getAsString();
 
         String oofService = jsonObject.get("sonhandler.oof.service").getAsString();
+        String oofEndpoint = jsonObject.get("sonhandler.oof.endpoint").getAsString();
         int pollingTimeout = jsonObject.get("sonhandler.pollingTimeout").getAsInt();
 
         int badThreshold = jsonObject.get("sonhandler.badThreshold").getAsInt();
@@ -150,6 +151,7 @@ public class ConfigFetchFromCbs {
         configuration.setPciOptimizer(pciOptimizer);
         configuration.setPciAnrOptimizer(pciAnrOptimizer);
         configuration.setOofService(oofService);
+        configuration.setOofEndpoint(oofEndpoint);
         configuration.setPollingTimeout(pollingTimeout);
         configuration.setBadThreshold(badThreshold);
         configuration.setPoorThreshold(poorThreshold);

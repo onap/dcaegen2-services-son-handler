@@ -26,6 +26,7 @@ import java.util.List;
 
 import org.onap.dcaegen2.services.sonhms.model.AnrInput;
 
+
 public class CellInfo {
     String networkId = null;
     List<String> cellIdList = new ArrayList<>();
