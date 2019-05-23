@@ -103,6 +103,10 @@ inputs:
   oof:
     type: string
     description: oof location
+  oof_endpoint:
+    type: string
+    description: oof endpoint
+    default: /api/oof/v1/pci
   pci_optimizer:
     type: string
     description: pci optimizer name in oof
@@ -264,6 +268,7 @@ node_templates:
         sonhandler.cid: { get_input: cid }
         sonhandler.configDb.service: { get_input: config_db }
         sonhandler.oof.service: { get_input: oof }
+        sonhandler.oof.endpoint: { get_input: oof_endpoint }
         sonhandler.pciOptimizer: { get_input: pci_optimizer }
         sonhandler.pciAnrOptimizer: { get_input: pci_anr_optimizer }
         sonhandler.poorCountThreshold: { get_input: poorCountThreshold}

@@ -235,7 +235,6 @@ public class PmNotificationHandler {
     }
 
     private Boolean saveToHandOverMetrics(List<HoDetails> hoDetailsList, String srcCellId) {
-        HandOverMetricsRepository handOverMetricsRepository = BeanUtil.getBean(HandOverMetricsRepository.class);
         ObjectMapper mapper = new ObjectMapper();
         String hoDetailsString = null;
         try {
@@ -247,6 +246,7 @@ public class PmNotificationHandler {
         HandOverMetrics handOverMetrics = new HandOverMetrics();
         handOverMetrics.setHoDetails(hoDetailsString);
         handOverMetrics.setSrcCellId(srcCellId);
+        HandOverMetricsRepository handOverMetricsRepository = BeanUtil.getBean(HandOverMetricsRepository.class);
         handOverMetricsRepository.save(handOverMetrics);
         return true;
     }

@@ -37,6 +37,7 @@ cg: sonhms-cg
 cid: sonhms-cid
 config_db: http://sdnc.onap:8181
 oof: http://oof-osdf.onap:8699
+oof_endpoint: /api/oof/v1/pci
 pci_optimizer: pci
 pci_anr_optimizer: pci_anr
 log_path: /dockerdata-nfs/son-handler
