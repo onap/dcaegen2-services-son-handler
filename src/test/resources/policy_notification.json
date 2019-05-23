@@ -14,5 +14,5 @@
 		"generic-vnf.is-closed-loop-disabled": "false",
 		"generic-vnf.vnf-id": "ncserver23"
 	},
-	"Action": "action"
+	"Action": "ModifyConfig"
 }

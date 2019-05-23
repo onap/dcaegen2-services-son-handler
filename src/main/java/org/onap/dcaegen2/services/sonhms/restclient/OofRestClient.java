@@ -96,14 +96,18 @@ public class OofRestClient {
         }
         log.info("requestBody{}", requestBody);
 
-        String requestUrl = configuration.getOofService() + "/api/oof/pci/v1";
-        log.debug("requestUrl {}", requestUrl);
+        String requestUrl = configuration.getOofService() + configuration.getOofEndpoint();
+        log.info("requestUrl {}", requestUrl);
         ResponseEntity<String> response = null;
         response = SonHandlerRestTemplate.sendPostRequestToOof(requestUrl, requestBody,
                 new ParameterizedTypeReference<String>() {
                 });
+        
         if (response == null) {
             throw new OofNotFoundException("Request to oof failed");
+        }
+        else if (response.getStatusCodeValue() != 202) {
+            throw new OofNotFoundException("Request to oof failed with status code" + response.getStatusCodeValue());
         }
         log.info("response {}", response);
 

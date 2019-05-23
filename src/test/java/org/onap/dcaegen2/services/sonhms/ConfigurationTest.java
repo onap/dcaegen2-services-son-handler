@@ -59,8 +59,13 @@ public class ConfigurationTest {
         configuration.setMinConfusion(5);
         configuration.setNumSolutions(1);
         configuration.setOofService("oofService");
+        configuration.setOofEndpoint("/api/oof/v1/pci");
+        configuration.setOofTriggerCountTimer(30);
+        configuration.setOofTriggerCountThreshold(5);
         configuration.setBadThreshold(50);
         configuration.setPoorThreshold(70);
+        configuration.setBadCountThreshold(3);
+        configuration.setPoorCountThreshold(3);
         configuration.setPciOptimizer("pci");
         configuration.setPciAnrOptimizer("pci-anr");
         configuration.setPollingInterval(30);
@@ -78,6 +83,9 @@ public class ConfigurationTest {
         assertEquals(5, configuration.getMinConfusion());
         assertEquals(1, configuration.getNumSolutions());
         assertEquals("oofService", configuration.getOofService());
+        assertEquals("/api/oof/v1/pci", configuration.getOofEndpoint());
+        assertEquals(30, configuration.getOofTriggerCountTimer());
+        assertEquals(5, configuration.getOofTriggerCountThreshold());
         assertEquals("pci", configuration.getPciOptimizer());
         assertEquals("pci-anr", configuration.getPciAnrOptimizer());
         assertEquals("user", configuration.getPgUsername());
@@ -91,6 +99,8 @@ public class ConfigurationTest {
         assertEquals("sourceId", configuration.getSourceId());
         assertEquals(50, configuration.getBadThreshold());
         assertEquals(70, configuration.getPoorThreshold());
+        assertEquals(3, configuration.getBadCountThreshold());
+        assertEquals(3, configuration.getPoorCountThreshold());
         assertEquals(subscribes, configuration.getStreamsSubscribes());
         assertEquals(subscribes, configuration.getStreamsPublishes());
     }

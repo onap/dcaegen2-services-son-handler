@@ -70,7 +70,8 @@ public class ChildThreadUtils {
     /**
      * Parameterized constructor.
      */
-    public ChildThreadUtils(ConfigPolicy configPolicy, PnfUtils pnfUtils, PolicyDmaapClient policyDmaapClient, HoMetricsComponent hoMetricsComponent) {
+    public ChildThreadUtils(ConfigPolicy configPolicy, PnfUtils pnfUtils, PolicyDmaapClient policyDmaapClient,
+            HoMetricsComponent hoMetricsComponent) {
         this.configPolicy = configPolicy;
         this.pnfUtils = pnfUtils;
         this.policyDmaapClient = policyDmaapClient;
@@ -120,11 +121,22 @@ public class ChildThreadUtils {
     public String getNotificationString(String pnfName, String requestId, String payloadString, Long alarmStartTime,
             String action) {
 
-        String closedLoopControlName = "ControlLoop-vPCI-fb41f388-a5f2-11e8-98d0-529269fb1459";
-        try {
-            closedLoopControlName = (String) configPolicy.getConfig().get("PCI_MODCONFIG_POLICY_NAME");
-        } catch (NullPointerException e) {
-            log.error("Config policy not found, Using default");
+        String closedLoopControlName = "";
+        if (action.equals("ModifyConfig")) {
+            closedLoopControlName = "ControlLoop-vPCI-fb41f388-a5f2-11e8-98d0-529269fb1459";
+            try {
+                closedLoopControlName = (String) configPolicy.getConfig().get("PCI_MODCONFIG_POLICY_NAME");
+            } catch (NullPointerException e) {
+                log.error("Config policy not found, Using default");
+            }
+        }
+        else {
+            closedLoopControlName = "ControlLoop-vSONH-7d4baf04-8875-4d1f-946d-06b874048b61";
+            try {
+                closedLoopControlName = (String) configPolicy.getConfig().get("PCI_MODCONFIGANR_POLICY_NAME");
+            } catch (NullPointerException e) {
+                log.error("Config policy not found, Using default");
+            }
         }
 
         PolicyNotification policyNotification = new PolicyNotification(closedLoopControlName, requestId, alarmStartTime,
@@ -226,12 +238,12 @@ public class ChildThreadUtils {
                                 null);
                         configurations.add(configuration);
                         Either<List<HoDetails>, Integer> hoMetrics = hoMetricsComponent.getHoMetrics(cellId);
-                        if(hoMetrics.isLeft()) {
+                        if (hoMetrics.isLeft()) {
                             List<HoDetails> hoDetailsList = hoMetrics.left().value();
-                            for(LteCell lteCell:lteCellList) {
+                            for (LteCell lteCell : lteCellList) {
                                 String removedNbr = lteCell.getCid();
-                                for(HoDetails hoDetail:hoDetailsList) {
-                                    if(removedNbr.equals(hoDetail.getDstCellId())) {
+                                for (HoDetails hoDetail : hoDetailsList) {
+                                    if (removedNbr.equals(hoDetail.getDstCellId())) {
                                         hoDetailsList.remove(hoDetail);
                                         break;
                                     }
@@ -246,27 +258,27 @@ public class ChildThreadUtils {
                                 return false;
                             }
                             hoMetricsComponent.update(hoDetailsString, cellId);
+                        }
+
                     }
-                    
-                }
-                Payload payload = new Payload(configurations);
-                ObjectMapper mapper = new ObjectMapper();
-                mapper.setSerializationInclusion(Include.NON_NULL);
-                String payloadString = null;
-                try {
-                    payloadString = mapper.writeValueAsString(payload);
-                } catch (JsonProcessingException e) {
-                    log.error("Exception in writing anrupdate string", e);
-                }
-                String requestId = UUID.randomUUID().toString();
-                String notification = getNotificationString(pnfName, requestId, payloadString,
-                        System.currentTimeMillis(), "ModifyConfigANR");
-                log.info("Policy Notification: {}", notification);
-                Boolean result = policyDmaapClient.sendNotificationToPolicy(notification);
-                log.info("send notification to policy result {} ", result);
-                policyDmaapClient.handlePolicyResponse(requestId);
-                log.info("handled policy response in ModifyConfigANR");
-                
+                    Payload payload = new Payload(configurations);
+                    ObjectMapper mapper = new ObjectMapper();
+                    mapper.setSerializationInclusion(Include.NON_NULL);
+                    String payloadString = null;
+                    try {
+                        payloadString = mapper.writeValueAsString(payload);
+                    } catch (JsonProcessingException e) {
+                        log.error("Exception in writing anrupdate string", e);
+                    }
+                    String requestId = UUID.randomUUID().toString();
+                    String notification = getNotificationString(pnfName, requestId, payloadString,
+                            System.currentTimeMillis(), "ModifyConfigANR");
+                    log.info("Policy Notification: {}", notification);
+                    Boolean result = policyDmaapClient.sendNotificationToPolicy(notification);
+                    log.info("send notification to policy result {} ", result);
+                    policyDmaapClient.handlePolicyResponse(requestId);
+                    log.info("handled policy response in ModifyConfigANR");
+
                 }
 
             }

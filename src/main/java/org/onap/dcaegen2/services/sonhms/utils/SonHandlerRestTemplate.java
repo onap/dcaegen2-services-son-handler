@@ -21,8 +21,24 @@
 
 package org.onap.dcaegen2.services.sonhms.utils;
 
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Collections;
 
+import javax.net.ssl.SSLContext;
+
+import org.apache.http.config.Registry;
+import org.apache.http.config.RegistryBuilder;
+import org.apache.http.conn.socket.ConnectionSocketFactory;
+import org.apache.http.conn.socket.PlainConnectionSocketFactory;
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.conn.ssl.SSLContexts;
+import org.apache.http.conn.ssl.TrustStrategy;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.BasicHttpClientConnectionManager;
 import org.slf4j.Logger;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -31,9 +47,11 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+@SuppressWarnings("deprecation")
 @Component
 public class SonHandlerRestTemplate {
 
@@ -42,9 +60,9 @@ public class SonHandlerRestTemplate {
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(SonHandlerRestTemplate.class);
 
     private SonHandlerRestTemplate() {
-        
+
     }
-    
+
     /**
      * Send Post Request.
      */
@@ -63,7 +81,6 @@ public class SonHandlerRestTemplate {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
 
     /**
      * Send Get Request.
@@ -114,12 +131,33 @@ public class SonHandlerRestTemplate {
         headers.add(AUTH, "Basic cGNpX3Rlc3Q6cGNpX3Rlc3Rwd2Q=");
         HttpEntity<Object> requestEntity = new HttpEntity<>(requestBody, headers);
         try {
-            RestTemplate restTemplate = BeanUtil.getBean(RestTemplate.class);
+            RestTemplate restTemplate = new RestTemplate(useApacheHttpClientWithSelfSignedSupport());
             return restTemplate.exchange(requestUrl, HttpMethod.POST, requestEntity, responseType);
         } catch (Exception e) {
-            log.debug(EXCEPTION_MSG, e);
+            log.error(EXCEPTION_MSG, e);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    private static HttpComponentsClientHttpRequestFactory useApacheHttpClientWithSelfSignedSupport() {
+
+        TrustStrategy acceptingTrustStrategy = (cert, authType) -> true;
+        SSLContext sslContext = null;
+        try {
+            sslContext = SSLContexts.custom().loadTrustMaterial(null, acceptingTrustStrategy).build();
+        } catch (KeyManagementException | NoSuchAlgorithmException | KeyStoreException e) {
+            log.error(EXCEPTION_MSG, e);
+        }
+        SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslContext, NoopHostnameVerifier.INSTANCE);
+        Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder.<ConnectionSocketFactory>create()
+                .register("https", sslsf).register("http", new PlainConnectionSocketFactory()).build();
+        BasicHttpClientConnectionManager connectionManager = new BasicHttpClientConnectionManager(
+                socketFactoryRegistry);
+        CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(sslsf)
+                .setConnectionManager(connectionManager).build();
+        HttpComponentsClientHttpRequestFactory useApacheHttpClient = new HttpComponentsClientHttpRequestFactory();
+        useApacheHttpClient.setHttpClient(httpClient);
+        return useApacheHttpClient;
     }
 
 }

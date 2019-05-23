@@ -34,6 +34,7 @@ public class Configuration {
     private List<String> dmaapServers;
     private String configDbService;
     private String oofService;
+    private String oofEndpoint;
     private String cg;
     private String cid;
     private int pollingInterval;
@@ -330,20 +331,29 @@ public class Configuration {
         this.pciAnrOptimizer = pciAnrOptimizer;
     }
 
+    public String getOofEndpoint() {
+        return oofEndpoint;
+    }
+
+    public void setOofEndpoint(String oofEndpoint) {
+        this.oofEndpoint = oofEndpoint;
+    }
+
     @Override
     public String toString() {
         return "Configuration [pgHost=" + pgHost + ", pgPort=" + pgPort + ", pgUsername=" + pgUsername + ", pgPassword="
                 + pgPassword + ", dmaapServers=" + dmaapServers + ", configDbService=" + configDbService
-                + ", oofService=" + oofService + ", cg=" + cg + ", cid=" + cid + ", pollingInterval=" + pollingInterval
-                + ", pollingTimeout=" + pollingTimeout + ", minCollision=" + minCollision + ", minConfusion="
-                + minConfusion + ", sourceId=" + sourceId + ", callbackUrl=" + callbackUrl + ", pciOptimizer="
-                + pciOptimizer + ", pciAnrOptimizer=" + pciAnrOptimizer + ", numSolutions=" + numSolutions
-                + ", bufferTime=" + bufferTime + ", maximumClusters=" + maximumClusters + ", aafUsername=" + aafUsername
-                + ", aafPassword=" + aafPassword + ", streamsSubscribes=" + streamsSubscribes + ", streamsPublishes="
-                + streamsPublishes + ", badThreshold=" + badThreshold + ", poorThreshold=" + poorThreshold
-                + ", poorCountThreshold=" + poorCountThreshold + ", badCountThreshold=" + badCountThreshold
-                + ", oofTriggerCountTimer=" + oofTriggerCountTimer + ", oofTriggerCountThreshold="
-                + oofTriggerCountThreshold + ", policyRespTimer=" + policyRespTimer + "]";
+                + ", oofService=" + oofService + ", oofEndpoint=" + oofEndpoint + ", cg=" + cg + ", cid=" + cid
+                + ", pollingInterval=" + pollingInterval + ", pollingTimeout=" + pollingTimeout + ", minCollision="
+                + minCollision + ", minConfusion=" + minConfusion + ", sourceId=" + sourceId + ", callbackUrl="
+                + callbackUrl + ", pciOptimizer=" + pciOptimizer + ", pciAnrOptimizer=" + pciAnrOptimizer
+                + ", numSolutions=" + numSolutions + ", bufferTime=" + bufferTime + ", maximumClusters="
+                + maximumClusters + ", aafUsername=" + aafUsername + ", aafPassword=" + aafPassword
+                + ", streamsSubscribes=" + streamsSubscribes + ", streamsPublishes=" + streamsPublishes
+                + ", badThreshold=" + badThreshold + ", poorThreshold=" + poorThreshold + ", poorCountThreshold="
+                + poorCountThreshold + ", badCountThreshold=" + badCountThreshold + ", oofTriggerCountTimer="
+                + oofTriggerCountTimer + ", oofTriggerCountThreshold=" + oofTriggerCountThreshold + ", policyRespTimer="
+                + policyRespTimer + "]";
     }
     
     

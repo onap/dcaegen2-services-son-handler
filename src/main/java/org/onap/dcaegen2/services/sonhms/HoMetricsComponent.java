@@ -64,16 +64,23 @@ public class HoMetricsComponent {
         }
     }
 
+    /**
+     * Update HO metrics.
+     */
     public Boolean update(String hoDetails, String srcCellId) {
         try {
-        HandOverMetricsRepository handOverMetricsRepository = BeanUtil.getBean(HandOverMetricsRepository.class);
-        handOverMetricsRepository.updateHoMetrics(hoDetails, srcCellId);
-        return true;
-        }catch(Exception e) {
-            log.info("Exception in updating ho metrics {}",e);
+            HandOverMetricsRepository handOverMetricsRepository = BeanUtil.getBean(HandOverMetricsRepository.class);
+            handOverMetricsRepository.updateHoMetrics(hoDetails, srcCellId);
+            return true;
+        } catch (Exception e) {
+            log.info("Exception in updating ho metrics {}", e);
             return false;
         }
     }
+
+    /**
+     * Get all HO metrics.
+     */
     public Either<List<HandOverMetrics>, Integer> getAll() {
         HandOverMetricsRepository handOverMetricsRepository = BeanUtil.getBean(HandOverMetricsRepository.class);
         try {
