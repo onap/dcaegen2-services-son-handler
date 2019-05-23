@@ -163,7 +163,7 @@ public class TestChildThreadUtils {
 		String requestId = "a4130fd5-2291-4a83-8992-04e4c9f32731";
 		Long alarmStart = Long.parseLong("1542445563201");
 
-		String result = childThreadUtils.getNotificationString(pnfName, requestId, "payloadString", alarmStart, "action");
+		String result = childThreadUtils.getNotificationString(pnfName, requestId, "payloadString", alarmStart, "ModifyConfig");
 		PolicyNotification actual = new PolicyNotification();
 		try {
 			actual = mapper.readValue(result, PolicyNotification.class);

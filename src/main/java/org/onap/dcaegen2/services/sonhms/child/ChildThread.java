@@ -49,6 +49,7 @@ import org.onap.dcaegen2.services.sonhms.dao.SonRequestsRepository;
 import org.onap.dcaegen2.services.sonhms.dmaap.PolicyDmaapClient;
 import org.onap.dcaegen2.services.sonhms.entity.HandOverMetrics;
 import org.onap.dcaegen2.services.sonhms.exceptions.ConfigDbNotFoundException;
+import org.onap.dcaegen2.services.sonhms.exceptions.OofNotFoundException;
 import org.onap.dcaegen2.services.sonhms.model.AnrInput;
 import org.onap.dcaegen2.services.sonhms.model.CellPciPair;
 import org.onap.dcaegen2.services.sonhms.model.ClusterMap;
@@ -227,7 +228,7 @@ public class ChildThread implements Runnable {
                 }
                 policyTriggerFlag.setHolder("CHILD");
                 policyTriggerFlag.setNumChilds(policyTriggerFlag.getNumChilds() + 1);
-                
+
                 Timer timerOof = BeanUtil.getBean(Timer.class);
                 if (!timerOof.getIsTimer()) {
                     log.info("Starting timer");
@@ -238,13 +239,13 @@ public class ChildThread implements Runnable {
                     log.info("startTime {}", startTime);
 
                 }
-                Timestamp currentTime = new Timestamp(System.currentTimeMillis());
-                Long difference = currentTime.getTime() - timerOof.getStartTime().getTime();
                 int timerThreshold = (Configuration.getInstance().getOofTriggerCountTimer() * 60000);
                 int triggerCountThreshold = Configuration.getInstance().getOofTriggerCountThreshold();
                 log.info("Time threshold {}, triggerCountThreshold {}", timerThreshold, triggerCountThreshold);
                 log.info("oof trigger count {}", timerOof.getCount());
-                timerOof.setCount(timerOof.getCount()+1);
+                timerOof.setCount(timerOof.getCount() + 1);
+                Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+                Long difference = currentTime.getTime() - timerOof.getStartTime().getTime();
                 if (difference < timerThreshold && timerOof.getCount() > triggerCountThreshold) {
                     log.info("difference {}", difference);
 
@@ -258,7 +259,6 @@ public class ChildThread implements Runnable {
                         }
                         transactionId = oof.triggerOof(cellidList, networkId, new ArrayList<>());
 
-
                     } else {
                         log.info("ANR trigger response left {}", anrTriggerResponse.left().value());
                         List<AnrInput> anrInputList = anrTriggerResponse.left().value();
@@ -268,9 +268,9 @@ public class ChildThread implements Runnable {
                     }
 
                 } else {
-                    
+
                     transactionId = oof.triggerOof(cellidList, networkId, new ArrayList<>());
-                    
+
                     if (difference > timerThreshold) {
                         timerOof.setIsTimer(false);
                         timerOof.setCount(0);
@@ -330,8 +330,17 @@ public class ChildThread implements Runnable {
 
             }
 
+        } catch (OofNotFoundException e) {
+            log.error("OOF not found, Removing flag and cleaning up");
+            Flag policyTriggerFlag = BeanUtil.getBean(Flag.class);
+            policyTriggerFlag.setNumChilds(policyTriggerFlag.getNumChilds() - 1);
+            if (policyTriggerFlag.getNumChilds() == 0) {
+                policyTriggerFlag.setHolder("NONE");
+            }
         } catch (Exception e) {
             log.error("{}", e);
+            
+            
         }
 
         cleanup();
@@ -444,7 +453,7 @@ public class ChildThread implements Runnable {
         Configuration configuration = Configuration.getInstance();
         List<HoDetails> hoDetailsList;
         Either<List<HandOverMetrics>, Integer> hoMetrics = hoMetricsComponent.getAll();
-        if(hoMetrics.isRight()) {
+        if (hoMetrics.isRight()) {
             log.error("Error in getting HO details from db");
             return Either.right(500);
         }
@@ -462,11 +471,10 @@ public class ChildThread implements Runnable {
             List<String> removeableNeighbors = new ArrayList<>();
             log.info("Checking poor count for src cell {}", hoMetric.getSrcCellId());
             for (HoDetails hoDetail : hoDetailsList) {
-                    if (hoDetail.getPoorCount() >= configuration.getPoorCountThreshold()) {
-                        removeableNeighbors.add(hoDetail.getDstCellId());
-                    }
+                if (hoDetail.getPoorCount() >= configuration.getPoorCountThreshold()) {
+                    removeableNeighbors.add(hoDetail.getDstCellId());
                 }
-         
+            }
 
             if (!removeableNeighbors.isEmpty()) {
                 AnrInput anrInput = new AnrInput(hoMetric.getSrcCellId(), removeableNeighbors);

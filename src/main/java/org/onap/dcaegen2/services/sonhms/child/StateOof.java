@@ -71,12 +71,12 @@ public class StateOof {
 
         pciOptimizerList.add(config.getPciOptimizer());
         pciAnrOptimizerList.add(config.getPciAnrOptimizer());
-        
-        String oofResponse =null;
-        if(!anrInputList.isEmpty()) {
+
+        String oofResponse = null;
+        if (!anrInputList.isEmpty()) {
             oofResponse = OofRestClient.queryOof(numSolutions, transactionId.toString(), "create", cellidList,
                     networkId, pciAnrOptimizerList, anrInputList);
-        }else {
+        } else {
             oofResponse = OofRestClient.queryOof(numSolutions, transactionId.toString(), "create", cellidList,
                     networkId, pciOptimizerList, anrInputList);
         }
