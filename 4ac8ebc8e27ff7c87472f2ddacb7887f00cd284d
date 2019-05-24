@@ -1,0 +1,8 @@
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+1: Yang Xu <yang.xu3@huawei.com>
+Code-Review+2: Vijay Venkatesh Kumar <vv770d@att.com>
+Submitted-by: Vijay Venkatesh Kumar <vv770d@att.com>
+Submitted-at: Fri, 24 May 2019 15:47:50 +0000
+Reviewed-on: https://gerrit.onap.org/r/c/dcaegen2/services/son-handler/+/88380
+Project: dcaegen2/services/son-handler
+Branch: refs/heads/dublin
