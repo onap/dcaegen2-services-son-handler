@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4f747c01_56063da8",
+        "filename": "pom.xml",
+        "patchSetId": 4
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 5064
+      },
+      "writtenOn": "2019-06-17T11:46:35Z",
+      "side": 1,
+      "message": "Note:\nThis plugin maven-checkstyle-plugin, was throwing MojoFailureException. Appears to be clashing with the version in the parent oparent pom.  Therefore, removed here.",
+      "range": {
+        "startLine": 187,
+        "startChar": 3,
+        "endLine": 187,
+        "endChar": 10
+      },
+      "revId": "62386fb559fd543364aacc7fb7b40a74691e4472",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
