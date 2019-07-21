@@ -210,9 +210,11 @@
 				<configuration>
 					<serverId>${onap.nexus.dockerregistry.daily}</serverId>
 
-					<imageName>${docker.image.name}</imageName>
+					<imageName>${onap.nexus.dockerregistry.daily}/${docker.image.name}</imageName>
 					<imageTags>
-						<tag>latest</tag>
+                                                <imageTag>${project.version}-${maven.build.timestamp}Z</imageTag>
+                                                <imageTag>${project.version}</imageTag>
+                                                <imageTag>latest</imageTag>
 					</imageTags>
 					<baseImage>java:openjdk-8</baseImage>
 					<user>sonhms</user>
@@ -230,7 +232,7 @@
 					</resources>
 					<runs>
 						<!-- Maven is loosing file permissions during artifacts copy -->
-					    <run>adduser --disabled-password sonhms </run>
+				 		<run>adduser --disabled-password sonhms </run>
 						<run>chmod +x /bin/entrypoint.sh</run>
 						<run>mv /bin/*.jar /bin/application.jar</run>
 						<run>chmod -R 777 /bin</run>
@@ -240,6 +242,7 @@
 					</exposes>
 					<entryPoint>/bin/entrypoint.sh</entryPoint>
 				</configuration>
+<!--
 				<executions>
 					<execution>
 						<id>build-image</id>
@@ -285,6 +288,7 @@
 						</configuration>
 					</execution>
 				</executions>
+-->
 			</plugin>
 		</plugins>
 	</build>
