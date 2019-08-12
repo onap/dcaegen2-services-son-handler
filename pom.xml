@@ -175,10 +175,40 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.functionaljava</groupId>
-			<artifactId>functionaljava</artifactId>
-			<version>3.0</version>
-		</dependency>
+	            <groupId>org.functionaljava</groupId>
+	            <artifactId>functionaljava</artifactId>
+	            <version>3.0</version>
+            </dependency>
+	    <dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-core</artifactId>
+		    <version>5.0.9.RELEASE</version>
+	    </dependency>
+	    <dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-expression</artifactId>
+		    <version>5.0.9.RELEASE</version>
+	    </dependency>
+	    <dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-web</artifactId>
+		    <version>5.0.9.RELEASE</version>
+	    </dependency>
+	    <dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-webmvc</artifactId>
+		    <version>5.0.9.RELEASE</version>
+	    </dependency>
+	    <dependency>
+		    <groupId>org.apache.tomcat.embed</groupId>
+		    <artifactId>tomcat-embed-core</artifactId>
+		    <version>9.0.14</version>
+	    </dependency>
+	    <dependency>
+		    <groupId>org.apache.httpcomponents</groupId>
+		    <artifactId>httpclient</artifactId>
+	    	<version>4.5.7</version>
+	    </dependency>
 
 
 	</dependencies>

@@ -27,6 +27,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
@@ -58,22 +59,29 @@ public class ConfigFetchFromCbs {
         log.debug("environments {}", env);
         ConfigPolicy configPolicy = ConfigPolicy.getInstance();
 
+        // Polling properties
+        final Duration initialDelay = Duration.ofSeconds(5);
+        final Duration period = Duration.ofMinutes(1);
+
         // Create the client and use it to get the configuration
         final CbsRequest request = CbsRequests.getAll(diagnosticContext);
-        CbsClientFactory.createCbsClient(env).flatMap(cbsClient -> cbsClient.get(request)).subscribe(jsonObject -> {
-            log.info("configuration and policy from CBS {}", jsonObject);
-            JsonObject config = jsonObject.getAsJsonObject("config");
+        CbsClientFactory.createCbsClient(env).flatMapMany(cbsClient -> cbsClient.updates(request, initialDelay, period))
+                .subscribe(jsonObject -> {
+                    log.info("configuration and policy from CBS {}", jsonObject);
+                    JsonObject config = jsonObject.getAsJsonObject("config");
 
-            updateConfigurationFromJsonObject(config);
+                    updateConfigurationFromJsonObject(config);
 
-            Type mapType = new TypeToken<Map<String, Object>>() {
-            }.getType();
-            JsonObject policyJson = jsonObject.getAsJsonObject("policies").getAsJsonArray("items").get(0)
-                    .getAsJsonObject().getAsJsonObject("config");
-            Map<String, Object> policy = new Gson().fromJson(policyJson, mapType);
-            configPolicy.setConfig(policy);
-            log.info("Config policy {}", configPolicy);
-        }, throwable -> log.warn("Ooops", throwable));
+                    Type mapType = new TypeToken<Map<String, Object>>() {
+                    }.getType();
+                    if (jsonObject.getAsJsonObject("policies") != null) {
+                        JsonObject policyJson = jsonObject.getAsJsonObject("policies").getAsJsonArray("items").get(0)
+                                .getAsJsonObject().getAsJsonObject("config");
+                        Map<String, Object> policy = new Gson().fromJson(policyJson, mapType);
+                        configPolicy.setConfig(policy);
+                        log.info("Config policy {}", configPolicy);
+                    }
+                }, throwable -> log.warn("Ooops", throwable));
 
     }
 
@@ -160,7 +168,7 @@ public class ConfigFetchFromCbs {
         configuration.setOofTriggerCountTimer(oofTriggerCountTimer);
         configuration.setOofTriggerCountThreshold(oofTriggerCountThreshold);
         configuration.setPolicyRespTimer(policyRespTimer);
-        
+
         log.info("configuration from CBS {}", configuration.toString());
 
     }
