@@ -18,7 +18,7 @@
  
 pgaas_cluster_name: dcae-pg-primary.onap
 database_name: sonhms
-tag_version: nexus3.onap.org:10001/onap/org.onap.dcaegen2.services.son-handler:1.1.0
+tag_version: nexus3.onap.org:10001/onap/org.onap.dcaegen2.services.son-handler:1.1.1
 replicas: 1
 aaf_username: 
 aaf_password: 
