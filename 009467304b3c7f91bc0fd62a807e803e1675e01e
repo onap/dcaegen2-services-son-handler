@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2127a4d5_3bdad07f",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/controller/ConfigFetchFromCbs.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-08-14T14:06:08Z",
+      "side": 1,
+      "message": "can be added configuration among application properties as CBS pull can override this config dynamically also.",
+      "range": {
+        "startLine": 64,
+        "startChar": 8,
+        "endLine": 64,
+        "endChar": 54
+      },
+      "revId": "009467304b3c7f91bc0fd62a807e803e1675e01e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
