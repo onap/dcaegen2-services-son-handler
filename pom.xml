@@ -246,7 +246,7 @@
                                                 <imageTag>${project.version}</imageTag>
                                                 <imageTag>latest</imageTag>
 					</imageTags>
-					<baseImage>java:openjdk-8</baseImage>
+					<baseImage>openjdk:8-alpine</baseImage>
 					<user>sonhms</user>
 					<resources>
 						<resource>
@@ -254,23 +254,17 @@
 							<directory>${project.build.directory}</directory>
 							<include>${project.artifactId}-${project.version}.jar</include>
 						</resource>
-						<resource>
-							<targetPath>/bin</targetPath>
-							<directory>${project.basedir}</directory>
-							<include>entrypoint.sh</include>
-						</resource>
 					</resources>
 					<runs>
 						<!-- Maven is loosing file permissions during artifacts copy -->
 				 		<run>adduser --disabled-password sonhms </run>
-						<run>chmod +x /bin/entrypoint.sh</run>
 						<run>mv /bin/*.jar /bin/application.jar</run>
 						<run>chmod -R 777 /bin</run>
 					</runs>
 					<exposes>
 						<expose>8080</expose>
 					</exposes>
-					<entryPoint>/bin/entrypoint.sh</entryPoint>
+					<entryPoint>java -jar /bin/application.jar</entryPoint>
 				</configuration>
 <!--
 				<executions>
