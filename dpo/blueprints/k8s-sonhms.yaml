@@ -49,6 +49,10 @@ inputs:
     type: integer
     description: dmaap polling interval
     default: 20
+  cbs_polling_interval:
+    type: integer
+    description: cbs polling interval
+    default: 60
   polling_timeout:
     type: integer
     description: dmaap polling timeout
@@ -253,6 +257,7 @@ node_templates:
         postgres.password: { get_attribute: [ pgaasvm, admin, password ] }
         sonhandler.pollingInterval: { get_input: polling_interval}
         sonhandler.pollingTimeout: { get_input: polling_timeout }
+        cbsPollingInterval: { get_input: cbs_polling_interval }
         sonhandler.numSolutions: { get_input: num_solutions }
         sonhandler.minCollision: { get_input: min_collision }
         sonhandler.minConfusion: { get_input: min_confusion }

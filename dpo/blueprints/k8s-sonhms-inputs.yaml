@@ -24,6 +24,7 @@ aaf_username:
 aaf_password: 
 polling_interval: 20
 polling_timeout: 60
+cbs_polling_interval: 60
 num_solutions: 5
 min_collision: 5
 min_confusion: 5
