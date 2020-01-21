@@ -145,38 +145,50 @@ public class MainThread implements Runnable {
 
                 }
                 if (newFmNotification.getNewNotif()) {
-                    log.info("newFmNotification has come");
+					log.info("newFmNotification has come");
 
-                    String faultCellId = "";
-                    Either<List<FaultEvent>, Integer> fmNotifications = faultNotificationComponent
-                            .getFaultNotifications();
-                    if (fmNotifications.isRight()) {
-                        if (fmNotifications.right().value() == 400) {
-                            log.info("Error parsing notifications");
-                        } else if (fmNotifications.right().value() == 404) {
-                            newFmNotification.setNewNotif(false);
-                        }
-                    } else {
-                        for (FaultEvent fmNotification : fmNotifications.left().value()) {
-                            faultCellId = fmNotification.getEvent().getCommonEventHeader().getSourceName();
-                            bufferedFmNotificationCells.put(faultCellId, fmNotification);
-                            log.info("Buffered FM cell {}", faultCellId);
-                            log.info("fmNotification{}", fmNotification);
+					String faultCellId = "";
+					Either<List<FaultEvent>, Integer> fmNotifications = faultNotificationComponent
+							.getFaultNotifications();
+					if (fmNotifications.isRight()) {
+						if (fmNotifications.right().value() == 400) {
+							log.info("Error parsing notifications");
+						} else if (fmNotifications.right().value() == 404) {
+							newFmNotification.setNewNotif(false);
+						}
+					} else {
+						for (FaultEvent fmNotification : fmNotifications.left().value()) {
+							if (fmNotification.getEvent().getFaultFields().getSpecificProblem()
+									.equals("Optimised PCI")) {
+								log.info("PCI problem cleared for :" + fmNotification);
+							} else if ((fmNotification.getEvent().getFaultFields().getSpecificProblem()
+									.equals("Collision"))
+									|| (fmNotification.getEvent().getFaultFields().getSpecificProblem()
+											.equals("Confusion"))) {
+								faultCellId = fmNotification.getEvent().getCommonEventHeader().getSourceName();
+								bufferedFmNotificationCells.put(faultCellId, fmNotification);
+								log.info("Buffered FM cell {}", faultCellId);
+								log.info("fmNotification{}", fmNotification);
+							} else {
+								log.info("Error resolving faultNotification for :" + fmNotification);
+							}
+						}
 
-                        }
-                        log.info("bufferedFMNotificationCells before staring timer {}",
-                                bufferedFmNotificationCells.keySet());
+						if (!(bufferedFmNotificationCells.isEmpty())) {
+							log.info("bufferedFMNotificationCells before staring timer {}",
+									bufferedFmNotificationCells.keySet());
 
-                        for (String sdnrCell : sdnrNotificationCells) {
-                            bufferedFmNotificationCells.remove(sdnrCell);
-                        }
+							for (String sdnrCell : sdnrNotificationCells) {
+								bufferedFmNotificationCells.remove(sdnrCell);
+							}
 
-                        startTimer = new Timestamp(System.currentTimeMillis());
-                        isTimer = true;
-                        log.info("Buffered FM cell {}", bufferedFmNotificationCells.keySet());
-                    }
+							startTimer = new Timestamp(System.currentTimeMillis());
+							isTimer = true;
+							log.info("Buffered FM cell {}", bufferedFmNotificationCells.keySet());
+						}
+					}
 
-                }
+				}
 
             } catch (Exception e) {
                 log.error("Exception in main Thread", e);
