@@ -47,11 +47,11 @@ badCountThreshold: 3
 oofTriggerCountTimer: 30
 oofTriggerCountThreshold: 5
 policyRespTimer: 10
-policy_id: com.Config_PCIMS_CONFIG_POLICY.1.xml
+policy_id: com.Config_PCIMS_CONFIG_POLICY
 topic00_location: onap
 topic00_client_role: son-subscriber
 topic00_client_id: sdnr-son-1
-topic00_url: https://message-router.onap.svc.cluster.local:3905/events/unauthenticated.SEC_MEASUREMENT_OUTPUT
+topic00_url: https://message-router.onap.svc.cluster.local:3905/events/unauthenticated.VES_MEASUREMENT_OUTPUT
 topic01_location: onap
 topic01_client_role: son-subscriber
 topic01_client_id: sdnr-son-1
@@ -63,7 +63,7 @@ topic02_url: https://message-router.onap.svc.cluster.local:3905/events/PCI-NOTIF
 topic03_location: onap
 topic03_client_role: son-subscriber
 topic03_client_id: sdnr-son-1
-topic03_url: https://message-router.onap.svc.cluster.local:3905/events/DCAE_CL_OUTPUT
+topic03_url: https://message-router.onap.svc.cluster.local:3905/events/unauthenticated.DCAE_CL_OUTPUT
 topic04_location: onap
 topic04_client_role: son-subscriber
 topic04_client_id: sdnr-son-1

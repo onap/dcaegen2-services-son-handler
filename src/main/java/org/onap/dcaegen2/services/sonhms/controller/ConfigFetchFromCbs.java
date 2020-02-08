@@ -7,28 +7,26 @@
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *  
+ *
  *          http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  *     ============LICENSE_END=========================================================
- *  
+ *
  *******************************************************************************/
 
 package org.onap.dcaegen2.services.sonhms.controller;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.time.Duration;
-import java.util.List;
 import java.util.Map;
 
 import org.onap.dcaegen2.services.sdk.rest.services.cbs.client.api.CbsClientFactory;
@@ -89,7 +87,7 @@ public class ConfigFetchFromCbs implements Runnable {
                         }
 
                     }
-                    updateConfigurationFromJsonObject(config);
+                    Configuration.getInstance().updateConfigurationFromJsonObject(config);
 
                     Type mapType = new TypeToken<Map<String, Object>>() {
                     }.getType();
@@ -103,93 +101,7 @@ public class ConfigFetchFromCbs implements Runnable {
                 }, throwable -> log.warn("Ooops", throwable));
     }
 
-    private void updateConfigurationFromJsonObject(JsonObject jsonObject) {
 
-        log.info("Updating configuration from CBS");
-        Configuration configuration = Configuration.getInstance();
-
-        Type mapType = new TypeToken<Map<String, Object>>() {
-        }.getType();
-
-        JsonObject subscribes = jsonObject.getAsJsonObject("streams_subscribes");
-        Map<String, Object> streamsSubscribes = new Gson().fromJson(subscribes, mapType);
-
-        JsonObject publishes = jsonObject.getAsJsonObject("streams_publishes");
-        Map<String, Object> streamsPublishes = new Gson().fromJson(publishes, mapType);
-
-        int pgPort = jsonObject.get("postgres.port").getAsInt();
-        int pollingInterval = jsonObject.get("sonhandler.pollingInterval").getAsInt();
-        String pgPassword = jsonObject.get("postgres.password").getAsString();
-        int numSolutions = jsonObject.get("sonhandler.numSolutions").getAsInt();
-        int minConfusion = jsonObject.get("sonhandler.minConfusion").getAsInt();
-        int maximumClusters = jsonObject.get("sonhandler.maximumClusters").getAsInt();
-        int minCollision = jsonObject.get("sonhandler.minCollision").getAsInt();
-        String sourceId = jsonObject.get("sonhandler.sourceId").getAsString();
-        String pgUsername = jsonObject.get("postgres.username").getAsString();
-        String pgHost = jsonObject.get("postgres.host").getAsString();
-
-        JsonArray servers = jsonObject.getAsJsonArray("sonhandler.dmaap.server");
-        Type listType = new TypeToken<List<String>>() {
-        }.getType();
-        List<String> dmaapServers = new Gson().fromJson(servers, listType);
-
-        String cg = jsonObject.get("sonhandler.cg").getAsString();
-        int bufferTime = jsonObject.get("sonhandler.bufferTime").getAsInt();
-        String cid = jsonObject.get("sonhandler.cid").getAsString();
-        String configDbService = jsonObject.get("sonhandler.configDb.service").getAsString();
-        String namespace = jsonObject.get("sonhandler.namespace").getAsString();
-        String callbackUrl = "http://" + System.getenv("HOSTNAME") + "." + namespace + ":8080/callbackUrl";
-
-        String pciOptimizer = jsonObject.get("sonhandler.pciOptimizer").getAsString();
-        String pciAnrOptimizer = jsonObject.get("sonhandler.pciAnrOptimizer").getAsString();
-
-        String oofService = jsonObject.get("sonhandler.oof.service").getAsString();
-        String oofEndpoint = jsonObject.get("sonhandler.oof.endpoint").getAsString();
-        int pollingTimeout = jsonObject.get("sonhandler.pollingTimeout").getAsInt();
-
-        int badThreshold = jsonObject.get("sonhandler.badThreshold").getAsInt();
-        int poorThreshold = jsonObject.get("sonhandler.poorThreshold").getAsInt();
-
-        int poorCountThreshold = jsonObject.get("sonhandler.poorCountThreshold").getAsInt();
-        int badCountThreshold = jsonObject.get("sonhandler.badCountThreshold").getAsInt();
-        int oofTriggerCountTimer = jsonObject.get("sonhandler.oofTriggerCountTimer").getAsInt();
-        int oofTriggerCountThreshold = jsonObject.get("sonhandler.oofTriggerCountThreshold").getAsInt();
-        int policyRespTimer = jsonObject.get("sonhandler.policyRespTimer").getAsInt();
-
-        configuration.setStreamsSubscribes(streamsSubscribes);
-        configuration.setStreamsPublishes(streamsPublishes);
-        configuration.setPgPassword(pgPassword);
-        configuration.setPgPort(pgPort);
-        configuration.setPollingInterval(pollingInterval);
-        configuration.setNumSolutions(numSolutions);
-        configuration.setMinCollision(minCollision);
-        configuration.setMinConfusion(minConfusion);
-        configuration.setMaximumClusters(maximumClusters);
-        configuration.setPgHost(pgHost);
-        configuration.setPgUsername(pgUsername);
-        configuration.setSourceId(sourceId);
-        configuration.setDmaapServers(dmaapServers);
-        configuration.setCg(cg);
-        configuration.setCid(cid);
-        configuration.setBufferTime(bufferTime);
-        configuration.setConfigDbService(configDbService);
-        configuration.setCallbackUrl(callbackUrl);
-        configuration.setPciOptimizer(pciOptimizer);
-        configuration.setPciAnrOptimizer(pciAnrOptimizer);
-        configuration.setOofService(oofService);
-        configuration.setOofEndpoint(oofEndpoint);
-        configuration.setPollingTimeout(pollingTimeout);
-        configuration.setBadThreshold(badThreshold);
-        configuration.setPoorThreshold(poorThreshold);
-        configuration.setPoorCountThreshold(poorCountThreshold);
-        configuration.setBadCountThreshold(badCountThreshold);
-        configuration.setOofTriggerCountTimer(oofTriggerCountTimer);
-        configuration.setOofTriggerCountThreshold(oofTriggerCountThreshold);
-        configuration.setPolicyRespTimer(policyRespTimer);
-
-        log.info("configuration from CBS {}", configuration);
-
-    }
 
     @Override
     public void run() {

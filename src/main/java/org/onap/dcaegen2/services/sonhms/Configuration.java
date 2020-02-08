@@ -7,24 +7,36 @@
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *  
+ *
  *          http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  *     ============LICENSE_END=========================================================
- *  
+ *
  *******************************************************************************/
 
 package org.onap.dcaegen2.services.sonhms;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 public class Configuration {
+
+    private static Logger log = LoggerFactory.getLogger(Configuration.class);
 
     private static Configuration instance = null;
     private String pgHost;
@@ -59,8 +71,8 @@ public class Configuration {
     private int oofTriggerCountTimer;
     private int oofTriggerCountThreshold;
     private int policyRespTimer;
-    
-    
+
+
     public int getPoorCountThreshold() {
         return poorCountThreshold;
     }
@@ -122,7 +134,7 @@ public class Configuration {
      */
     public boolean isSecured() {
         return (aafUsername != null);
-           
+
     }
 
     public String getAafUsername() {
@@ -355,7 +367,67 @@ public class Configuration {
                 + oofTriggerCountTimer + ", oofTriggerCountThreshold=" + oofTriggerCountThreshold + ", policyRespTimer="
                 + policyRespTimer + "]";
     }
-    
-    
+
+    /**
+     * updates application configuration.
+     */
+    public void updateConfigurationFromJsonObject(JsonObject jsonObject) {
+
+        log.info("Updating configuration from CBS");
+
+        Type mapType = new TypeToken<Map<String, Object>>() {
+        }.getType();
+
+        JsonObject subscribes = jsonObject.getAsJsonObject("streams_subscribes");
+        streamsSubscribes = new Gson().fromJson(subscribes, mapType);
+
+        JsonObject publishes = jsonObject.getAsJsonObject("streams_publishes");
+        streamsPublishes = new Gson().fromJson(publishes, mapType);
+
+        pgPort = jsonObject.get("postgres.port").getAsInt();
+        pollingInterval = jsonObject.get("sonhandler.pollingInterval").getAsInt();
+        pgPassword = jsonObject.get("postgres.password").getAsString();
+        numSolutions = jsonObject.get("sonhandler.numSolutions").getAsInt();
+        minConfusion = jsonObject.get("sonhandler.minConfusion").getAsInt();
+        maximumClusters = jsonObject.get("sonhandler.maximumClusters").getAsInt();
+        minCollision = jsonObject.get("sonhandler.minCollision").getAsInt();
+        sourceId = jsonObject.get("sonhandler.sourceId").getAsString();
+        pgUsername = jsonObject.get("postgres.username").getAsString();
+        pgHost = jsonObject.get("postgres.host").getAsString();
+
+        JsonArray servers = jsonObject.getAsJsonArray("sonhandler.dmaap.server");
+        Type listType = new TypeToken<List<String>>() {
+        }.getType();
+        dmaapServers = new Gson().fromJson(servers, listType);
+
+        cg = jsonObject.get("sonhandler.cg").getAsString();
+        bufferTime = jsonObject.get("sonhandler.bufferTime").getAsInt();
+        cid = jsonObject.get("sonhandler.cid").getAsString();
+        configDbService = jsonObject.get("sonhandler.configDb.service").getAsString();
+        String namespace = jsonObject.get("sonhandler.namespace").getAsString();
+        callbackUrl = "http://" + System.getenv("HOSTNAME") + "." + namespace + ":8080/callbackUrl";
+
+        pciOptimizer = jsonObject.get("sonhandler.pciOptimizer").getAsString();
+        pciAnrOptimizer = jsonObject.get("sonhandler.pciAnrOptimizer").getAsString();
+
+        oofService = jsonObject.get("sonhandler.oof.service").getAsString();
+        oofEndpoint = jsonObject.get("sonhandler.oof.endpoint").getAsString();
+        pollingTimeout = jsonObject.get("sonhandler.pollingTimeout").getAsInt();
+
+        badThreshold = jsonObject.get("sonhandler.badThreshold").getAsInt();
+        poorThreshold = jsonObject.get("sonhandler.poorThreshold").getAsInt();
+
+        poorCountThreshold = jsonObject.get("sonhandler.poorCountThreshold").getAsInt();
+        badCountThreshold = jsonObject.get("sonhandler.badCountThreshold").getAsInt();
+        oofTriggerCountTimer = jsonObject.get("sonhandler.oofTriggerCountTimer").getAsInt();
+        oofTriggerCountThreshold = jsonObject.get("sonhandler.oofTriggerCountThreshold").getAsInt();
+        policyRespTimer = jsonObject.get("sonhandler.policyRespTimer").getAsInt();
+
+
+        log.info("configuration from CBS {}", this);
+
+    }
+
+
 
 }
