@@ -52,6 +52,9 @@
 		<releases.path>content/repositories/releases/</releases.path>
 		<site.path>content/sites/site/org/onap/dcaegen2/services/son-handler/${project.artifactId}/${project.version}</site.path>
 		<maven.build.timestamp.format>yyyyMMdd'T'HHmmss</maven.build.timestamp.format>
+		<sonar.coverage.jacoco.xmlReportPaths>
+		  ${project.reporting.outputDirectory}/jacoco-ut/jacoco.xml
+		</sonar.coverage.jacoco.xmlReportPaths>
 	</properties>
 
 	<dependencies>
