@@ -6,3 +6,7 @@ target/
 *.jar
 /bin/
 .checkstyle
+
+#intellij files
+.idea
+son-handler.iml

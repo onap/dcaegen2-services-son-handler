@@ -7,6 +7,7 @@ This project is organized as a mvn project and has "org.onap.dcaegen2" as parent
 ```
 git clone https://gerrit.onap.org/r/dcaegen2/services/son-handler
 mvn clean install
+mvn clean install docker:build
 ```
 
 
@@ -44,3 +45,13 @@ To uninstall:
 	cfy blueprints delete sonhms
 
 
+### Standalone deployment
+son handler can be deployed standalone using docker-compose.
+
+Navigate to src/main/docker directory. docker-compose.yaml can be found there.
+
+To install :
+    docker-compose up
+
+To uninstall :
+    docker-compose down
