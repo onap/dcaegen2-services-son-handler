@@ -2,7 +2,7 @@
  *  ============LICENSE_START=======================================================
  *  son-handler
  *  ================================================================================
- *   Copyright (C) 2019 Wipro Limited.
+ *   Copyright (C) 2019-2020 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -32,6 +32,7 @@ public class CellInfo {
     List<String> cellIdList = new ArrayList<>();
     protected List<AnrInput> anrInputList = new ArrayList<>();
     String trigger;
+    List<String> fixedPCICells = new ArrayList<>();
     
     
     public List<AnrInput> getAnrInputList() {
@@ -66,6 +67,11 @@ public class CellInfo {
         this.cellIdList = cellIdList;
     }
 
-    
+	public List<String> getFixedPCICells() {
+		return fixedPCICells;
+	}
 
+	public void setFixedPCICells(List<String> fixedPCICells) {
+		this.fixedPCICells = fixedPCICells;
+	}
 }

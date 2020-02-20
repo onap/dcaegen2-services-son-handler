@@ -2,7 +2,7 @@
  *  ============LICENSE_START=======================================================
  *  son-handler
  *  ================================================================================
- *   Copyright (C) 2019 Wipro Limited.
+ *   Copyright (C) 2019-2020 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -45,9 +45,12 @@ import org.onap.dcaegen2.services.sonhms.Configuration;
 import org.onap.dcaegen2.services.sonhms.HoMetricsComponent;
 import org.onap.dcaegen2.services.sonhms.Timer;
 import org.onap.dcaegen2.services.sonhms.dao.ClusterDetailsRepository;
+import org.onap.dcaegen2.services.sonhms.dao.FixedPciCellsRepository;
+import org.onap.dcaegen2.services.sonhms.dao.PciUpdateRepository;
 import org.onap.dcaegen2.services.sonhms.dao.SonRequestsRepository;
 import org.onap.dcaegen2.services.sonhms.dmaap.PolicyDmaapClient;
 import org.onap.dcaegen2.services.sonhms.entity.HandOverMetrics;
+import org.onap.dcaegen2.services.sonhms.entity.PciUpdate;
 import org.onap.dcaegen2.services.sonhms.exceptions.ConfigDbNotFoundException;
 import org.onap.dcaegen2.services.sonhms.exceptions.OofNotFoundException;
 import org.onap.dcaegen2.services.sonhms.model.AnrInput;
@@ -57,6 +60,8 @@ import org.onap.dcaegen2.services.sonhms.model.Flag;
 import org.onap.dcaegen2.services.sonhms.model.HoDetails;
 import org.onap.dcaegen2.services.sonhms.model.ThreadId;
 import org.onap.dcaegen2.services.sonhms.restclient.AsyncResponseBody;
+import org.onap.dcaegen2.services.sonhms.restclient.PciSolutions;
+import org.onap.dcaegen2.services.sonhms.restclient.SdnrRestClient;
 import org.onap.dcaegen2.services.sonhms.utils.BeanUtil;
 import org.onap.dcaegen2.services.sonhms.utils.ClusterUtils;
 import org.onap.dcaegen2.services.sonhms.utils.DmaapUtils;
@@ -74,6 +79,8 @@ public class ChildThread implements Runnable {
     Map<CellPciPair, ArrayList<CellPciPair>> clusterMap;
     HoMetricsComponent hoMetricsComponent;
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(ChildThread.class);
+    private static Timestamp startTime;
+
 
     /**
      * Constructor with parameters.
@@ -139,211 +146,244 @@ public class ChildThread implements Runnable {
         return responseMap;
     }
 
+	public static Timestamp getLastInvokedOofTimeStamp() {
+		return startTime;
+
+	}
+
     @Override
     public void run() {
 
-        threadId.setChildThreadId(Thread.currentThread().getId());
-        synchronized (threadId) {
-            threadId.notifyAll();
-        }
+		threadId.setChildThreadId(Thread.currentThread().getId());
+		synchronized (threadId) {
+			threadId.notifyAll();
+		}
 
-        MDC.put("logFileName", Thread.currentThread().getName());
-        log.info("Starting child thread");
+		MDC.put("logFileName", Thread.currentThread().getName());
+		log.info("Starting child thread");
 
-        StateOof oof = new StateOof(childStatusUpdate);
-        ClusterUtils clusterUtils = new ClusterUtils();
-        Detection detect = new Detection();
-        ChildThreadUtils childUtils = new ChildThreadUtils(ConfigPolicy.getInstance(), new PnfUtils(),
-                new PolicyDmaapClient(new DmaapUtils(), Configuration.getInstance()), new HoMetricsComponent());
+		StateOof oof = new StateOof(childStatusUpdate);
+		ClusterUtils clusterUtils = new ClusterUtils();
+		Detection detect = new Detection();
+		ChildThreadUtils childUtils = new ChildThreadUtils(ConfigPolicy.getInstance(), new PnfUtils(),
+				new PolicyDmaapClient(new DmaapUtils(), Configuration.getInstance()), new HoMetricsComponent());
 
-        try {
-            String networkId = cluster.getNetworkId();
+		try {
+			String networkId = cluster.getNetworkId();
 
-            Boolean done = false;
+			Boolean done = false;
 
-            Map<String, ArrayList<Integer>> collisionConfusionResult;
-            while (!done) {
-                if (cluster.getCollisionConfusionMap().isEmpty()) {
+			Map<String, ArrayList<Integer>> collisionConfusionResult = new HashMap<String, ArrayList<Integer>>();
 
-                    collisionConfusionResult = detect.detectCollisionConfusion(cluster);
-                } else {
-                    collisionConfusionResult = cluster.getCollisionConfusionMap();
-                }
+			while (!done) {
 
-                Boolean trigger = childUtils.triggerOrWait(collisionConfusionResult);
-                ConfigPolicy configPolicy = ConfigPolicy.getInstance();
-                double timer = 60;
-                try {
-                    timer = (double) configPolicy.getConfig().get("PCI_NEIGHBOR_CHANGE_CLUSTER_TIMEOUT_IN_SECS");
-                } catch (NullPointerException e) {
-                    log.info("Policy config not available. Using default timeout - 60 seconds");
-                }
-                if (!trigger) {
-                    try {
-                        Thread.sleep((long) timer * 1000);
-                    } catch (InterruptedException e) {
-                        log.error("Interrupted Exception while waiting for more notifications {}", e);
-                        Thread.currentThread().interrupt();
-                    }
+				if (!cluster.getCellPciNeighbourMap().isEmpty()) {
 
-                    while (!queue.isEmpty()) {
-                        Map<CellPciPair, ArrayList<CellPciPair>> newNotification;
-                        newNotification = queue.poll();
-                        log.info("New notification from SDNR {}", newNotification);
-                        cluster = clusterUtils.modifyCluster(cluster, newNotification);
+					if (cluster.getCollisionConfusionMap().isEmpty()) {
 
-                        // update cluster in DB
-                        clusterUtils.updateCluster(cluster);
-                        collisionConfusionResult = detect.detectCollisionConfusion(cluster);
+						collisionConfusionResult = detect.detectCollisionConfusion(cluster);
+					} else {
+						collisionConfusionResult = cluster.getCollisionConfusionMap();
+					}
 
-                    }
+					Boolean trigger = childUtils.triggerOrWait(collisionConfusionResult);
+					ConfigPolicy configPolicy = ConfigPolicy.getInstance();
+					double timer = 60;
+					try {
+						timer = (double) configPolicy.getConfig().get("PCI_NEIGHBOR_CHANGE_CLUSTER_TIMEOUT_IN_SECS");
+					} catch (NullPointerException e) {
+						log.info("Policy config not available. Using default timeout - 60 seconds");
+					}
+					if (!trigger) {
+						try {
+							Thread.sleep((long) timer * 1000);
+						} catch (InterruptedException e) {
+							log.error("Interrupted Exception while waiting for more notifications {}", e);
+							Thread.currentThread().interrupt();
+						}
 
-                }
-                ArrayList<String> cellidList = new ArrayList<>();
-                ArrayList<String> cellIds = new ArrayList<>();
+						while (!queue.isEmpty()) {
+							Map<CellPciPair, ArrayList<CellPciPair>> newNotification;
+							newNotification = queue.poll();
+							log.info("New notification from SDNR {}", newNotification);
+							cluster = clusterUtils.modifyCluster(cluster, newNotification);
 
-                for (Map.Entry<String, ArrayList<Integer>> entry : collisionConfusionResult.entrySet()) {
-                    String key = entry.getKey();
-                    ArrayList<Integer> arr;
-                    arr = entry.getValue();
-                    if (!arr.isEmpty()) {
-                        Set<Integer> set = new HashSet<>(arr);
-                        if (((set.size() == 1) && !set.contains(0)) || (set.size() != 1)) {
-                            cellIds.add(key);
+							// update cluster in DB
+							clusterUtils.updateCluster(cluster);
+							collisionConfusionResult = detect.detectCollisionConfusion(cluster);
 
-                        }
-                    }
+						}
 
-                }
+					}
+				}
+				ArrayList<String> cellidList = new ArrayList<>();
+				ArrayList<String> cellIds = new ArrayList<>();
 
-                for (String cell : cellIds) {
-                    log.debug("cellidList entries: {}", cell);
-                    cellidList.add(cell);
-                }
-                UUID transactionId;
+				for (Map.Entry<String, ArrayList<Integer>> entry : collisionConfusionResult.entrySet()) {
+					String key = entry.getKey();
+					ArrayList<Integer> arr;
+					arr = entry.getValue();
+					if (!arr.isEmpty()) {
+						Set<Integer> set = new HashSet<>(arr);
+						if (((set.size() == 1) && !set.contains(0)) || (set.size() != 1)) {
+							cellIds.add(key);
 
-                Flag policyTriggerFlag = BeanUtil.getBean(Flag.class);
-                while (policyTriggerFlag.getHolder().equals("PM")) {
-                    Thread.sleep(100);
-                }
-                policyTriggerFlag.setHolder("CHILD");
-                policyTriggerFlag.setNumChilds(policyTriggerFlag.getNumChilds() + 1);
+						}
+					}
 
-                Timer timerOof = BeanUtil.getBean(Timer.class);
-                if (!timerOof.getIsTimer()) {
-                    log.info("Starting timer");
-                    timerOof.setIsTimer(true);
-                    Timestamp startTime = new Timestamp(System.currentTimeMillis());
-                    timerOof.setStartTime(startTime);
-                    timerOof.setCount(0);
-                    log.info("startTime {}", startTime);
+				}
 
-                }
-                int timerThreshold = (Configuration.getInstance().getOofTriggerCountTimer() * 60000);
-                int triggerCountThreshold = Configuration.getInstance().getOofTriggerCountThreshold();
-                log.info("Time threshold {}, triggerCountThreshold {}", timerThreshold, triggerCountThreshold);
-                log.info("oof trigger count {}", timerOof.getCount());
-                timerOof.setCount(timerOof.getCount() + 1);
-                Timestamp currentTime = new Timestamp(System.currentTimeMillis());
-                Long difference = currentTime.getTime() - timerOof.getStartTime().getTime();
-                if (difference < timerThreshold && timerOof.getCount() > triggerCountThreshold) {
-                    log.info("difference {}", difference);
+				for (String cell : cellIds) {
+					log.debug("cellidList entries: {}", cell);
+					cellidList.add(cell);
+				}
+				UUID transactionId;
 
-                    Either<List<AnrInput>, Integer> anrTriggerResponse = checkAnrTrigger();
-                    if (anrTriggerResponse.isRight()) {
-                        log.info("ANR trigger response right {}", anrTriggerResponse.right().value());
-                        if (anrTriggerResponse.right().value() == 404) {
-                            log.info("No poor neighbors found");
-                        } else if (anrTriggerResponse.right().value() == 500) {
-                            log.info("Failed to fetch HO details from DB ");
-                        }
-                        transactionId = oof.triggerOof(cellidList, networkId, new ArrayList<>());
+				Flag policyTriggerFlag = BeanUtil.getBean(Flag.class);
+				while (policyTriggerFlag.getHolder().equals("PM")) {
+					Thread.sleep(100);
+				}
+				policyTriggerFlag.setHolder("CHILD");
+				policyTriggerFlag.setNumChilds(policyTriggerFlag.getNumChilds() + 1);
 
-                    } else {
-                        log.info("ANR trigger response left {}", anrTriggerResponse.left().value());
-                        List<AnrInput> anrInputList = anrTriggerResponse.left().value();
-                        log.info("Trigger oof for joint optimization");
-                        transactionId = oof.triggerOof(cellidList, networkId, anrInputList);
+				FixedPciCellsRepository fixedPciCellsRepository = BeanUtil.getBean(FixedPciCellsRepository.class);
+				List<String> fixedPciCells = fixedPciCellsRepository.getFixedPciCells();
 
-                    }
+				Timer timerOof = BeanUtil.getBean(Timer.class);
+				if (!timerOof.getIsTimer()) {
+					log.info("Starting timer");
+					timerOof.setIsTimer(true);
+					startTime = new Timestamp(System.currentTimeMillis());
+					timerOof.setStartTime(startTime);
+					timerOof.setCount(0);
+					log.info("startTime {}", startTime); 
 
-                } else {
+				}
+				int timerThreshold = (Configuration.getInstance().getOofTriggerCountTimer() * 60000);
+				int triggerCountThreshold = Configuration.getInstance().getOofTriggerCountThreshold();
+				log.info("Time threshold {}, triggerCountThreshold {}", timerThreshold, triggerCountThreshold);
+				log.info("oof trigger count {}", timerOof.getCount());
+				timerOof.setCount(timerOof.getCount() + 1);
+				Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+				Long difference = currentTime.getTime() - timerOof.getStartTime().getTime();
+				if (difference < timerThreshold && timerOof.getCount() > triggerCountThreshold) {
+					log.info("difference {}", difference);
 
-                    transactionId = oof.triggerOof(cellidList, networkId, new ArrayList<>());
+					Either<List<AnrInput>, Integer> anrTriggerResponse = checkAnrTrigger();
+					if (anrTriggerResponse.isRight()) {
+						log.info("ANR trigger response right {}", anrTriggerResponse.right().value());
+						if (anrTriggerResponse.right().value() == 404) {
+							log.info("No poor neighbors found");
+						} else if (anrTriggerResponse.right().value() == 500) {
+							log.info("Failed to fetch HO details from DB ");
+						}
+						transactionId = oof.triggerOof(cellidList, networkId, new ArrayList<>(),fixedPciCells);
 
-                    if (difference > timerThreshold) {
-                        timerOof.setIsTimer(false);
-                        timerOof.setCount(0);
-                    }
-                }
+					} else {
+						log.info("ANR trigger response left {}", anrTriggerResponse.left().value());
+						List<AnrInput> anrInputList = anrTriggerResponse.left().value();
+						log.info("Trigger oof for joint optimization");
+						transactionId = oof.triggerOof(cellidList, networkId, anrInputList,fixedPciCells);
 
-                long childThreadId = Thread.currentThread().getId();
-                childUtils.saveRequest(transactionId.toString(), childThreadId);
+					}
+
+				} else {
+
+					transactionId = oof.triggerOof(cellidList, networkId, new ArrayList<>(),fixedPciCells);
+
+					if (difference > timerThreshold) {
+						timerOof.setIsTimer(false);
+						timerOof.setCount(0);
+					}
+				}
+
+				long childThreadId = Thread.currentThread().getId();
+				childUtils.saveRequest(transactionId.toString(), childThreadId);
                 while (!ChildThread.getResponseMap().containsKey(childThreadId)) {
                     Thread.sleep(100);
                 }
 
                 AsyncResponseBody asynResponseBody = ChildThread.getResponseMap().get(childThreadId);
+				
+				List<PciSolutions> pciSolutionsList = asynResponseBody.getSolutions().getPciSolutions();
 
-                try {
-                    childUtils.sendToPolicy(asynResponseBody);
-                    policyTriggerFlag.setNumChilds(policyTriggerFlag.getNumChilds() - 1);
-                    if (policyTriggerFlag.getNumChilds() == 0) {
-                        policyTriggerFlag.setHolder("NONE");
-                    }
+				if (!pciSolutionsList.isEmpty())
+					for (PciSolutions pcisolutions : pciSolutionsList) {
 
-                } catch (ConfigDbNotFoundException e1) {
-                    log.debug("Config DB is unreachable: {}", e1);
-                }
+						String cellId = pcisolutions.getCellId();
+						int oldPci = SdnrRestClient.getPci(cellId);
+						int newPci = pcisolutions.getPci();
+						PciUpdate pciUpdate = new PciUpdate();
+						pciUpdate.setCellId(cellId);
+						pciUpdate.setOldPci(oldPci);
+						pciUpdate.setNewPci(newPci);
+						PciUpdateRepository pciUpdateRepository = BeanUtil.getBean(PciUpdateRepository.class);
+						pciUpdateRepository.save(pciUpdate);
+					}
 
-                SonRequestsRepository sonRequestsRepository = BeanUtil.getBean(SonRequestsRepository.class);
-                sonRequestsRepository.deleteByChildThreadId(childThreadId);
+				try {
+					childUtils.sendToPolicy(asynResponseBody);
+					policyTriggerFlag.setNumChilds(policyTriggerFlag.getNumChilds() - 1);
+					if (policyTriggerFlag.getNumChilds() == 0) {
+						policyTriggerFlag.setHolder("NONE");
+					}
 
-                List<String> childStatus = new ArrayList<>();
-                childStatus.add(Long.toString(Thread.currentThread().getId()));
-                childStatus.add("success");
-                try {
-                    childStatusUpdate.put(childStatus);
-                } catch (InterruptedException e) {
-                    log.debug("InterruptedException during childStatus update {}", e);
-                    Thread.currentThread().interrupt();
+				} catch (ConfigDbNotFoundException e1) {
+					log.debug("Config DB is unreachable: {}", e1);
+				}
 
-                }
+				SonRequestsRepository sonRequestsRepository = BeanUtil.getBean(SonRequestsRepository.class);
+				sonRequestsRepository.deleteByChildThreadId(childThreadId);
 
-                Either<List<String>, Integer> bufferedNotifications = getBufferedNotifications();
+				List<String> childStatus = new ArrayList<>();
+				childStatus.add(Long.toString(Thread.currentThread().getId()));
+				childStatus.add("success");
+				try {
+					childStatusUpdate.put(childStatus);
+				} catch (InterruptedException e) {
+					log.debug("InterruptedException during childStatus update {}", e);
+					Thread.currentThread().interrupt();
 
-                if (bufferedNotifications.isRight()) {
-                    log.info("No buffered notifications");
-                    done = true;
-                } else {
-                    List<Map<CellPciPair, ArrayList<CellPciPair>>> clusterMaps = getClusterMapsFromNotifications(
-                            bufferedNotifications.left().value());
-                    for (Map<CellPciPair, ArrayList<CellPciPair>> bufferedClusterMap : clusterMaps) {
-                        cluster = clusterUtils.modifyCluster(cluster, bufferedClusterMap);
-                    }
-                    String cellPciNeighbourString = cluster.getPciNeighbourJson();
-                    UUID clusterId = cluster.getGraphId();
-                    ClusterDetailsRepository clusterDetailsRepository = BeanUtil
-                            .getBean(ClusterDetailsRepository.class);
-                    clusterDetailsRepository.updateCluster(cellPciNeighbourString, clusterId.toString());
-                }
+				}
 
-            }
+				if (!cluster.getCellPciNeighbourMap().isEmpty()) {
 
-        } catch (OofNotFoundException e) {
-            log.error("OOF not found, Removing flag and cleaning up");
-            Flag policyTriggerFlag = BeanUtil.getBean(Flag.class);
-            policyTriggerFlag.setNumChilds(policyTriggerFlag.getNumChilds() - 1);
-            if (policyTriggerFlag.getNumChilds() == 0) {
-                policyTriggerFlag.setHolder("NONE");
-            }
-        } catch (Exception e) {
-            log.error("{}", e);
-            
-            
-        }
+					Either<List<String>, Integer> bufferedNotifications = getBufferedNotifications();
 
-        cleanup();
+					if (bufferedNotifications.isRight()) {
+						log.info("No buffered notifications");
+						done = true;
+					} else {
+						List<Map<CellPciPair, ArrayList<CellPciPair>>> clusterMaps = getClusterMapsFromNotifications(
+								bufferedNotifications.left().value());
+						for (Map<CellPciPair, ArrayList<CellPciPair>> bufferedClusterMap : clusterMaps) {
+							cluster = clusterUtils.modifyCluster(cluster, bufferedClusterMap);
+						}
+						String cellPciNeighbourString = cluster.getPciNeighbourJson();
+						UUID clusterId = cluster.getGraphId();
+						ClusterDetailsRepository clusterDetailsRepository = BeanUtil
+								.getBean(ClusterDetailsRepository.class);
+						clusterDetailsRepository.updateCluster(cellPciNeighbourString, clusterId.toString());
+					}
+				} else {
+					done = true;
+				}
+
+			}
+
+		} catch (OofNotFoundException e) {
+			log.error("OOF not found, Removing flag and cleaning up");
+			Flag policyTriggerFlag = BeanUtil.getBean(Flag.class);
+			policyTriggerFlag.setNumChilds(policyTriggerFlag.getNumChilds() - 1);
+			if (policyTriggerFlag.getNumChilds() == 0) {
+				policyTriggerFlag.setHolder("NONE");
+			}
+		} catch (Exception e) {
+			log.error("{}", e);
+
+		}
+
+		cleanup();
     }
 
     private List<Map<CellPciPair, ArrayList<CellPciPair>>> getClusterMapsFromNotifications(List<String> notifications) {

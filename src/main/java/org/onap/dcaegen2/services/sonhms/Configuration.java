@@ -71,7 +71,8 @@ public class Configuration {
     private int oofTriggerCountTimer;
     private int oofTriggerCountThreshold;
     private int policyRespTimer;
-
+    private int policyNegativeAckThreshold;
+    private long policyFixedPciTimeInterval;
 
     public int getPoorCountThreshold() {
         return poorCountThreshold;
@@ -351,7 +352,23 @@ public class Configuration {
         this.oofEndpoint = oofEndpoint;
     }
 
-    @Override
+    public int getPolicyNegativeAckThreshold() {
+		return policyNegativeAckThreshold;
+	}
+
+	public void setPolicyNegativeAckThreshold(int policyNegativeAckThreshold) {
+		this.policyNegativeAckThreshold = policyNegativeAckThreshold;
+	}
+
+	public long getPolicyFixedPciTimeInterval() {
+		return policyFixedPciTimeInterval;
+	}
+
+	public void setPolicyFixedPciTimeInterval(long policyFixedPciTimeInterval) {
+		this.policyFixedPciTimeInterval = policyFixedPciTimeInterval;
+	}
+
+	@Override
     public String toString() {
         return "Configuration [pgHost=" + pgHost + ", pgPort=" + pgPort + ", pgUsername=" + pgUsername + ", pgPassword="
                 + pgPassword + ", dmaapServers=" + dmaapServers + ", configDbService=" + configDbService
@@ -365,7 +382,7 @@ public class Configuration {
                 + ", badThreshold=" + badThreshold + ", poorThreshold=" + poorThreshold + ", poorCountThreshold="
                 + poorCountThreshold + ", badCountThreshold=" + badCountThreshold + ", oofTriggerCountTimer="
                 + oofTriggerCountTimer + ", oofTriggerCountThreshold=" + oofTriggerCountThreshold + ", policyRespTimer="
-                + policyRespTimer + "]";
+                + policyRespTimer + ", policyNegativeAckThreshold=" + policyNegativeAckThreshold + ", policyFixedPciTimeInterval="+ policyFixedPciTimeInterval + "]";
     }
 
     /**
@@ -422,7 +439,8 @@ public class Configuration {
         oofTriggerCountTimer = jsonObject.get("sonhandler.oofTriggerCountTimer").getAsInt();
         oofTriggerCountThreshold = jsonObject.get("sonhandler.oofTriggerCountThreshold").getAsInt();
         policyRespTimer = jsonObject.get("sonhandler.policyRespTimer").getAsInt();
-
+        policyNegativeAckThreshold = jsonObject.get("sonhandler.policyNegativeAckThreshold").getAsInt();
+        policyFixedPciTimeInterval = jsonObject.get("sonhandler.policyFixedPciTimeInterval").getAsLong();
 
         log.info("configuration from CBS {}", this);
 

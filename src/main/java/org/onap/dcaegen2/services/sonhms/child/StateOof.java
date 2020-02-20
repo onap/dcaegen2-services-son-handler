@@ -55,7 +55,7 @@ public class StateOof {
      * @throws OofNotFoundException
      *             when trigger oof fails
      */
-    public UUID triggerOof(List<String> cellidList, String networkId, List<AnrInput> anrInputList)
+    public UUID triggerOof(List<String> cellidList, String networkId, List<AnrInput> anrInputList, List<String> fixedPciCells)
             throws OofNotFoundException, InterruptedException {
 
         log.info("Triggering oof");
@@ -75,10 +75,10 @@ public class StateOof {
         String oofResponse = null;
         if (!anrInputList.isEmpty()) {
             oofResponse = OofRestClient.queryOof(numSolutions, transactionId.toString(), "create", cellidList,
-                    networkId, pciAnrOptimizerList, anrInputList);
+                    networkId, pciAnrOptimizerList, anrInputList,fixedPciCells);
         } else {
             oofResponse = OofRestClient.queryOof(numSolutions, transactionId.toString(), "create", cellidList,
-                    networkId, pciOptimizerList, anrInputList);
+                    networkId, pciOptimizerList, anrInputList,fixedPciCells);
         }
         log.info("Synchronous Response {}", oofResponse);
 

@@ -2,7 +2,7 @@
  *  ============LICENSE_START=======================================================
  *  son-handler
  *  ================================================================================
- *   Copyright (C) 2019 Wipro Limited.
+ *   Copyright (C) 2019-2020 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ package org.onap.dcaegen2.services.sonhms.child;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -62,18 +63,20 @@ public class StateOofTest {
     @Test
 	public void triggerOofTest() {
 		ArrayList<String> cellList = new ArrayList<>();
+	    List<String> fixedPciCells = new ArrayList<>();
+
 		cellList.add("cell1");
 		PowerMockito.mockStatic(OofRestClient.class);
 		try {
 			PowerMockito.when(OofRestClient.queryOof(Mockito.anyInt(), Mockito.anyString(), Mockito.anyString(), Mockito.anyList(),
-					Mockito.anyString(), Mockito.anyList(), Mockito.anyList())).thenReturn("oofResponse");
+					Mockito.anyString(), Mockito.anyList(), Mockito.anyList(), Mockito.any())).thenReturn("oofResponse");
 		} catch (OofNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 
 		try {
-			transactionId = oof.triggerOof(cellList, "networkId", new ArrayList<>());
+			transactionId = oof.triggerOof(cellList, "networkId", new ArrayList<>(),fixedPciCells);
 		} catch (OofNotFoundException | InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

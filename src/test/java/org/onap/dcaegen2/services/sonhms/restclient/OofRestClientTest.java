@@ -2,7 +2,7 @@
  *  ============LICENSE_START=======================================================
  *  son-handler
  *  ================================================================================
- *   Copyright (C) 2019 Wipro Limited.
+ *   Copyright (C) 2019-2020 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -86,7 +86,8 @@ public class OofRestClientTest {
 	    cellIdList.add("EXP001");
 	    List<String> optimizers=new ArrayList<String>();
 	    optimizers.add("pci"); 
-	    List<AnrInput> anrInputList = new ArrayList<>(); 
+	    List<AnrInput> anrInputList = new ArrayList<>();
+	    List<String> fixedPciCells = new ArrayList<>();
         
         PowerMockito.mockStatic(SonHandlerRestTemplate.class);
 		PowerMockito.mockStatic(Configuration.class);
@@ -97,7 +98,7 @@ public class OofRestClientTest {
 
 	    try {
 	        
-			String result=OofRestClient.queryOof(1, "xxx-xxx-xxxx", "create", cellIdList, "NTWK005", optimizers, anrInputList);
+			String result=OofRestClient.queryOof(1, "xxx-xxx-xxxx", "create", cellIdList, "NTWK005", optimizers, anrInputList,fixedPciCells);
 			assertEquals(ResponseEntity.ok(responseBody).getBody(), result);
 			
 
@@ -109,7 +110,7 @@ public class OofRestClientTest {
         .thenReturn(null);
 	    try {
 			
-	        OofRestClient.queryOof(1, "xxx-xxx-xxxx", "create", cellIdList, "NTWK005", optimizers, new ArrayList<>());
+	        OofRestClient.queryOof(1, "xxx-xxx-xxxx", "create", cellIdList, "NTWK005", optimizers, new ArrayList<>(),fixedPciCells);
 
 		} catch (OofNotFoundException e) {
 			// TODO Auto-generated catch block

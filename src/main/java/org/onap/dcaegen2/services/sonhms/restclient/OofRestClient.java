@@ -2,7 +2,7 @@
  *  ============LICENSE_START=======================================================
  *  son-handler
  *  ================================================================================
- *   Copyright (C) 2019 Wipro Limited.
+ *   Copyright (C) 2019-2020 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -53,7 +53,7 @@ public class OofRestClient {
      */
 
     public static String queryOof(int numSolutions, String transactionId, String requestType, List<String> cellIdList,
-            String networkId, List<String> optimizers, List<AnrInput> anrInputList) throws OofNotFoundException {
+            String networkId, List<String> optimizers, List<AnrInput> anrInputList, List<String> fixedPciCells) throws OofNotFoundException {
         log.debug("inside queryoof");
 
         Configuration configuration = Configuration.getInstance();
@@ -82,6 +82,9 @@ public class OofRestClient {
         if (!anrInputList.isEmpty()) {
             cellInfo.setAnrInputList(anrInputList);
         }
+        if(!fixedPciCells.isEmpty()) {
+        cellInfo.setFixedPCICells(fixedPciCells); 
+        }
         OofRequestBody oofRequestBody = new OofRequestBody();
         oofRequestBody.setRequestInfo(requestInfo);
         oofRequestBody.setCellInfo(cellInfo);
@@ -98,7 +101,7 @@ public class OofRestClient {
 
         String requestUrl = configuration.getOofService() + configuration.getOofEndpoint();
         log.info("requestUrl {}", requestUrl);
-        ResponseEntity<String> response = null;
+        ResponseEntity<String> response = null; 
         response = SonHandlerRestTemplate.sendPostRequestToOof(requestUrl, requestBody,
                 new ParameterizedTypeReference<String>() {
                 });
