@@ -2,7 +2,7 @@
  *  ============LICENSE_START=======================================================
  *  son-handler
  *  ================================================================================
- *   Copyright (C) 2019 Wipro Limited.
+ *   Copyright (C) 2019-2020 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -207,9 +207,6 @@ public class ChildThreadUtils {
                 } else {
                     log.debug("Sending notification to policy failed");
                 }
-                policyDmaapClient.handlePolicyResponse(requestId);
-                log.info("handled policy response in ModifyConfig");
-
             }
         }
         if (!solutions.getAnrSolutions().isEmpty()) {
@@ -276,9 +273,6 @@ public class ChildThreadUtils {
                     log.info("Policy Notification: {}", notification);
                     Boolean result = policyDmaapClient.sendNotificationToPolicy(notification);
                     log.info("send notification to policy result {} ", result);
-                    policyDmaapClient.handlePolicyResponse(requestId);
-                    log.info("handled policy response in ModifyConfigANR");
-
                 }
 
             }

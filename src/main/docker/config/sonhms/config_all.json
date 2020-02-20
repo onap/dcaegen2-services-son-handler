@@ -89,6 +89,8 @@
     "sonhandler.oofTriggerCountThreshold": 5,
     "sonhandler.oof.service": "http://oof-osdf.onap:8699",
     "sonhandler.pciAnrOptimizer": "pci_anr",
+    "sonhandler.policyNegativeAckThreshold": 3,
+    "sonhandler.policyFixedPciTimeInterval": 300000,
     "sonhandler.pollingTimeout": 60,
     "service_calls": {
       "sdnr-getpnfname": [],

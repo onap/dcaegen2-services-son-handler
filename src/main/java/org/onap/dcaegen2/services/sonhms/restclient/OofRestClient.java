@@ -2,7 +2,7 @@
  *  ============LICENSE_START=======================================================
  *  son-handler
  *  ================================================================================
- *   Copyright (C) 2019 Wipro Limited.
+ *   Copyright (C) 2019-2020 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -30,8 +30,10 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.onap.dcaegen2.services.sonhms.Configuration;
+import org.onap.dcaegen2.services.sonhms.dao.FixedPciCellsRepository;
 import org.onap.dcaegen2.services.sonhms.exceptions.OofNotFoundException;
 import org.onap.dcaegen2.services.sonhms.model.AnrInput;
+import org.onap.dcaegen2.services.sonhms.utils.BeanUtil;
 import org.onap.dcaegen2.services.sonhms.utils.SonHandlerRestTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,6 +83,11 @@ public class OofRestClient {
         cellInfo.setTrigger("NbrListChange");
         if (!anrInputList.isEmpty()) {
             cellInfo.setAnrInputList(anrInputList);
+        }
+        FixedPciCellsRepository fixedPciCellsRepository = BeanUtil.getBean(FixedPciCellsRepository.class);
+        List<String> fixedPciCells = fixedPciCellsRepository.getFixedPciCells();
+        if(!fixedPciCells.isEmpty()) {
+        cellInfo.setFixedPCICells(fixedPciCells); 
         }
         OofRequestBody oofRequestBody = new OofRequestBody();
         oofRequestBody.setRequestInfo(requestInfo);

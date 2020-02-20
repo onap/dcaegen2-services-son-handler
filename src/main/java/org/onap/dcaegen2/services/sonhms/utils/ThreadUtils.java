@@ -2,7 +2,7 @@
  *  ============LICENSE_START=======================================================
  *  son-handler
  *  ================================================================================
- *   Copyright (C) 2019 Wipro Limited.
+ *   Copyright (C) 2019-2020 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -49,8 +49,21 @@ public class ThreadUtils {
      */
     public Boolean createNewThread(List<Graph> newClusters, BlockingQueue<List<String>> childStatusQueue,
             ExecutorService pool, EventHandler eventHandler,String cellId) {
-        
-        
+
+		if (newClusters.isEmpty()) {
+
+			BlockingQueue<Map<CellPciPair, ArrayList<CellPciPair>>> queue = new LinkedBlockingQueue<>();
+			ThreadId threadId = new ThreadId();
+			threadId.setChildThreadId(0);
+			ChildThread child = new ChildThread(childStatusQueue, new Graph(), queue, threadId,
+					new HoMetricsComponent());
+			log.info("Creating new child thread");
+			pool.execute(child);
+			waitForThreadId(threadId);
+			EventHandler.addChildThreadMap(threadId.getChildThreadId(), child);
+			eventHandler.addChildStatus(threadId.getChildThreadId(), "processingNotifications");
+		}
+
         for (Graph cluster : newClusters) {
 
             BlockingQueue<Map<CellPciPair, ArrayList<CellPciPair>>> queue = new LinkedBlockingQueue<>();
