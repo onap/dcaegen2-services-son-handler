@@ -19,18 +19,19 @@
  *  
  *******************************************************************************/
 
-package org.onap.dcaegen2.services.sonhms.controller;
+package org.onap.dcaegen2.services.sonhms;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import static org.junit.Assert.*;
 
-@RestController
-public class HealthCheck {
-    @RequestMapping(value = "/healthcheck", method = RequestMethod.GET)
-    public ResponseEntity<HttpStatus> healthCheck() {
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+import org.junit.Test;
+
+public class NewPmNotificationTest {
+
+	@Test
+	public void test() {
+		NewPmNotification newPmNotification = new NewPmNotification();
+		newPmNotification.setNewNotif(true);
+		assertTrue(newPmNotification.getNewNotif());
+	}
+
 }

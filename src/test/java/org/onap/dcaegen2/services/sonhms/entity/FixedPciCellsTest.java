@@ -2,7 +2,7 @@
  *  ============LICENSE_START=======================================================
  *  son-handler
  *  ================================================================================
- *   Copyright (C) 2019 Wipro Limited.
+ *   Copyright (C) 2019-2020 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -19,18 +19,28 @@
  *  
  *******************************************************************************/
 
-package org.onap.dcaegen2.services.sonhms.controller;
+package org.onap.dcaegen2.services.sonhms.entity;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import static org.junit.Assert.*;
 
-@RestController
-public class HealthCheck {
-    @RequestMapping(value = "/healthcheck", method = RequestMethod.GET)
-    public ResponseEntity<HttpStatus> healthCheck() {
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+import java.sql.Timestamp;
+
+import org.junit.Test;
+
+public class FixedPciCellsTest {
+
+	private Timestamp createdAt;
+
+	@Test
+	public void test() {
+		FixedPciCells fixedPciCells = new FixedPciCells();
+		fixedPciCells.setCellId("Chn0001");
+		fixedPciCells.setFixedPci(5000);
+		fixedPciCells.setCreatedAt(createdAt);
+		assertEquals("Chn0001", fixedPciCells.getCellId());
+		assertEquals(5000, fixedPciCells.getFixedPci());
+		assertEquals(createdAt, fixedPciCells.getCreatedAt());
+
+	}
+
 }

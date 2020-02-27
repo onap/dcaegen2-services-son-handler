@@ -72,6 +72,8 @@ public class ConfigurationTest {
         configuration.setPollingTimeout(100);
         configuration.setConfigDbService("sdnrService");
         configuration.setSourceId("sourceId");
+        configuration.setPolicyNegativeAckThreshold(3);
+        configuration.setPolicyFixedPciTimeInterval(5000);
         assertEquals(60, configuration.getBufferTime());
         assertEquals("/callbackUrl", configuration.getCallbackUrl());
         assertEquals("cg", configuration.getCg());
@@ -103,5 +105,7 @@ public class ConfigurationTest {
         assertEquals(3, configuration.getPoorCountThreshold());
         assertEquals(subscribes, configuration.getStreamsSubscribes());
         assertEquals(subscribes, configuration.getStreamsPublishes());
+        assertEquals(3,configuration.getPolicyNegativeAckThreshold());
+        assertEquals(5000, configuration.getPolicyFixedPciTimeInterval());
     }
 }

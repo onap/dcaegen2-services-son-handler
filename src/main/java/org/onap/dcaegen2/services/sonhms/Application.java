@@ -94,6 +94,7 @@ public class Application {
             Thread.sleep(10000);
         } catch (InterruptedException e) {
             log.debug("InterruptedException : {}", e);
+            Thread.currentThread().interrupt();
         }
         log.info("after 10s sleep");
     }

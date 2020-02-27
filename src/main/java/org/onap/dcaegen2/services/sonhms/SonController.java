@@ -39,7 +39,7 @@ public class SonController {
     SonRequestsComponent pciRequestsComponent;
 
     @RequestMapping(value = "/callbackUrl", method = RequestMethod.POST)
-    String callBackUrl(@RequestBody AsyncResponseBody callback) {
+    public String callBackUrl(@RequestBody AsyncResponseBody callback) {
         log.debug("received request to callback url");
         String async = callback.toString();
         log.debug("AsyncResponseBody{}", async);

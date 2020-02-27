@@ -99,6 +99,14 @@ public class HoMetricsComponentTest {
         when(handOverMetricsRepositoryMock.findAll()).thenReturn(null);
         assertTrue(hoMetricsComponent.getAll().isRight());
     }
+
+	@Test
+	public void update() {
+		PowerMockito.mockStatic(BeanUtil.class);
+		PowerMockito.when(BeanUtil.getBean(HandOverMetricsRepository.class)).thenReturn(handOverMetricsRepositoryMock);
+		assertEquals(true, hoMetricsComponent.update("HODetails", "12"));
+	}
+
     private static String readFromFile(String file) { 
         String content = new String();
         try {

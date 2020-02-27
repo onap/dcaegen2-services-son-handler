@@ -18,19 +18,22 @@
  *     ============LICENSE_END=========================================================
  *  
  *******************************************************************************/
+package org.onap.dcaegen2.services.sonhms.model;
 
-package org.onap.dcaegen2.services.sonhms.controller;
+import static org.junit.Assert.*;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.junit.Test;
 
-@RestController
-public class HealthCheck {
-    @RequestMapping(value = "/healthcheck", method = RequestMethod.GET)
-    public ResponseEntity<HttpStatus> healthCheck() {
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+public class FlagTest {
+
+	@Test
+	public void test() {
+     Flag flag = new Flag();
+     flag.setHolder("Holder");
+     flag.setNumChilds(2);
+     assertEquals("Holder",flag.getHolder());
+     assertEquals(2,flag.getNumChilds());
+     
+	}
+
 }

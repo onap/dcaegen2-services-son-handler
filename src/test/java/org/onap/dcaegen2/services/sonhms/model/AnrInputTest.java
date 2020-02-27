@@ -18,19 +18,26 @@
  *     ============LICENSE_END=========================================================
  *  
  *******************************************************************************/
+package org.onap.dcaegen2.services.sonhms.model;
 
-package org.onap.dcaegen2.services.sonhms.controller;
+import static org.junit.Assert.*;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import java.util.ArrayList;
 
-@RestController
-public class HealthCheck {
-    @RequestMapping(value = "/healthcheck", method = RequestMethod.GET)
-    public ResponseEntity<HttpStatus> healthCheck() {
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+import org.junit.Test;
+
+public class AnrInputTest {
+
+	@Test
+	public void test() {
+		
+		AnrInput anrInput = new AnrInput();
+		anrInput.setCellId("20");
+		ArrayList<String> removeableNeighbors = new ArrayList<String>();
+		anrInput.setRemoveableNeighbors(removeableNeighbors);
+        assertEquals("20", anrInput.getCellId());
+        assertEquals(removeableNeighbors,anrInput.getRemoveableNeighbors());
+		
+	}
+
 }

@@ -103,9 +103,9 @@ public class PolicyDmaapClient {
                         int status = payloadObject.getConfiguration().get(0).getStatus().getCode();
                         String statusToString = Integer.toString(status);
                         log.info("response from policy, status code {}", statusToString);
+                        return true;
 
                     }
-                    return true;
                 }
             } catch (IOException e) {
                 log.info("caught io exception while fetching policy response");

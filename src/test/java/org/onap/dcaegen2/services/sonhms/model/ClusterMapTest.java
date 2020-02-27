@@ -18,19 +18,31 @@
  *     ============LICENSE_END=========================================================
  *  
  *******************************************************************************/
+package org.onap.dcaegen2.services.sonhms.model;
 
-package org.onap.dcaegen2.services.sonhms.controller;
+import static org.junit.Assert.*;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import java.util.ArrayList;
 
-@RestController
-public class HealthCheck {
-    @RequestMapping(value = "/healthcheck", method = RequestMethod.GET)
-    public ResponseEntity<HttpStatus> healthCheck() {
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+import org.junit.Test;
+
+public class ClusterMapTest {
+
+	@Test
+	public void test() {
+
+		ClusterMap clusterMap = new ClusterMap();
+		CellPciPair cellPciPair = new CellPciPair();
+		cellPciPair.setCellId("45");
+		cellPciPair.setPhysicalCellId(310);
+		ArrayList<CellPciPair> cellPciPairList = new ArrayList<CellPciPair>();
+		cellPciPairList.add(cellPciPair);
+
+		clusterMap.setCell(cellPciPair);
+		clusterMap.setNeighbourList(cellPciPairList);
+		assertEquals(cellPciPair, clusterMap.getCell());
+		assertEquals(cellPciPairList, clusterMap.getNeighbourList());
+
+	}
+
 }

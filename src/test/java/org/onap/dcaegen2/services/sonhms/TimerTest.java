@@ -18,19 +18,29 @@
  *     ============LICENSE_END=========================================================
  *  
  *******************************************************************************/
+package org.onap.dcaegen2.services.sonhms;
 
-package org.onap.dcaegen2.services.sonhms.controller;
+import static org.junit.Assert.*;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import java.sql.Timestamp;
 
-@RestController
-public class HealthCheck {
-    @RequestMapping(value = "/healthcheck", method = RequestMethod.GET)
-    public ResponseEntity<HttpStatus> healthCheck() {
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+import org.junit.Test;
+
+public class TimerTest {
+
+	@Test
+	public void test() {
+		Timestamp timestamp = null;
+		Timer timer = new Timer();
+		timer.setCount(2);
+		timer.setCurrentTime(timestamp);
+		timer.setIsTimer(true);
+		timer.setStartTime(timestamp);
+		assertEquals(2, timer.getCount());
+		assertEquals(timestamp, timer.getCurrentTime());
+		assertEquals(timestamp, timer.getStartTime());
+		assertEquals(true, timer.getIsTimer());
+
+	}
+
 }

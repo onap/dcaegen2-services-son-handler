@@ -2,7 +2,7 @@
  *  ============LICENSE_START=======================================================
  *  son-handler
  *  ================================================================================
- *   Copyright (C) 2019 Wipro Limited.
+ *   Copyright (C) 2019-2020 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -19,18 +19,28 @@
  *  
  *******************************************************************************/
 
-package org.onap.dcaegen2.services.sonhms.controller;
+package org.onap.dcaegen2.services.sonhms.entity;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import static org.junit.Assert.*;
 
-@RestController
-public class HealthCheck {
-    @RequestMapping(value = "/healthcheck", method = RequestMethod.GET)
-    public ResponseEntity<HttpStatus> healthCheck() {
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+import org.junit.Test;
+
+public class PciUpdateTest {
+
+	@Test
+	public void test() {
+
+		PciUpdate pciUpdate = new PciUpdate();
+		pciUpdate.setCellId("Chn0001");
+		pciUpdate.setNewPci(5000);
+		pciUpdate.setOldPci(3000);
+		pciUpdate.setNegativeAckCount(3);
+
+		assertEquals("Chn0001", pciUpdate.getCellId());
+		assertEquals(5000, pciUpdate.getNewPci());
+		assertEquals(3000, pciUpdate.getOldPci());
+		assertEquals(3, pciUpdate.getNegativeAckCount());
+
+	}
+
 }
