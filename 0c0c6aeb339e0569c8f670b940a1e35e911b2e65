@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "82eec9ca_d8a2e707",
+        "filename": "releases/2.0.0-container.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2020-03-03T00:40:16Z",
+      "side": 1,
+      "message": "This version is not created from job#217. Either update the log_dir reference job or this version tag to be picked up for release.",
+      "range": {
+        "startLine": 8,
+        "startChar": 22,
+        "endLine": 8,
+        "endChar": 38
+      },
+      "revId": "0c0c6aeb339e0569c8f670b940a1e35e911b2e65",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
