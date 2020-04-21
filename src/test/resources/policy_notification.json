@@ -3,7 +3,7 @@
 	"closedLoopAlarmStart": 1542445563201,
 	"closedLoopEventClient": "microservice.PCI",
 	"closedLoopEventStatus": "ONSET",
-	"target_type": "VNF",
+	"target_type": "PNF",
 	"target": "generic-vnf.vnf-id",
 	"requestID": "a4130fd5-2291-4a83-8992-04e4c9f32731",
 	"from": "PCIMS",
