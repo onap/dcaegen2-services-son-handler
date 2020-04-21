@@ -92,6 +92,7 @@
     "sonhandler.policyNegativeAckThreshold": 3,
     "sonhandler.policyFixedPciTimeInterval": 300000,
     "sonhandler.pollingTimeout": 60,
+    "sonhandler.nfNamingCode": "RansimAgent",
     "service_calls": {
       "sdnr-getpnfname": [],
       "sdnr-getpci": [],
