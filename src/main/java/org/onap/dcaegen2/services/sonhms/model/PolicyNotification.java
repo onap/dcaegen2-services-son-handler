@@ -2,7 +2,7 @@
  *  ============LICENSE_START=======================================================
  *  son-handler
  *  ================================================================================
- *   Copyright (C) 2019 Wipro Limited.
+ *   Copyright (C) 2019-2020 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -75,7 +75,7 @@ public class PolicyNotification {
         this.version = "1.0.2";
         this.action = action;
         this.target = "generic-vnf.vnf-id";
-        this.targetType = "VNF";
+        this.targetType = "PNF";
         this.aai = new HashMap<>();
         aai.put("generic-vnf.is-closed-loop-disabled", "false");
         aai.put("generic-vnf.prov-status", "ACTIVE");

@@ -73,6 +73,7 @@ public class Configuration {
     private int policyRespTimer;
     private int policyNegativeAckThreshold;
     private long policyFixedPciTimeInterval;
+    private String nfNamingCode;
 
     public int getPoorCountThreshold() {
         return poorCountThreshold;
@@ -367,6 +368,14 @@ public class Configuration {
 	public void setPolicyFixedPciTimeInterval(long policyFixedPciTimeInterval) {
 		this.policyFixedPciTimeInterval = policyFixedPciTimeInterval;
 	}
+	
+	public String getNfNamingCode() {
+		return nfNamingCode;
+	}
+
+	public void setNfNamingCode(String nfNamingCode) {
+		this.nfNamingCode = nfNamingCode;
+	}
 
 	@Override
     public String toString() {
@@ -382,7 +391,7 @@ public class Configuration {
                 + ", badThreshold=" + badThreshold + ", poorThreshold=" + poorThreshold + ", poorCountThreshold="
                 + poorCountThreshold + ", badCountThreshold=" + badCountThreshold + ", oofTriggerCountTimer="
                 + oofTriggerCountTimer + ", oofTriggerCountThreshold=" + oofTriggerCountThreshold + ", policyRespTimer="
-                + policyRespTimer + ", policyNegativeAckThreshold=" + policyNegativeAckThreshold + ", policyFixedPciTimeInterval="+ policyFixedPciTimeInterval + "]";
+                + policyRespTimer + ", policyNegativeAckThreshold=" + policyNegativeAckThreshold + ", policyFixedPciTimeInterval="+ policyFixedPciTimeInterval + ", nfNamingCode="+nfNamingCode+"]";
     }
 
     /**
@@ -441,6 +450,7 @@ public class Configuration {
         policyRespTimer = jsonObject.get("sonhandler.policyRespTimer").getAsInt();
         policyNegativeAckThreshold = jsonObject.get("sonhandler.policyNegativeAckThreshold").getAsInt();
         policyFixedPciTimeInterval = jsonObject.get("sonhandler.policyFixedPciTimeInterval").getAsLong();
+        nfNamingCode = jsonObject.get("sonhandler.nfNamingCode").getAsString();
 
         log.info("configuration from CBS {}", this);
 

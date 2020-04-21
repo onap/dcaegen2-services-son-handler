@@ -2,7 +2,7 @@
  *  ============LICENSE_START=======================================================
  *  son-handler
  *  ================================================================================
- *   Copyright (C) 2019 Wipro Limited.
+ *   Copyright (C) 2019-2020 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -37,6 +37,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.onap.dcaegen2.services.sonhms.dao.DmaapNotificationsRepository;
 import org.onap.dcaegen2.services.sonhms.dao.PerformanceNotificationsRepository;
 import org.onap.dcaegen2.services.sonhms.model.Notification;
@@ -51,29 +52,33 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockRunnerDelegate(SpringRunner.class)
-@PrepareForTest({ BeanUtil.class })
+@PrepareForTest({ BeanUtil.class, Configuration.class })
 @SpringBootTest(classes = DmaapNotificationsComponentTest.class)
 
 public class DmaapNotificationsComponentTest {
 
 	@Mock
 	DmaapNotificationsRepository dmaapNotificationsRepositoryMock;
-	
+
 	@Mock
 	PerformanceNotificationsRepository performanceNotificationsRepositoryMock;
+
+	@Mock
+	Configuration configurationMock;
 
 	@InjectMocks
 	DmaapNotificationsComponent component;
 
 	static String notificationString;
 	static String pmNotificationString;
-
+	static String pmNotificationString2;
 
 	@BeforeClass
 	public static void setupTest() {
 
 		notificationString = readFromFile("/notification1.json");
-		pmNotificationString=readFromFile("/pmNotification.json");
+		pmNotificationString = readFromFile("/pmNotification.json");
+		pmNotificationString2 = readFromFile("/pmNotification2.json");
 
 	}
 
@@ -84,38 +89,56 @@ public class DmaapNotificationsComponentTest {
 				.thenReturn(dmaapNotificationsRepositoryMock);
 		when(dmaapNotificationsRepositoryMock.getNotificationFromQueue()).thenReturn(notificationString);
 
-
 		Either<Notification, Integer> result = component.getSdnrNotifications();
-		//assertTrue(result.isLeft());
+		// assertTrue(result.isLeft());
 		assertNotNull(result.left().value());
-		
+
 		when(dmaapNotificationsRepositoryMock.getNotificationFromQueue()).thenReturn("notification");
 
-        result = component.getSdnrNotifications();
-        int resultRight = result.right().value();
-        assertEquals(400, resultRight);
-		
-	}
-	
-	@Test
-	public void getPmNotificationsTest() {
-	    PowerMockito.mockStatic(BeanUtil.class);
-        PowerMockito.when(BeanUtil.getBean(PerformanceNotificationsRepository.class))
-                .thenReturn(performanceNotificationsRepositoryMock);
-        when(performanceNotificationsRepositoryMock.getPerformanceNotificationFromQueue()).thenReturn(pmNotificationString);
-        
-        Either<PmNotification,Integer> result = component.getPmNotifications();
-        assertTrue(result.isLeft());
-        assertNotNull(result.left().value());
-        
-        when(performanceNotificationsRepositoryMock.getPerformanceNotificationFromQueue()).thenReturn("pmNotification");
-        result = component.getPmNotifications();
-        int res= result.right().value();
-        assertEquals(400,res);
-        
+		result = component.getSdnrNotifications();
+		int resultRight = result.right().value();
+		assertEquals(400, resultRight);
+
 	}
 
-	private static String readFromFile(String file) { 
+	@Test
+	public void getPmNotificationsTest() {
+		PowerMockito.mockStatic(BeanUtil.class);
+		PowerMockito.when(BeanUtil.getBean(PerformanceNotificationsRepository.class))
+				.thenReturn(performanceNotificationsRepositoryMock);
+		when(performanceNotificationsRepositoryMock.getPerformanceNotificationFromQueue())
+				.thenReturn(pmNotificationString);
+		PowerMockito.mockStatic(Configuration.class);
+		PowerMockito.when(Configuration.getInstance()).thenReturn(configurationMock);
+		when(configurationMock.getNfNamingCode()).thenReturn("RansimAgent");
+		Either<PmNotification, Integer> result = component.getPmNotifications();
+		assertTrue(result.isLeft());
+		assertNotNull(result.left().value());
+		when(performanceNotificationsRepositoryMock.getPerformanceNotificationFromQueue()).thenReturn("pmNotification");
+		result = component.getPmNotifications();
+		int res = result.right().value();
+		assertEquals(400, res);
+
+	}
+
+	@Test
+	public void getPmNotificationsORanNotifTest() {
+		PowerMockito.mockStatic(BeanUtil.class);
+		PowerMockito.when(BeanUtil.getBean(PerformanceNotificationsRepository.class))
+				.thenReturn(performanceNotificationsRepositoryMock);
+		PowerMockito.mockStatic(Configuration.class);
+		PowerMockito.when(Configuration.getInstance()).thenReturn(configurationMock);
+		when(configurationMock.getNfNamingCode()).thenReturn("RansimAgent");
+		when(performanceNotificationsRepositoryMock.getPerformanceNotificationFromQueue())
+				.thenReturn(pmNotificationString2);
+		Either<PmNotification, Integer> result = component.getPmNotifications();
+		result = component.getPmNotifications();
+		int res = result.right().value();
+		assertEquals(404, res);
+
+	}
+
+	private static String readFromFile(String file) {
 		String content = new String();
 		try {
 
@@ -135,3 +158,4 @@ public class DmaapNotificationsComponentTest {
 	}
 
 }
+
