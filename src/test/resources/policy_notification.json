@@ -4,7 +4,7 @@
 	"closedLoopEventClient": "microservice.PCI",
 	"closedLoopEventStatus": "ONSET",
 	"target_type": "PNF",
-	"target": "generic-vnf.vnf-id",
+	"target": "pnf.pnf-name",
 	"requestID": "a4130fd5-2291-4a83-8992-04e4c9f32731",
 	"from": "PCIMS",
 	"version": "1.0.2",
@@ -12,7 +12,7 @@
 	"AAI": {
 		"generic-vnf.prov-status": "ACTIVE",
 		"generic-vnf.is-closed-loop-disabled": "false",
-		"generic-vnf.vnf-id": "ncserver23"
+		"pnf.pnf-name": "ncserver23"
 	},
 	"Action": "ModifyConfig"
 }

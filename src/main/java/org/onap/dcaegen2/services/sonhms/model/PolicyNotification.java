@@ -74,12 +74,12 @@ public class PolicyNotification {
         this.from = "PCIMS";
         this.version = "1.0.2";
         this.action = action;
-        this.target = "generic-vnf.vnf-id";
+        this.target = "pnf.pnf-name";
         this.targetType = "PNF";
         this.aai = new HashMap<>();
         aai.put("generic-vnf.is-closed-loop-disabled", "false");
         aai.put("generic-vnf.prov-status", "ACTIVE");
-        aai.put("generic-vnf.vnf-id", pnfName);
+        aai.put("pnf.pnf-name", pnfName);
     }
 
     public long getClosedLoopAlarmStart() {
