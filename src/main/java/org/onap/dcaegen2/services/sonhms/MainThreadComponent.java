@@ -82,7 +82,7 @@ public class MainThreadComponent {
 			Long difference = fixedPciCreatedAt.getTime() - lastInvokedOofTimeStamp.getTime();
 			Configuration configuration = Configuration.getInstance();
 
-			if (difference > configuration.getPolicyFixedPciTimeInterval()) {
+			if (Math.abs(difference) > configuration.getPolicyFixedPciTimeInterval()) {
 				log.info("Creating new child thread for sending fixedPciCells");
 				List<Graph> cluster = new ArrayList<>();
 				BlockingQueue<List<String>> childStatusQueue = new LinkedBlockingQueue<>();
