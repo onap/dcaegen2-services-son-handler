@@ -2,7 +2,7 @@
  *  ============LICENSE_START=======================================================
  *  son-handler
  *  ================================================================================
- *   Copyright (C) 2019 Wipro Limited.
+ *   Copyright (C) 2019-2020 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -104,6 +104,21 @@ public class SdnrRestClient {
         JSONObject responseObject = new JSONObject(response);
         return responseObject.getString("value");
     }
+
+    /**
+     * Method to get CellData name from SDNR.
+     *
+     * @throws ConfigDbNotFoundException
+     *             when request to configDB fails
+     */
+    public static JSONObject getCellData(String cellId) throws ConfigDbNotFoundException {
+	Configuration configuration = Configuration.getInstance();
+	String requestUrl = configuration.getConfigDbService() + "/api/sdnc-config-db/v3/getCell" + "/" + cellId;
+	String response = sendRequest(requestUrl);
+	JSONObject responseObject = new JSONObject(response);
+	return responseObject;
+    }
+
 
     /**
      * Method to send request.

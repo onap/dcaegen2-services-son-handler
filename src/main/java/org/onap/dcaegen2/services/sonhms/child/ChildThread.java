@@ -25,6 +25,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import fj.data.Either;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -80,6 +81,7 @@ public class ChildThread implements Runnable {
     HoMetricsComponent hoMetricsComponent;
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(ChildThread.class);
     private static Timestamp startTime;
+    private static String networkId;
 
 
     /**
@@ -169,7 +171,14 @@ public class ChildThread implements Runnable {
 				new PolicyDmaapClient(new DmaapUtils(), Configuration.getInstance()), new HoMetricsComponent());
 
 		try {
-			String networkId = cluster.getNetworkId();
+		     networkId = cluster.getNetworkId();
+			if (cluster.getCellPciNeighbourMap().isEmpty()) {
+				FixedPciCellsRepository fixedPciCellsRepository = BeanUtil.getBean(FixedPciCellsRepository.class);
+				List<String> fixedPciCells = fixedPciCellsRepository.getFixedPciCells();
+				String cellId = fixedPciCells.get(0);
+				JSONObject cellData = SdnrRestClient.getCellData(cellId);
+				networkId = cellData.getJSONObject("Cell").getString("networkId");
+			}
 
 			Boolean done = false;
 
