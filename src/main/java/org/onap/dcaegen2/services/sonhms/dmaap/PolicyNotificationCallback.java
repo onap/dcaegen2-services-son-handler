@@ -45,8 +45,9 @@ public class PolicyNotificationCallback extends NotificationCallback {
 	}
 
 	private void handlePolicyNotification(String msg) {
+                log.info("Message received from policy: " +msg);
 		PciUpdateRepository pciUpdateRepository = BeanUtil.getBean(PciUpdateRepository.class);
-        Configuration configuration = Configuration.getInstance();
+                Configuration configuration = Configuration.getInstance();
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			PolicyNotification policyResponse = mapper.readValue(msg, PolicyNotification.class);
@@ -82,8 +83,8 @@ public class PolicyNotificationCallback extends NotificationCallback {
 				String statusToString = Integer.toString(status);
 				log.info("Handled response from policy, status code {}", statusToString);
 			}
-		} catch (IOException e) {
-			log.info("caught io exception while fetching policy response");
+		} catch (Exception e) {
+			log.info("caught exception while fetching policy response:" + e);
 
 		}
 	}

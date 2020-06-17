@@ -223,9 +223,6 @@ public class PmNotificationHandler {
             log.info("Policy Notification: {}", notification);
             Boolean result = policyDmaapClient.sendNotificationToPolicy(notification);
             log.info("send notification to policy result {} ", result);
-            // getting policy response
-            policyDmaapClient.handlePolicyResponse(requestId);
-            log.info("handled policy response");
 
         } catch (Exception e) {
             log.error("Exception in sending Anr update to policy ", e);
