@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5cae8c5f_d83764bf",
+        "filename": "releases/2.0.4-container.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2020-07-13T13:21:52Z",
+      "side": 1,
+      "message": "remove extra space",
+      "range": {
+        "startLine": 5,
+        "startChar": 45,
+        "endLine": 5,
+        "endChar": 47
+      },
+      "revId": "6edb42982bc29e91ae48ad2191989aba61fc7924",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7b5f203a_251c9dab",
+        "filename": "releases/2.0.4-container.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2020-07-13T13:21:52Z",
+      "side": 1,
+      "message": "This tag is not found under https://jenkins.onap.org/view/dcaegen2/job/dcaegen2-services-son-handler-maven-docker-stage-master/349/consoleFull",
+      "range": {
+        "startLine": 8,
+        "startChar": 22,
+        "endLine": 8,
+        "endChar": 38
+      },
+      "revId": "6edb42982bc29e91ae48ad2191989aba61fc7924",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
