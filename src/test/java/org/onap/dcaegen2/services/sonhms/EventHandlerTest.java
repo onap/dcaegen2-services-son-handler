@@ -2,7 +2,7 @@
  *  ============LICENSE_START=======================================================
  *  son-handler
  *  ================================================================================
- *   Copyright (C) 2019 Wipro Limited.
+ *   Copyright (C) 2019-2020 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -127,7 +127,6 @@ public class EventHandlerTest {
         Mockito.when(clusterutilsMock.getAllClusters()).thenReturn(clusterDetails);
         Mockito.when(clusterutilsMock.getClustersForNotification(notification, clusterDetails)).thenReturn(mapping);
         Mockito.when(clusterutilsMock.getClusterForCell(Mockito.any(), Mockito.any())).thenReturn(existingCluster);
-        Mockito.when(threadUtilsMock.createNewThread(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(),Mockito.anyString())).thenReturn(true);
         
         try {
             Mockito.when(clusterutilsMock.createCluster(Mockito.any())).thenReturn(cluster);
@@ -162,8 +161,6 @@ public class EventHandlerTest {
 		Mockito.when(clusterutilsMock.getAllClusters()).thenReturn(clusterDetails);
 		Mockito.when(clusterutilsMock.getClustersForNotification(notification, clusterDetails)).thenReturn(mapping);
 		Mockito.when(clusterutilsMock.getClusterForCell(Mockito.any(), Mockito.any())).thenReturn(existingCluster);
-		Mockito.when(threadUtilsMock.createNewThread(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(),
-				Mockito.anyString())).thenReturn(true);
 		Mockito.when(clusterutilsMock.getClusterDetailsFromClusterId(Mockito.any(), Mockito.any()))
 				.thenReturn(clusterDetail);
 
@@ -224,9 +221,7 @@ public class EventHandlerTest {
 
 		try {
 			Mockito.when(clusterutilsMock.findClusterMap(Mockito.any())).thenReturn(clusterMap);
-			Mockito.when(clusterutilsMock.createCluster(Mockito.any())).thenReturn(graph);
 			Mockito.when(clusterutilsMock.modifyCluster(Mockito.any(), Mockito.any())).thenReturn(graph);
-			Mockito.when(clusterutilsMock.getClusterForCell(Mockito.any(), Mockito.any())).thenReturn(existingCluster);
 
 		} catch (ConfigDbNotFoundException e) {
 			e.printStackTrace();
@@ -285,8 +280,6 @@ public class EventHandlerTest {
 		try {
 			Mockito.when(clusterutilsMock.findClusterMap(Mockito.any())).thenReturn(clusterMap);
 			Mockito.when(clusterutilsMock.createCluster(Mockito.any())).thenReturn(graph);
-			Mockito.when(clusterutilsMock.modifyCluster(Mockito.any(), Mockito.any())).thenReturn(graph);
-			Mockito.when(clusterutilsMock.getClusterForCell(Mockito.any(), Mockito.any())).thenReturn(existingCluster);
 
 		} catch (ConfigDbNotFoundException e) {
 			e.printStackTrace();
