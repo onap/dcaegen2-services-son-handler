@@ -3,7 +3,7 @@
  *  ============LICENSE_START=======================================================
  *  son-handler
  *  ================================================================================
- *   Copyright (C) 2019 Wipro Limited.
+ *   Copyright (C) 2019-2020 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -37,6 +37,7 @@ import org.onap.dcaegen2.services.sonhms.dao.FixedPciCellsRepository;
 import org.onap.dcaegen2.services.sonhms.dao.PciUpdateRepository;
 import org.onap.dcaegen2.services.sonhms.entity.FixedPciCells;
 import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.modules.junit4.PowerMockRunnerDelegate;
@@ -45,6 +46,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.onap.dcaegen2.services.sonhms.utils.BeanUtil;
 
 @RunWith(PowerMockRunner.class)
+@PowerMockIgnore({"com.sun.org.apache.xerces.*", "javax.xml.*", "org.xml.*", "javax.management.*"})
 @PowerMockRunnerDelegate(SpringRunner.class)
 @SpringBootTest(classes = PolicyNotificationCallbackDuplicate.class)
 @PrepareForTest({ BeanUtil.class, PolicyNotificationCallbackDuplicate.class, Configuration.class })
