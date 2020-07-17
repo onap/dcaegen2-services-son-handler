@@ -2,7 +2,7 @@
  *  ============LICENSE_START=======================================================
  *  son-handler
  *  ================================================================================
- *   Copyright (C) 2019 Wipro Limited.
+ *   Copyright (C) 2019-2020 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -103,11 +103,6 @@ public class PolicyDmaapClientTest {
         };
         Mockito.when(configurationMock.getStreamsSubscribes()).thenReturn(streamsSubscribes);
         Mockito.when(dmaapUtilsMock.buildConsumer(configurationMock, "DCAE_CL_RSP")).thenReturn(policyResponseCambriaConsumerMock);
-        try {
-            Mockito.when(policyResponseCambriaConsumerMock.fetch()).thenReturn(msgs);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         assertTrue(policyDmaapClient.handlePolicyResponse("9d2d790e-a5f0-11e8-98d0-529269fb1459"));
     }
     
