@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0c44276a_0af34c3f",
+        "filename": "pom.xml",
+        "patchSetId": 4
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2020-07-21T23:43:48Z",
+      "side": 1,
+      "message": "2.0.4 already released for frankfurt maintenance; switch master to 2.1.0 for Guilin",
+      "range": {
+        "startLine": 30,
+        "startChar": 10,
+        "endLine": 30,
+        "endChar": 23
+      },
+      "revId": "babc560156ec409943b270a6a4192c866eeaf3ac",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1136379a_7c4e4fce",
+        "filename": "version.properties",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2020-07-21T23:43:48Z",
+      "side": 1,
+      "message": "2.1.0",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 7
+      },
+      "revId": "babc560156ec409943b270a6a4192c866eeaf3ac",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
