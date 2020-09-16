@@ -1,0 +1,4 @@
+distribution_type: 'maven'
+version: '2.1.1'
+project: 'dcaegen2-services-son-handler'
+log_dir: 'dcaegen2-services-son-handler-maven-stage-master/428/'
