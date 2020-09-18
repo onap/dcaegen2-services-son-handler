@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f1211d22_da2374bd",
+        "filename": "releases/2.1.1-container.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2020-09-18T13:45:18Z",
+      "side": 1,
+      "message": "just fyi - as this is based on 09/12 build, the container release need not wait for java artifact release. Both could be submitted same time (under different MR though)",
+      "range": {
+        "startLine": 4,
+        "startChar": 66,
+        "endLine": 4,
+        "endChar": 70
+      },
+      "revId": "8dffe74e450abb232f916cd74febb41b97bad3ab",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
