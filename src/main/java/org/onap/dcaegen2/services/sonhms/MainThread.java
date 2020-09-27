@@ -164,7 +164,9 @@ public class MainThread implements Runnable {
 							} else if ((fmNotification.getEvent().getFaultFields().getSpecificProblem()
 									.equals("Collision"))
 									|| (fmNotification.getEvent().getFaultFields().getSpecificProblem()
-											.equals("Confusion"))) {
+											.equals("Confusion"))
+									|| (fmNotification.getEvent().getFaultFields().getSpecificProblem()
+											.equals("CollisionAndConfusion"))) {
 								faultCellId = fmNotification.getEvent().getCommonEventHeader().getSourceName();
 								bufferedFmNotificationCells.put(faultCellId, fmNotification);
 								log.info("Buffered FM cell {}", faultCellId);
