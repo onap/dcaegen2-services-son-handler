@@ -2,7 +2,7 @@
  *  ============LICENSE_START=======================================================
  *  son-handler
  *  ================================================================================
- *   Copyright (C) 2019 Wipro Limited.
+ *   Copyright (C) 2019-2020 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -164,7 +164,9 @@ public class MainThread implements Runnable {
 							} else if ((fmNotification.getEvent().getFaultFields().getSpecificProblem()
 									.equals("Collision"))
 									|| (fmNotification.getEvent().getFaultFields().getSpecificProblem()
-											.equals("Confusion"))) {
+											.equals("Confusion"))
+									|| (fmNotification.getEvent().getFaultFields().getSpecificProblem()
+											.equals("CollisionAndConfusion"))) {
 								faultCellId = fmNotification.getEvent().getCommonEventHeader().getSourceName();
 								bufferedFmNotificationCells.put(faultCellId, fmNotification);
 								log.info("Buffered FM cell {}", faultCellId);
