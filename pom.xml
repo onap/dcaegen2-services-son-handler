@@ -27,7 +27,7 @@
 	<groupId>org.onap.dcaegen2.services.son-handler</groupId>
 	<artifactId>son-handler</artifactId>
 	<name>dcaegen2-services-son-handler</name>
-	<version>2.1.2-SNAPSHOT</version>
+	<version>2.1.3-SNAPSHOT</version>
 
 	<!--parent> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.0.4.RELEASE</version> </parent -->
@@ -93,7 +93,7 @@
 	        <dependency>
 		        <groupId>org.springframework</groupId>
 		        <artifactId>spring-web</artifactId>
-		        <version>5.2.7.RELEASE</version>
+		        <version>5.2.10.RELEASE</version>
 	        </dependency>
                 <dependency>
                         <groupId>org.springframework</groupId>
@@ -105,6 +105,12 @@
                         <artifactId>spring-data-commons</artifactId>
                         <version>2.2.0.RELEASE</version>
                 </dependency>
+		<!-- https://mvnrepository.com/artifact/io.projectreactor.netty/reactor-netty -->
+		<dependency>
+   			<groupId>io.projectreactor.netty</groupId>
+    			<artifactId>reactor-netty</artifactId>
+    			<version>0.9.12.RELEASE</version>
+		</dependency>
 		<!-- cbs client -->
 		<dependency>
 			<groupId>org.onap.dcaegen2.services.sdk.rest.services</groupId>
@@ -165,7 +171,7 @@
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>42.2.5</version>
+			<version>42.2.18</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -264,7 +270,7 @@
 	    <dependency>
 		    <groupId>org.apache.tomcat.embed</groupId>
 		    <artifactId>tomcat-embed-core</artifactId>
-		   <version>9.0.36</version>
+		   <version>9.0.39</version>
 	    </dependency>
 	</dependencies>
 
