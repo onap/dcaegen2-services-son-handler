@@ -55,6 +55,7 @@
 		<sonar.coverage.jacoco.xmlReportPaths>
 		  ${project.reporting.outputDirectory}/jacoco-ut/jacoco.xml
 		</sonar.coverage.jacoco.xmlReportPaths>
+		<onap.nexus.dockerregistry.daily>nexus3.onap.org:10003</onap.nexus.dockerregistry.daily>
 	</properties>
 
 	<dependencies>
@@ -73,22 +74,22 @@
                 <dependency>
 		        <groupId>org.springframework</groupId>
 		        <artifactId>spring-webmvc</artifactId>
-		        <version>5.2.7.RELEASE</version>
+		        <version>5.2.10.RELEASE</version>
 	        </dependency>
                 <dependency>
 		         <groupId>org.springframework</groupId>
 		         <artifactId>spring-core</artifactId>
-		         <version>5.2.7.RELEASE</version>
+		         <version>5.2.10.RELEASE</version>
 	        </dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-beans</artifactId>
-			<version>5.2.7.RELEASE</version>
+			<version>5.2.10.RELEASE</version>
 		</dependency>
 	        <dependency>
 		        <groupId>org.springframework</groupId>
 		        <artifactId>spring-expression</artifactId>
-		        <version>5.2.7.RELEASE</version>
+		        <version>5.2.10.RELEASE</version>
                 </dependency>
 	        <dependency>
 		        <groupId>org.springframework</groupId>
@@ -98,7 +99,7 @@
                 <dependency>
                         <groupId>org.springframework</groupId>
                         <artifactId>spring-tx</artifactId>
-                        <version>5.2.7.RELEASE</version>
+                        <version>5.2.10.RELEASE</version>
                 </dependency>
                 <dependency>
                         <groupId>org.springframework.data</groupId>
