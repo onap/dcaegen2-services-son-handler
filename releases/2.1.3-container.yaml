@@ -1,0 +1,8 @@
+distribution_type: 'container'
+container_release_tag: '2.1.3'
+project: 'dcaegen2-services-son-handler'
+log_dir: 'dcaegen2-services-son-handler-maven-docker-stage-master/565/'
+ref: f11633f81f4e49fbe08e26a4dcbd0365a6d6bd56
+containers:
+    - name: 'org.onap.dcaegen2.services.son-handler'
+      version: '2.1.3-20210212T023435Z'
