@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "17f87e58_3643da4a",
+        "filename": "pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-06-11T09:20:36Z",
+      "side": 1,
+      "message": "Use 1.8.6\n\n1.8.5 was not released.",
+      "range": {
+        "startLine": 44,
+        "startChar": 15,
+        "endLine": 44,
+        "endChar": 20
+      },
+      "revId": "fd3ffbdcd1d3dc9011f98ea03894d7deb05c0db6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
