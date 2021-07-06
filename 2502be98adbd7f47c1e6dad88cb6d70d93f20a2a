@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "09c5ebea_93e48680",
+        "filename": "pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2021-07-06T14:43:03Z",
+      "side": 1,
+      "message": "2021",
+      "range": {
+        "startLine": 7,
+        "startChar": 24,
+        "endLine": 7,
+        "endChar": 29
+      },
+      "revId": "2502be98adbd7f47c1e6dad88cb6d70d93f20a2a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "69ecb53d_af5b1f6a",
+        "filename": "pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 377,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2021-07-06T14:43:03Z",
+      "side": 1,
+      "message": "though not part of this change, suggest cleaning up pom to remove comments and align formatting  (tabs with spaces)",
+      "range": {
+        "startLine": 331,
+        "startChar": 0,
+        "endLine": 377,
+        "endChar": 3
+      },
+      "revId": "2502be98adbd7f47c1e6dad88cb6d70d93f20a2a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
