@@ -2,7 +2,7 @@
  *  ============LICENSE_START=======================================================
  *  son-handler
  *  ================================================================================
- *   Copyright (C) 2019 Wipro Limited.
+ *   Copyright (C) 2021 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -82,48 +82,50 @@ public class EventHandler {
     /**
      * Handles fault notifications.
      */
-    public Boolean handleFaultNotification(List<FaultEvent> fmNotification) {
+     public Boolean handleFaultNotification(List<FaultEvent> fmNotification) {
 
-        log.info("Handling Fault notification");
-        log.info("fm notification {}", fmNotification);
-        
-        Set<String> cellIds = new HashSet<>();
-        List<ClusterDetails> clusterDetails = clusterUtils.getAllClusters();
-        String networkId = "";
-        Map<String, ArrayList<Integer>> collisionConfusionMap = new HashMap<>();
+       log.info("Handling Fault notification");
+       log.info("fm notification {}", fmNotification);
 
-        for (FaultEvent faultEvent : fmNotification) {
+       Set<String> cellIds = new HashSet<>();
+       List<ClusterDetails> clusterDetails = clusterUtils.getAllClusters();
+       String networkId = "";
+       Map<String, ArrayList<Integer>> collisionConfusionMap = new HashMap<>();
+       for (FaultEvent faultEvent : fmNotification) {
             String cellId = faultEvent.getEvent().getCommonEventHeader().getSourceName();
             cellIds.add(cellId);
             networkId = faultEvent.getEvent().getFaultFields().getAlarmAdditionalInformation().getNetworkId();
+	    
             ArrayList<Integer> counts = new ArrayList<>();
-            counts.add(faultEvent.getEvent().getFaultFields().getAlarmAdditionalInformation().getCollisions());
-            counts.add(faultEvent.getEvent().getFaultFields().getAlarmAdditionalInformation().getConfusions());
+            if(faultEvent.getEvent().getFaultFields().getAlarmCondition().contains("Collision")){
+		    counts.add(1);
+	    }else{counts.add(0);}
+            if(faultEvent.getEvent().getFaultFields().getAlarmCondition().contains("Confusion")){
+		    counts.add(1);
+            }else{counts.add(0);}
             collisionConfusionMap.put(cellId, counts);
-        }
-        FaultNotificationtoClusterMapping faultNotificationtoClusterMapping = clusterUtils
-                .getClustersForFmNotification(cellIds, clusterDetails);
-
-        faultNotificationtoClusterMapping.setCollisionConfusionMap(collisionConfusionMap);
-        // matching cells
-        if (faultNotificationtoClusterMapping.getCellsinCluster() != null 
-                && !faultNotificationtoClusterMapping.getCellsinCluster().isEmpty()) {
-            try {
-                handleMatchedFmCells(faultNotificationtoClusterMapping, clusterDetails);
-            } catch (ConfigDbNotFoundException e) {
-                log.error("Config DB Exception {}", e);
             }
+       FaultNotificationtoClusterMapping faultNotificationtoClusterMapping = clusterUtils
+	       .getClustersForFmNotification(cellIds, clusterDetails);
+       faultNotificationtoClusterMapping.setCollisionConfusionMap(collisionConfusionMap);
 
-        }
-        // unmatched new cells
-        if (faultNotificationtoClusterMapping.getNewCells() != null 
-                && !faultNotificationtoClusterMapping.getNewCells().isEmpty()) {
-            handleUnmatchedFmCells(faultNotificationtoClusterMapping, networkId);
+       // matching cells
+       if (faultNotificationtoClusterMapping.getCellsinCluster() != null 
+		       && !faultNotificationtoClusterMapping.getCellsinCluster().isEmpty()) {
+	       try {
+		       handleMatchedFmCells(faultNotificationtoClusterMapping, clusterDetails);
+	       } catch (ConfigDbNotFoundException e) {
+		       log.error("Config DB Exception {}", e);
+	       }
+		       }
+       // unmatched new cells
+       if (faultNotificationtoClusterMapping.getNewCells() != null 
+		       && !faultNotificationtoClusterMapping.getNewCells().isEmpty()) {
+	       handleUnmatchedFmCells(faultNotificationtoClusterMapping, networkId);
+		       }
 
-        }
-
-        return true;
-    }
+       return true;
+       }
 
     /**
      * handle matched fm cells.
