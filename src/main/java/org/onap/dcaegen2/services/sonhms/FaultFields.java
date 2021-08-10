@@ -29,7 +29,7 @@ public class FaultFields {
     @Override
     public String toString() {
         return "FaultFields [faultFieldsVersion=" + faultFieldsVersion + ", alarmCondition=" + alarmCondition
-                + ", eventSourceType=" + eventSourceType + ", specificProblem=" + specificProblem + ", eventSeverity="
+                + ", eventSourceType=" + eventSourceType + ", eventCategory=" + eventCategory  + ", specificProblem=" + specificProblem + ", eventSeverity="
                 + eventSeverity + ", vfStatus=" + vfStatus + ", alarmAdditionalInformation="
                 + alarmAdditionalInformation + "]";
     }
@@ -37,6 +37,7 @@ public class FaultFields {
     private double faultFieldsVersion;
     private String alarmCondition;
     private String eventSourceType;
+    private String eventCategory;
     private String specificProblem;
     private String eventSeverity;
     private String vfStatus;
@@ -74,6 +75,14 @@ public class FaultFields {
         this.eventSourceType = eventSourceType;
     }
 
+    public String getEventCategory() {
+        return eventCategory;
+    }
+
+    public void setEventCategory(String eventCategory) {
+        this.eventCategory = eventCategory;
+    }
+    
     public String getSpecificProblem() {
         return specificProblem;
     }
