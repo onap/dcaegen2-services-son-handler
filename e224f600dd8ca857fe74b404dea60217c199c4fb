@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "916e875e_9f4d1a27",
+        "filename": "src/main/docker/docker-compose.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2021-08-10T15:33:36Z",
+      "side": 1,
+      "message": "2020-2021",
+      "range": {
+        "startLine": 4,
+        "startChar": 20,
+        "endLine": 4,
+        "endChar": 25
+      },
+      "revId": "e224f600dd8ca857fe74b404dea60217c199c4fb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "abce04cc_f673703f",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/EventHandler.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2021-08-10T15:33:36Z",
+      "side": 1,
+      "message": "2019-2021",
+      "range": {
+        "startLine": 5,
+        "startChar": 19,
+        "endLine": 5,
+        "endChar": 24
+      },
+      "revId": "e224f600dd8ca857fe74b404dea60217c199c4fb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5cd4230e_1dd67fec",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/EventHandler.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2021-08-10T15:33:36Z",
+      "side": 1,
+      "message": "remove tab spaces",
+      "range": {
+        "startLine": 95,
+        "startChar": 0,
+        "endLine": 108,
+        "endChar": 2
+      },
+      "revId": "e224f600dd8ca857fe74b404dea60217c199c4fb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
