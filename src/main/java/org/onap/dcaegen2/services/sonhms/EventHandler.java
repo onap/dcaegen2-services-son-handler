@@ -91,16 +91,21 @@ public class EventHandler {
         List<ClusterDetails> clusterDetails = clusterUtils.getAllClusters();
         String networkId = "";
         Map<String, ArrayList<Integer>> collisionConfusionMap = new HashMap<>();
-
         for (FaultEvent faultEvent : fmNotification) {
-            String cellId = faultEvent.getEvent().getCommonEventHeader().getSourceName();
-            cellIds.add(cellId);
-            networkId = faultEvent.getEvent().getFaultFields().getAlarmAdditionalInformation().getNetworkId();
-            ArrayList<Integer> counts = new ArrayList<>();
-            counts.add(faultEvent.getEvent().getFaultFields().getAlarmAdditionalInformation().getCollisions());
-            counts.add(faultEvent.getEvent().getFaultFields().getAlarmAdditionalInformation().getConfusions());
-            collisionConfusionMap.put(cellId, counts);
-        }
+	            String cellId = faultEvent.getEvent().getCommonEventHeader().getSourceName();
+		    cellIds.add(cellId);
+		    networkId = faultEvent.getEvent().getFaultFields().getAlarmAdditionalInformation().getNetworkId();
+		    ArrayList<Integer> counts = new ArrayList<>();
+		    if(faultEvent.getEvent().getFaultFields().getAlarmCondition().contains("Collision")){
+		           counts.add(1);
+		    }else{counts.add(0);}
+		    if(faultEvent.getEvent().getFaultFields().getAlarmCondition().contains("Confusion")){
+		           counts.add(1);
+		    }else{counts.add(0);}
+		    //counts.add(faultEvent.getEvent().getFaultFields().getAlarmAdditionalInformation().getCollisions());
+		   //counts.add(faultEvent.getEvent().getFaultFields().getAlarmAdditionalInformation().getConfusions());
+		   collisionConfusionMap.put(cellId, counts);
+	}
         FaultNotificationtoClusterMapping faultNotificationtoClusterMapping = clusterUtils
                 .getClustersForFmNotification(cellIds, clusterDetails);
 
