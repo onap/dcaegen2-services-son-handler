@@ -2,7 +2,7 @@
       "event":{
          "commonEventHeader":{
             "version":"4.0.1",
-            "vesEventListenerVersion":"7.0.1",
+            "vesEventListenerVersion":"7.2",
             "domain":"fault",
             "eventName":"Fault_RansimAgent-Wipro_RanPCIProblem",
             "eventId":"fault000001",
@@ -22,13 +22,12 @@
             "faultFieldsVersion":"4.0",
             "alarmCondition":"RanPciCollisionConfusionOccurred",
             "eventSourceType":"other",
-            "specificProblem":"Collision",
+            "specificProblem":"Chn0025",
             "eventSeverity":"CRITICAL",
+            "eventCategory": "PCICollision",
             "vfStatus":"Active",
             "alarmAdditionalInformation":{
-               "networkId":"NTWK005",
-               "collisions":"2",
-               "confusions":"0"
+               "networkId":"NTWK005"
             }
          }
       }
