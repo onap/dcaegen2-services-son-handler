@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9f4942c9_a43f3537",
+        "filename": "Changelog.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 6219
+      },
+      "writtenOn": "2021-08-13T09:14:27Z",
+      "side": 1,
+      "message": "https://jira.onap.org/browse/DCAEGEN2-2884",
+      "range": {
+        "startLine": 10,
+        "startChar": 26,
+        "endLine": 10,
+        "endChar": 69
+      },
+      "revId": "e47532c99a68766734338768cd7435b7a55e4b1c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f617a33b_03fda53e",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/EventHandler.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 6219
+      },
+      "writtenOn": "2021-08-13T09:14:27Z",
+      "side": 1,
+      "message": "2019-2021",
+      "range": {
+        "startLine": 5,
+        "startChar": 18,
+        "endLine": 5,
+        "endChar": 23
+      },
+      "revId": "e47532c99a68766734338768cd7435b7a55e4b1c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "821ba0a1_6a1f0f88",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/EventHandler.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 6219
+      },
+      "writtenOn": "2021-08-13T09:14:27Z",
+      "side": 1,
+      "message": "format and remove tab spaces",
+      "range": {
+        "startLine": 87,
+        "startChar": 6,
+        "endLine": 128,
+        "endChar": 8
+      },
+      "revId": "e47532c99a68766734338768cd7435b7a55e4b1c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
