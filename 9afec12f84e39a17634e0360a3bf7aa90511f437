@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "531c7180_cbd8e016",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/EventHandler.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-08-23T16:22:27Z",
+      "side": 1,
+      "message": "separate lines please\n\nan alternate code pattern is:\ncounts.add(faultEvent.getEvent().getFaultFields().getEventCategory().contains(\"Collision\") ? 1 : 0);",
+      "revId": "9afec12f84e39a17634e0360a3bf7aa90511f437",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f5b8928f_c530c911",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/EventHandler.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-08-23T16:22:27Z",
+      "side": 1,
+      "message": "see comment above",
+      "revId": "9afec12f84e39a17634e0360a3bf7aa90511f437",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bc97d453_2fad14fa",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/FaultFields.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-08-23T16:22:27Z",
+      "side": 1,
+      "message": "2019-2021",
+      "revId": "9afec12f84e39a17634e0360a3bf7aa90511f437",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
