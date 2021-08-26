@@ -27,6 +27,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import fj.data.Either;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +40,7 @@ import org.onap.dcaegen2.services.sonhms.dao.SonRequestsRepository;
 import org.onap.dcaegen2.services.sonhms.dmaap.PolicyDmaapClient;
 import org.onap.dcaegen2.services.sonhms.entity.SonRequests;
 import org.onap.dcaegen2.services.sonhms.exceptions.ConfigDbNotFoundException;
+import org.onap.dcaegen2.services.sonhms.exceptions.CpsNotFoundException;
 import org.onap.dcaegen2.services.sonhms.model.CellConfig;
 import org.onap.dcaegen2.services.sonhms.model.CellPciPair;
 import org.onap.dcaegen2.services.sonhms.model.Common;
@@ -54,7 +56,7 @@ import org.onap.dcaegen2.services.sonhms.model.PolicyNotification;
 import org.onap.dcaegen2.services.sonhms.model.Ran;
 import org.onap.dcaegen2.services.sonhms.model.X0005b9Lte;
 import org.onap.dcaegen2.services.sonhms.restclient.AsyncResponseBody;
-import org.onap.dcaegen2.services.sonhms.restclient.SdnrRestClient;
+import org.onap.dcaegen2.services.sonhms.restclient.ConfigurationClient;
 import org.onap.dcaegen2.services.sonhms.restclient.Solutions;
 import org.onap.dcaegen2.services.sonhms.utils.BeanUtil;
 import org.slf4j.Logger;
@@ -162,7 +164,7 @@ public class ChildThreadUtils {
      * @throws ConfigDbNotFoundException
      *             when config db is unreachable
      */
-    public Boolean sendToPolicy(AsyncResponseBody async) throws ConfigDbNotFoundException {
+    public Boolean sendToPolicy(AsyncResponseBody async) throws ConfigDbNotFoundException, CpsNotFoundException {
 
         if (log.isDebugEnabled()) {
             log.debug(async.toString());
@@ -224,7 +226,8 @@ public class ChildThreadUtils {
                             lteCell.setBlacklisted("true");
                             lteCell.setPlmnId(solutions.getNetworkId());
                             lteCell.setCid(removeableNeighbor);
-                            int pci = SdnrRestClient.getPci(cellId);
+                            int pci = ConfigurationClient.configClient(Configuration.getInstance().getConfigClientType()).getPci(cellId);
+                            System.out.println("THE PCI VALUE IS " + pci);
                             lteCell.setPhyCellId(pci);
                             lteCell.setPnfName(pnfName);
                             lteCellList.add(lteCell);

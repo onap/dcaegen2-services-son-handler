@@ -55,9 +55,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 @PrepareForTest({ SonHandlerRestTemplate.class,Configuration.class })
 @SpringBootTest(classes = SdnrRestClientTest.class)
 public class SdnrRestClientTest {
-	    
-    
-    
+
+
+	SdnrRestClient sdnr = new SdnrRestClient();
     Configuration configuration = Configuration.getInstance();
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(SdnrRestClient.class);
     @Before
@@ -85,8 +85,8 @@ public class SdnrRestClientTest {
    		PowerMockito.when(SonHandlerRestTemplate.sendGetRequest(Mockito.anyString(),Matchers.<ParameterizedTypeReference<String>>any())) 
            .thenReturn(ResponseEntity.ok(responseBody));
    		try {
-   			List<CellPciPair> result=SdnrRestClient.getNbrList("1");
-   			List<CellPciPair> nbrList = new ArrayList<>();
+   			List<CellPciPair> result = sdnr.getNbrList("1");;
+			List<CellPciPair> nbrList = new ArrayList<>();
    			String response=ResponseEntity.ok(responseBody).getBody();
    			JSONObject responseJson = new JSONObject(response);
    	        JSONArray nbrListObj = responseJson.getJSONArray("nbrList");
@@ -116,7 +116,7 @@ public class SdnrRestClientTest {
    		PowerMockito.when(SonHandlerRestTemplate.sendGetRequest(Mockito.anyString(),Matchers.<ParameterizedTypeReference<String>>any())) 
            .thenReturn(ResponseEntity.ok(responseBody));
    		try {
-   			int result=SdnrRestClient.getPci("1");
+   			int result=sdnr.getPci("1");
    			String response=ResponseEntity.ok(responseBody).getBody();
    			JSONObject respObj = new JSONObject(response);
    			assertEquals(respObj.getInt("value"),result);
@@ -138,7 +138,7 @@ public class SdnrRestClientTest {
    		PowerMockito.when(SonHandlerRestTemplate.sendGetRequest(Mockito.anyString(),Matchers.<ParameterizedTypeReference<String>>any())) 
            .thenReturn(ResponseEntity.ok(responseBody));
    		try {
-   			String result=SdnrRestClient.getPnfName("1");
+   			String result=sdnr.getPnfName("1");
    			String response=ResponseEntity.ok(responseBody).getBody();
    			JSONObject respObj = new JSONObject(response);
    			assertEquals(respObj.getString("value"),result);

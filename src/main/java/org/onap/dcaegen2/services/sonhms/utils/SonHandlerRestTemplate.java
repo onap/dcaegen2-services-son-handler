@@ -39,6 +39,7 @@ import org.apache.http.conn.ssl.TrustStrategy;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.BasicHttpClientConnectionManager;
+import org.onap.dcaegen2.services.sonhms.Configuration;
 import org.slf4j.Logger;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -72,6 +73,7 @@ public class SonHandlerRestTemplate {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         headers.setContentType(MediaType.APPLICATION_JSON);
+        //headers.setBasicAuth(Configuration.getInstance().getCpsUsername(), Configuration.getInstance().getCpsPassword());
         HttpEntity<Object> requestEntity = new HttpEntity<>(requestBody, headers);
         try {
             RestTemplate restTemplate = BeanUtil.getBean(RestTemplate.class);

@@ -47,14 +47,17 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.onap.dcaegen2.services.sonhms.Configuration;
 import org.onap.dcaegen2.services.sonhms.NotificationToClusterMapping;
 import org.onap.dcaegen2.services.sonhms.child.Graph;
 import org.onap.dcaegen2.services.sonhms.dao.ClusterDetailsRepository;
 import org.onap.dcaegen2.services.sonhms.entity.ClusterDetails;
 import org.onap.dcaegen2.services.sonhms.exceptions.ConfigDbNotFoundException;
+import org.onap.dcaegen2.services.sonhms.exceptions.CpsNotFoundException;
 import org.onap.dcaegen2.services.sonhms.model.CellPciPair;
 import org.onap.dcaegen2.services.sonhms.model.FapServiceList;
 import org.onap.dcaegen2.services.sonhms.model.Notification;
+import org.onap.dcaegen2.services.sonhms.restclient.ConfigurationClient;
 import org.onap.dcaegen2.services.sonhms.restclient.SdnrRestClient;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
@@ -67,15 +70,17 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore({"com.sun.org.apache.xerces.*", "javax.xml.*", "org.xml.*", "javax.management.*"})
 @PowerMockRunnerDelegate(SpringRunner.class)
-@PrepareForTest({ SdnrRestClient.class, BeanUtil.class })
+@PrepareForTest({ SdnrRestClient.class, BeanUtil.class, ConfigurationClient.class })
 @SpringBootTest(classes = ClusterUtils.class)
 public class ClusterUtilsTest {
+
 
     @Mock
     private ClusterDetailsRepository clusterDetailsRepositoryMock;
 
     @InjectMocks
     ClusterUtils clusterUtils;
+
 
     private static Notification notification1;
     private static Notification notification2;
@@ -86,6 +91,8 @@ public class ClusterUtilsTest {
     @BeforeClass
     public static void setup() {
 
+        Configuration config = Configuration.getInstance();
+        config.setConfigClientType("ConfigDB");
         notification1 = new Notification();
         notification2 = new Notification();
         clusterDetailsForGetClusterDetailsFromClusterIdTest = new ArrayList<ClusterDetails>();
@@ -150,7 +157,7 @@ public class ClusterUtilsTest {
     }
 
     @Test
-    public void createClusterTest() throws ConfigDbNotFoundException {
+    public void createClusterTest() throws Exception {
 
         Map<CellPciPair, ArrayList<CellPciPair>> clusterMap = new HashMap<CellPciPair, ArrayList<CellPciPair>>();
 
@@ -159,10 +166,16 @@ public class ClusterUtilsTest {
 
         firstNbrList.add(new CellPciPair("48", 0));
         nbrList.add(new CellPciPair("44", 3));
-
         PowerMockito.mockStatic(SdnrRestClient.class);
+        PowerMockito.mockStatic(ConfigurationClient.class);
 
-        PowerMockito.when(SdnrRestClient.getNbrList(Mockito.anyString())).thenReturn(nbrList);
+        SdnrRestClient sdnr = PowerMockito.spy(new SdnrRestClient());
+        Configuration config = Configuration.getInstance();
+
+        PowerMockito.whenNew(SdnrRestClient.class).withAnyArguments().thenReturn(sdnr);
+        PowerMockito.when(ConfigurationClient.configClient(config.getConfigClientType()))
+                .thenReturn(sdnr);
+        PowerMockito.doReturn(nbrList).when(sdnr, "getNbrList", Mockito.anyString());
 
         clusterMap.put(new CellPciPair("45", 310), (ArrayList<CellPciPair>) firstNbrList);
 
