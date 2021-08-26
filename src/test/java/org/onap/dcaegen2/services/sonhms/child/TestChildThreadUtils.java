@@ -2,7 +2,7 @@
  *  ============LICENSE_START=======================================================
  *  son-handler
  *  ================================================================================
- *   Copyright (C) 2019-2020 Wipro Limited.
+ *   Copyright (C) 2021 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -21,24 +21,8 @@
 
 package org.onap.dcaegen2.services.sonhms.child;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.when;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import fj.data.Either;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -55,10 +39,13 @@ import org.onap.dcaegen2.services.sonhms.dao.SonRequestsRepository;
 import org.onap.dcaegen2.services.sonhms.dmaap.PolicyDmaapClient;
 import org.onap.dcaegen2.services.sonhms.entity.SonRequests;
 import org.onap.dcaegen2.services.sonhms.exceptions.ConfigDbNotFoundException;
+import org.onap.dcaegen2.services.sonhms.exceptions.CpsNotFoundException;
 import org.onap.dcaegen2.services.sonhms.model.CellPciPair;
 import org.onap.dcaegen2.services.sonhms.model.HoDetails;
 import org.onap.dcaegen2.services.sonhms.model.PolicyNotification;
 import org.onap.dcaegen2.services.sonhms.restclient.AsyncResponseBody;
+import org.onap.dcaegen2.services.sonhms.restclient.ConfigInterface;
+import org.onap.dcaegen2.services.sonhms.restclient.ConfigurationClient;
 import org.onap.dcaegen2.services.sonhms.restclient.SdnrRestClient;
 import org.onap.dcaegen2.services.sonhms.utils.BeanUtil;
 import org.onap.dcaegen2.services.sonhms.utils.ClusterUtilsTest;
@@ -70,14 +57,28 @@ import org.powermock.modules.junit4.PowerMockRunnerDelegate;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore({"com.sun.org.apache.xerces.*", "javax.xml.*", "org.xml.*", "javax.management.*"})
 @PowerMockRunnerDelegate(SpringRunner.class)
-@PrepareForTest({ BeanUtil.class, SdnrRestClient.class })
+@PrepareForTest({ BeanUtil.class, SdnrRestClient.class, ConfigurationClient.class })
 @SpringBootTest(classes = TestChildThreadUtils.class)
 public class TestChildThreadUtils {
 
 	ChildThreadUtils childThreadUtils;
+
 	@Mock
 	private SonRequestsRepository repository;
 
@@ -85,15 +86,16 @@ public class TestChildThreadUtils {
 	private PnfUtils pnfUtils;
 	@Mock
 	private PolicyDmaapClient policyDmaapClient;
-	
+
 	@Mock
 	private HandOverMetricsRepository hoMetricRepository;
 	
 	@Mock
 	private HoMetricsComponent hoMetricsComponent;
-	
+
 	@InjectMocks
 	private ChildThreadUtils childThreadUtils2;
+
 
 	@Before
 	public void setup() {
@@ -102,6 +104,7 @@ public class TestChildThreadUtils {
 		Configuration config = Configuration.getInstance();
 		config.setMinCollision(5);
 		config.setMinConfusion(5);
+		config.setConfigClientType("ConfigDB");
 		Map<String, Object> configPolicyMap = new HashMap<>();
 		configPolicyMap.put("PCI_MODCONFIG_POLICY_NAME", "ControlLoop-vPCI-fb41f388-a5f2-11e8-98d0-529269fb1459");
 		configPolicy.setConfig(configPolicyMap);
@@ -177,21 +180,31 @@ public class TestChildThreadUtils {
 	}
 	
 	@Test
-	public void sendToPolicyTest() throws ConfigDbNotFoundException {
-	    
-	    PowerMockito.mockStatic(SdnrRestClient.class);
+	public void sendToPolicyTest() throws Exception {
+
 	    PowerMockito.mockStatic(BeanUtil.class);
+		PowerMockito.mockStatic(SdnrRestClient.class);
+		PowerMockito.mockStatic(ConfigurationClient.class);
+
+		SdnrRestClient sdnr = PowerMockito.spy(new SdnrRestClient());
+		Configuration config = Configuration.getInstance();
+
 
 	    String asyncRspBodyString = readFromFile("/AsyncRespBody.json");
 	    ObjectMapper mapper = new ObjectMapper();
-	    AsyncResponseBody async = new AsyncResponseBody ();
+	    AsyncResponseBody async = new AsyncResponseBody();
         try {
             async = mapper.readValue(asyncRspBodyString, AsyncResponseBody.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        PowerMockito.when(SdnrRestClient.getPci(Mockito.anyString())).thenReturn(3);
-        PowerMockito.when(SdnrRestClient.getPnfName(Mockito.anyString())).thenReturn("pnfName");
+
+		PowerMockito.whenNew(SdnrRestClient.class).withAnyArguments().thenReturn(sdnr);
+		PowerMockito.when(ConfigurationClient.configClient(config.getConfigClientType()))
+				.thenReturn(sdnr);
+		PowerMockito.doReturn(3).when(sdnr, "getPci", Mockito.anyString());
+		PowerMockito.doReturn("pnfName").when(sdnr, "getPnfName", Mockito.anyString());
+
         when(policyDmaapClient.sendNotificationToPolicy(Mockito.anyString())).thenReturn(true);
         Map<String,List<CellPciPair>> pnfsMap = new HashMap<String,List<CellPciPair>>();
         CellPciPair cell1 = new CellPciPair("cell0", 1);

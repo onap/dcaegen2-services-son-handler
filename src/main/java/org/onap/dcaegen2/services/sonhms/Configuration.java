@@ -2,7 +2,7 @@
  *  ============LICENSE_START=======================================================
  *  son-handler
  *  ================================================================================
- *   Copyright (C) 2019-2020 Wipro Limited.
+ *   Copyright (C) 2021 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -21,11 +21,6 @@
 
 package org.onap.dcaegen2.services.sonhms;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
-
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +28,10 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
 public class Configuration {
 
@@ -45,6 +44,11 @@ public class Configuration {
     private String pgPassword;
     private List<String> dmaapServers;
     private String configDbService;
+    private String cpsServiceUrl;
+    private String getCellDataUrl;
+    private String getNbrListUrl;
+    private String getPciUrl;
+    private String getPnfUrl;
     private String oofService;
     private String oofEndpoint;
     private String cg;
@@ -74,7 +78,35 @@ public class Configuration {
     private int policyNegativeAckThreshold;
     private long policyFixedPciTimeInterval;
     private String nfNamingCode;
+    private String ConfigClientType;
+    private String CpsUsername;
+    private String CpsPassword;
 
+    public String getCpsUsername()
+    {
+        return CpsUsername;
+    }
+    public void setCpsUsername(String CpsUsername)
+    {
+        this.CpsUsername = CpsUsername;
+    }
+    public String getCpsPassword()
+    {
+        return CpsPassword;
+    }
+    public void setCpsPassword(String CpsPassword)
+    {
+        this.CpsPassword = CpsPassword;
+    }
+
+    public String getConfigClientType()
+    {
+        return ConfigClientType;
+    }
+    public void setConfigClientType(String ConfigClientType)
+    {
+        this.ConfigClientType = ConfigClientType;
+    }
     public int getPoorCountThreshold() {
         return poorCountThreshold;
     }
@@ -354,44 +386,99 @@ public class Configuration {
     }
 
     public int getPolicyNegativeAckThreshold() {
-		return policyNegativeAckThreshold;
-	}
+        return policyNegativeAckThreshold;
+    }
 
-	public void setPolicyNegativeAckThreshold(int policyNegativeAckThreshold) {
-		this.policyNegativeAckThreshold = policyNegativeAckThreshold;
-	}
+    public void setPolicyNegativeAckThreshold(int policyNegativeAckThreshold) {
+        this.policyNegativeAckThreshold = policyNegativeAckThreshold;
+    }
 
-	public long getPolicyFixedPciTimeInterval() {
-		return policyFixedPciTimeInterval;
-	}
+    public long getPolicyFixedPciTimeInterval() {
+        return policyFixedPciTimeInterval;
+    }
 
-	public void setPolicyFixedPciTimeInterval(long policyFixedPciTimeInterval) {
-		this.policyFixedPciTimeInterval = policyFixedPciTimeInterval;
-	}
-	
-	public String getNfNamingCode() {
-		return nfNamingCode;
-	}
+    public void setPolicyFixedPciTimeInterval(long policyFixedPciTimeInterval) {
+        this.policyFixedPciTimeInterval = policyFixedPciTimeInterval;
+    }
 
-	public void setNfNamingCode(String nfNamingCode) {
-		this.nfNamingCode = nfNamingCode;
-	}
+    public String getNfNamingCode() {
+        return nfNamingCode;
+    }
 
-	@Override
+    public void setNfNamingCode(String nfNamingCode) {
+        this.nfNamingCode = nfNamingCode;
+    }
+
+    public static Logger getLog() {
+        return log;
+    }
+
+    public static void setLog(Logger log) {
+        Configuration.log = log;
+    }
+
+    public String getCpsServiceUrl() {
+        return cpsServiceUrl;
+    }
+
+    public void setCpsServiceUrl(String cpsServiceUrl) {
+        this.cpsServiceUrl = cpsServiceUrl;
+    }
+
+    public String getGetCellDataUrl() {
+        return getCellDataUrl;
+    }
+
+    public void setGetCellDataUrl(String getCellDataUrl) {
+        this.getCellDataUrl = getCellDataUrl;
+    }
+
+    public String getGetNbrListUrl() {
+        return getNbrListUrl;
+    }
+
+    public void setGetNbrListUrl(String getNbrListUrl) {
+        this.getNbrListUrl = getNbrListUrl;
+    }
+
+    public String getGetPciUrl() {
+        return getPciUrl;
+    }
+
+    public void setGetPciUrl(String getPciUrl) {
+        this.getPciUrl = getPciUrl;
+    }
+
+    public String getGetPnfUrl() {
+        return getPnfUrl;
+    }
+
+    public void setGetPnfUrl(String getPnfUrl) {
+        this.getPnfUrl = getPnfUrl;
+    }
+
+    public static void setInstance(Configuration instance) {
+        Configuration.instance = instance;
+    }
+
+    @Override
     public String toString() {
         return "Configuration [pgHost=" + pgHost + ", pgPort=" + pgPort + ", pgUsername=" + pgUsername + ", pgPassword="
                 + pgPassword + ", dmaapServers=" + dmaapServers + ", configDbService=" + configDbService
-                + ", oofService=" + oofService + ", oofEndpoint=" + oofEndpoint + ", cg=" + cg + ", cid=" + cid
-                + ", pollingInterval=" + pollingInterval + ", pollingTimeout=" + pollingTimeout + ", minCollision="
-                + minCollision + ", minConfusion=" + minConfusion + ", sourceId=" + sourceId + ", callbackUrl="
-                + callbackUrl + ", pciOptimizer=" + pciOptimizer + ", pciAnrOptimizer=" + pciAnrOptimizer
-                + ", numSolutions=" + numSolutions + ", bufferTime=" + bufferTime + ", maximumClusters="
-                + maximumClusters + ", aafUsername=" + aafUsername + ", aafPassword=" + aafPassword
-                + ", streamsSubscribes=" + streamsSubscribes + ", streamsPublishes=" + streamsPublishes
-                + ", badThreshold=" + badThreshold + ", poorThreshold=" + poorThreshold + ", poorCountThreshold="
-                + poorCountThreshold + ", badCountThreshold=" + badCountThreshold + ", oofTriggerCountTimer="
-                + oofTriggerCountTimer + ", oofTriggerCountThreshold=" + oofTriggerCountThreshold + ", policyRespTimer="
-                + policyRespTimer + ", policyNegativeAckThreshold=" + policyNegativeAckThreshold + ", policyFixedPciTimeInterval="+ policyFixedPciTimeInterval + ", nfNamingCode="+nfNamingCode+"]";
+                + ", cpsServiceUrl=" + cpsServiceUrl + ", CpsUsername=" + CpsUsername + ",CpsPassword=" + CpsPassword + ",ConfigClientType=" + ConfigClientType + ", getCellDataUrl=" + getCellDataUrl + ", getNbrListUrl="
+                + getNbrListUrl + ", getPciUrl=" + getPciUrl + ", getPnfUrl=" + getPnfUrl + ", oofService=" + oofService
+                + ", oofEndpoint=" + oofEndpoint + ", cg=" + cg + ", cid=" + cid + ", pollingInterval="
+                + pollingInterval + ", pollingTimeout=" + pollingTimeout + ", minCollision=" + minCollision
+                + ", minConfusion=" + minConfusion + ", sourceId=" + sourceId + ", callbackUrl=" + callbackUrl
+                + ", pciOptimizer=" + pciOptimizer + ", pciAnrOptimizer=" + pciAnrOptimizer + ", numSolutions="
+                + numSolutions + ", bufferTime=" + bufferTime + ", maximumClusters=" + maximumClusters
+                + ", aafUsername=" + aafUsername + ", aafPassword=" + aafPassword + ", streamsSubscribes="
+                + streamsSubscribes + ", streamsPublishes=" + streamsPublishes + ", badThreshold=" + badThreshold
+                + ", poorThreshold=" + poorThreshold + ", poorCountThreshold=" + poorCountThreshold
+                + ", badCountThreshold=" + badCountThreshold + ", oofTriggerCountTimer=" + oofTriggerCountTimer
+                + ", oofTriggerCountThreshold=" + oofTriggerCountThreshold + ", policyRespTimer=" + policyRespTimer
+                + ", policyNegativeAckThreshold=" + policyNegativeAckThreshold + ", policyFixedPciTimeInterval="
+                + policyFixedPciTimeInterval + ", nfNamingCode=" + nfNamingCode + "]";
     }
 
     /**
@@ -410,6 +497,8 @@ public class Configuration {
         JsonObject publishes = jsonObject.getAsJsonObject("streams_publishes");
         streamsPublishes = new Gson().fromJson(publishes, mapType);
 
+        CpsUsername = jsonObject.get("cps.username").getAsString();
+        CpsPassword = jsonObject.get("cps.password").getAsString();
         pgPort = jsonObject.get("postgres.port").getAsInt();
         pollingInterval = jsonObject.get("sonhandler.pollingInterval").getAsInt();
         pgPassword = jsonObject.get("postgres.password").getAsString();
@@ -452,10 +541,13 @@ public class Configuration {
         policyFixedPciTimeInterval = jsonObject.get("sonhandler.policyFixedPciTimeInterval").getAsLong();
         nfNamingCode = jsonObject.get("sonhandler.nfNamingCode").getAsString();
 
+        cpsServiceUrl = jsonObject.get("cps.service.url").getAsString();
+        getCellDataUrl = jsonObject.get("cps.get.celldata").getAsString();
+        getPnfUrl = jsonObject.get("cps.get.pnf.url").getAsString();
+        getPciUrl = jsonObject.get("cps.get.pci.url").getAsString();
+        ConfigClientType = jsonObject.get("sonhandler.clientType").getAsString();
         log.info("configuration from CBS {}", this);
 
     }
-
-
 
 }

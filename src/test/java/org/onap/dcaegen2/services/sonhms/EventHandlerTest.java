@@ -2,7 +2,7 @@
  *  ============LICENSE_START=======================================================
  *  son-handler
  *  ================================================================================
- *   Copyright (C) 2019-2020 Wipro Limited.
+ *   Copyright (C) 2021 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -46,6 +46,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.onap.dcaegen2.services.sonhms.child.Graph;
 import org.onap.dcaegen2.services.sonhms.entity.ClusterDetails;
 import org.onap.dcaegen2.services.sonhms.exceptions.ConfigDbNotFoundException;
+import org.onap.dcaegen2.services.sonhms.exceptions.CpsNotFoundException;
 import org.onap.dcaegen2.services.sonhms.model.CellPciPair;
 import org.onap.dcaegen2.services.sonhms.model.FapServiceList;
 import org.onap.dcaegen2.services.sonhms.model.LteNeighborListInUseLteCell;
@@ -130,7 +131,7 @@ public class EventHandlerTest {
         
         try {
             Mockito.when(clusterutilsMock.createCluster(Mockito.any())).thenReturn(cluster);
-        } catch (ConfigDbNotFoundException e1) {
+        } catch (ConfigDbNotFoundException | CpsNotFoundException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
         }
@@ -166,7 +167,7 @@ public class EventHandlerTest {
 
 		try {
 			Mockito.when(clusterutilsMock.createCluster(Mockito.any())).thenReturn(cluster);
-		} catch (ConfigDbNotFoundException e1) {
+		} catch (ConfigDbNotFoundException | CpsNotFoundException e1) {
 			e1.printStackTrace();
 		}
 		Assert.assertEquals(true, eventHandler.handleSdnrNotification(notification));
@@ -198,7 +199,7 @@ public class EventHandlerTest {
 
 		try {
 			Mockito.when(clusterutilsMock.findClusterMap(Mockito.any())).thenReturn(clusterMap);
-		} catch (ConfigDbNotFoundException e) {
+		} catch (ConfigDbNotFoundException | CpsNotFoundException e) {
 			e.printStackTrace();
 		}
 
@@ -223,7 +224,7 @@ public class EventHandlerTest {
 			Mockito.when(clusterutilsMock.findClusterMap(Mockito.any())).thenReturn(clusterMap);
 			Mockito.when(clusterutilsMock.modifyCluster(Mockito.any(), Mockito.any())).thenReturn(graph);
 
-		} catch (ConfigDbNotFoundException e) {
+		} catch (ConfigDbNotFoundException | CpsNotFoundException e) {
 			e.printStackTrace();
 		}
 
@@ -257,7 +258,7 @@ public class EventHandlerTest {
 
 		try {
 			Mockito.when(clusterutilsMock.findClusterMap(Mockito.any())).thenReturn(clusterMap);
-		} catch (ConfigDbNotFoundException e) {
+		} catch (ConfigDbNotFoundException | CpsNotFoundException e) {
 			e.printStackTrace();
 		}
 
@@ -281,7 +282,7 @@ public class EventHandlerTest {
 			Mockito.when(clusterutilsMock.findClusterMap(Mockito.any())).thenReturn(clusterMap);
 			Mockito.when(clusterutilsMock.createCluster(Mockito.any())).thenReturn(graph);
 
-		} catch (ConfigDbNotFoundException e) {
+		} catch (ConfigDbNotFoundException | CpsNotFoundException e) {
 			e.printStackTrace();
 		}
 
