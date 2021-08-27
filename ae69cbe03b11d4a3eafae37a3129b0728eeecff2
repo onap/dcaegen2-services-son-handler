@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "27561361_b7c6b7ab",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/child/ChildThread.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2021-08-27T15:40:37Z",
+      "side": 1,
+      "message": "2019-2021 - this applies for all existing files being updated (start year should not be removed/modified)",
+      "range": {
+        "startLine": 5,
+        "startChar": 19,
+        "endLine": 5,
+        "endChar": 23
+      },
+      "revId": "ae69cbe03b11d4a3eafae37a3129b0728eeecff2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
