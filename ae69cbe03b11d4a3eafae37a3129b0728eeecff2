@@ -22,6 +22,30 @@
       "revId": "ae69cbe03b11d4a3eafae37a3129b0728eeecff2",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "962b05ea_1185e25d",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/child/ChildThread.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 7661
+      },
+      "writtenOn": "2021-08-29T12:51:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "27561361_b7c6b7ab",
+      "range": {
+        "startLine": 5,
+        "startChar": 19,
+        "endLine": 5,
+        "endChar": 23
+      },
+      "revId": "ae69cbe03b11d4a3eafae37a3129b0728eeecff2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
