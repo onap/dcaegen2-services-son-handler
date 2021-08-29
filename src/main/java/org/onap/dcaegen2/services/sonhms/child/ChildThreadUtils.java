@@ -2,21 +2,21 @@
  *  ============LICENSE_START=======================================================
  *  son-handler
  *  ================================================================================
- *   Copyright (C) 2019-2020 Wipro Limited.
+ *   Copyright (C) 2019-2021 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *  
+ *
  *          http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  *     ============LICENSE_END=========================================================
- *  
+ *
  *******************************************************************************/
 
 package org.onap.dcaegen2.services.sonhms.child;
@@ -39,6 +39,7 @@ import org.onap.dcaegen2.services.sonhms.dao.SonRequestsRepository;
 import org.onap.dcaegen2.services.sonhms.dmaap.PolicyDmaapClient;
 import org.onap.dcaegen2.services.sonhms.entity.SonRequests;
 import org.onap.dcaegen2.services.sonhms.exceptions.ConfigDbNotFoundException;
+import org.onap.dcaegen2.services.sonhms.exceptions.CpsNotFoundException;
 import org.onap.dcaegen2.services.sonhms.model.CellConfig;
 import org.onap.dcaegen2.services.sonhms.model.CellPciPair;
 import org.onap.dcaegen2.services.sonhms.model.Common;
@@ -54,7 +55,7 @@ import org.onap.dcaegen2.services.sonhms.model.PolicyNotification;
 import org.onap.dcaegen2.services.sonhms.model.Ran;
 import org.onap.dcaegen2.services.sonhms.model.X0005b9Lte;
 import org.onap.dcaegen2.services.sonhms.restclient.AsyncResponseBody;
-import org.onap.dcaegen2.services.sonhms.restclient.SdnrRestClient;
+import org.onap.dcaegen2.services.sonhms.restclient.ConfigurationClient;
 import org.onap.dcaegen2.services.sonhms.restclient.Solutions;
 import org.onap.dcaegen2.services.sonhms.utils.BeanUtil;
 import org.slf4j.Logger;
@@ -71,7 +72,7 @@ public class ChildThreadUtils {
      * Parameterized constructor.
      */
     public ChildThreadUtils(ConfigPolicy configPolicy, PnfUtils pnfUtils, PolicyDmaapClient policyDmaapClient,
-            HoMetricsComponent hoMetricsComponent) {
+                            HoMetricsComponent hoMetricsComponent) {
         this.configPolicy = configPolicy;
         this.pnfUtils = pnfUtils;
         this.policyDmaapClient = policyDmaapClient;
@@ -119,7 +120,7 @@ public class ChildThreadUtils {
      *
      */
     public String getNotificationString(String pnfName, String requestId, String payloadString, Long alarmStartTime,
-            String action) {
+                                        String action) {
 
         String closedLoopControlName = "";
         if (action.equals("ModifyConfig")) {
@@ -162,7 +163,7 @@ public class ChildThreadUtils {
      * @throws ConfigDbNotFoundException
      *             when config db is unreachable
      */
-    public Boolean sendToPolicy(AsyncResponseBody async) throws ConfigDbNotFoundException {
+    public Boolean sendToPolicy(AsyncResponseBody async) throws ConfigDbNotFoundException, CpsNotFoundException {
 
         if (log.isDebugEnabled()) {
             log.debug(async.toString());
@@ -224,7 +225,7 @@ public class ChildThreadUtils {
                             lteCell.setBlacklisted("true");
                             lteCell.setPlmnId(solutions.getNetworkId());
                             lteCell.setCid(removeableNeighbor);
-                            int pci = SdnrRestClient.getPci(cellId);
+                            int pci = ConfigurationClient.configClient(Configuration.getInstance().getConfigClientType()).getPci(cellId);
                             lteCell.setPhyCellId(pci);
                             lteCell.setPnfName(pnfName);
                             lteCellList.add(lteCell);

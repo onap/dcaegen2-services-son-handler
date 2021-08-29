@@ -2,21 +2,21 @@
  *  ============LICENSE_START=======================================================
  *  son-handler
  *  ================================================================================
- *   Copyright (C) 2019-2020 Wipro Limited.
+ *   Copyright (C) 2019-2021 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *  
+ *
  *          http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  *     ============LICENSE_END=========================================================
- *  
+ *
  *******************************************************************************/
 
 package org.onap.dcaegen2.services.sonhms.child;
@@ -61,8 +61,8 @@ import org.onap.dcaegen2.services.sonhms.model.Flag;
 import org.onap.dcaegen2.services.sonhms.model.HoDetails;
 import org.onap.dcaegen2.services.sonhms.model.ThreadId;
 import org.onap.dcaegen2.services.sonhms.restclient.AsyncResponseBody;
+import org.onap.dcaegen2.services.sonhms.restclient.ConfigurationClient;
 import org.onap.dcaegen2.services.sonhms.restclient.PciSolutions;
-import org.onap.dcaegen2.services.sonhms.restclient.SdnrRestClient;
 import org.onap.dcaegen2.services.sonhms.utils.BeanUtil;
 import org.onap.dcaegen2.services.sonhms.utils.ClusterUtils;
 import org.onap.dcaegen2.services.sonhms.utils.DmaapUtils;
@@ -71,90 +71,89 @@ import org.slf4j.MDC;
 
 public class ChildThread implements Runnable {
 
-    private BlockingQueue<List<String>> childStatusUpdate;
-    private BlockingQueue<Map<CellPciPair, ArrayList<CellPciPair>>> queue = new LinkedBlockingQueue<>();
+	private BlockingQueue<List<String>> childStatusUpdate;
+	private BlockingQueue<Map<CellPciPair, ArrayList<CellPciPair>>> queue = new LinkedBlockingQueue<>();
 
-    private static Map<Long, AsyncResponseBody> responseMap = new HashMap<>();
-    private Graph cluster;
-    private ThreadId threadId;
-    Map<CellPciPair, ArrayList<CellPciPair>> clusterMap;
-    HoMetricsComponent hoMetricsComponent;
-    private static final Logger log = org.slf4j.LoggerFactory.getLogger(ChildThread.class);
-    private static Timestamp startTime;
-    private static String networkId;
+	private static Map<Long, AsyncResponseBody> responseMap = new HashMap<>();
+	private Graph cluster;
+	private ThreadId threadId;
+	Map<CellPciPair, ArrayList<CellPciPair>> clusterMap;
+	HoMetricsComponent hoMetricsComponent;
+	private static final Logger log = org.slf4j.LoggerFactory.getLogger(ChildThread.class);
+	private static Timestamp startTime;
+	private static String networkId;
 
+	/**
+	 * Constructor with parameters.
+	 */
+	public ChildThread(BlockingQueue<List<String>> childStatusUpdate, Graph cluster,
+					   BlockingQueue<Map<CellPciPair, ArrayList<CellPciPair>>> queue, ThreadId threadId,
+					   HoMetricsComponent hoMetricsComponent) {
+		super();
+		this.childStatusUpdate = childStatusUpdate;
+		this.queue = queue;
+		this.threadId = threadId;
+		this.cluster = cluster;
+		this.hoMetricsComponent = hoMetricsComponent;
+	}
 
-    /**
-     * Constructor with parameters.
-     */
-    public ChildThread(BlockingQueue<List<String>> childStatusUpdate, Graph cluster,
-            BlockingQueue<Map<CellPciPair, ArrayList<CellPciPair>>> queue, ThreadId threadId,
-            HoMetricsComponent hoMetricsComponent) {
-        super();
-        this.childStatusUpdate = childStatusUpdate;
-        this.queue = queue;
-        this.threadId = threadId;
-        this.cluster = cluster;
-        this.hoMetricsComponent = hoMetricsComponent;
-    }
+	public ChildThread() {
 
-    public ChildThread() {
+	}
 
-    }
+	/**
+	 * Puts notification in queue.
+	 */
+	// change this interface to send cell and neighbours to keep it generic for sdnr
+	// and fm
 
-    /**
-     * Puts notification in queue.
-     */
-    // change this interface to send cell and neighbours to keep it generic for sdnr
-    // and fm
+	public void putInQueue(Map<CellPciPair, ArrayList<CellPciPair>> clusterMap) {
+		try {
+			queue.put(clusterMap);
+		} catch (InterruptedException e) {
+			log.error(" The Thread is Interrupted", e);
+			Thread.currentThread().interrupt();
+		}
+	}
 
-    public void putInQueue(Map<CellPciPair, ArrayList<CellPciPair>> clusterMap) {
-        try {
-            queue.put(clusterMap);
-        } catch (InterruptedException e) {
-            log.error(" The Thread is Interrupted", e);
-            Thread.currentThread().interrupt();
-        }
-    }
+	/**
+	 * Puts notification in queue with notify.
+	 */
+	public void putInQueueWithNotify(Map<CellPciPair, ArrayList<CellPciPair>> clusterMap) {
+		synchronized (queue) {
+			try {
+				queue.put(clusterMap);
+				queue.notifyAll();
+			} catch (InterruptedException e) {
+				log.error(" The Thread is Interrupted", e);
+				Thread.currentThread().interrupt();
+			}
 
-    /**
-     * Puts notification in queue with notify.
-     */
-    public void putInQueueWithNotify(Map<CellPciPair, ArrayList<CellPciPair>> clusterMap) {
-        synchronized (queue) {
-            try {
-                queue.put(clusterMap);
-                queue.notifyAll();
-            } catch (InterruptedException e) {
-                log.error(" The Thread is Interrupted", e);
-                Thread.currentThread().interrupt();
-            }
+		}
 
-        }
+	}
 
-    }
+	/**
+	 * Puts response in queue.
+	 */
+	public static void putResponse(Long threadId, AsyncResponseBody obj) {
+		synchronized (responseMap) {
+			responseMap.put(threadId, obj);
+		}
 
-    /**
-     * Puts response in queue.
-     */
-    public static void putResponse(Long threadId, AsyncResponseBody obj) {
-        synchronized (responseMap) {
-            responseMap.put(threadId, obj);
-        }
+	}
 
-    }
-
-    public static Map<Long, AsyncResponseBody> getResponseMap() {
-        return responseMap;
-    }
+	public static Map<Long, AsyncResponseBody> getResponseMap() {
+		return responseMap;
+	}
 
 	public static Timestamp getLastInvokedOofTimeStamp() {
 		return startTime;
 
 	}
 
-    @Override
-    public void run() {
+	@Override
+	public void run() {
 
 		threadId.setChildThreadId(Thread.currentThread().getId());
 		synchronized (threadId) {
@@ -171,12 +170,12 @@ public class ChildThread implements Runnable {
 				new PolicyDmaapClient(new DmaapUtils(), Configuration.getInstance()), new HoMetricsComponent());
 
 		try {
-		     networkId = cluster.getNetworkId();
+			networkId = cluster.getNetworkId();
 			if (cluster.getCellPciNeighbourMap().isEmpty()) {
 				FixedPciCellsRepository fixedPciCellsRepository = BeanUtil.getBean(FixedPciCellsRepository.class);
 				List<String> fixedPciCells = fixedPciCellsRepository.getFixedPciCells();
 				String cellId = fixedPciCells.get(0);
-				JSONObject cellData = SdnrRestClient.getCellData(cellId);
+				JSONObject cellData = ConfigurationClient.configClient(Configuration.getInstance().getConfigClientType()).getCellData(cellId);
 				networkId = cellData.getJSONObject("Cell").getString("networkId");
 			}
 
@@ -265,7 +264,7 @@ public class ChildThread implements Runnable {
 					startTime = new Timestamp(System.currentTimeMillis());
 					timerOof.setStartTime(startTime);
 					timerOof.setCount(0);
-					log.info("startTime {}", startTime); 
+					log.info("startTime {}", startTime);
 
 				}
 				int timerThreshold = (Configuration.getInstance().getOofTriggerCountTimer() * 60000);
@@ -308,19 +307,19 @@ public class ChildThread implements Runnable {
 
 				long childThreadId = Thread.currentThread().getId();
 				childUtils.saveRequest(transactionId.toString(), childThreadId);
-                while (!ChildThread.getResponseMap().containsKey(childThreadId)) {
-                    Thread.sleep(100);
-                }
+				while (!ChildThread.getResponseMap().containsKey(childThreadId)) {
+					Thread.sleep(100);
+				}
 
-                AsyncResponseBody asynResponseBody = ChildThread.getResponseMap().get(childThreadId);
-				
+				AsyncResponseBody asynResponseBody = ChildThread.getResponseMap().get(childThreadId);
+
 				List<PciSolutions> pciSolutionsList = asynResponseBody.getSolutions().getPciSolutions();
 
 				if (!pciSolutionsList.isEmpty())
-					for (PciSolutions pcisolutions : pciSolutionsList) {
-
+					for (PciSolutions pcisolutions : pciSolutionsList)
+					{
 						String cellId = pcisolutions.getCellId();
-						int oldPci = SdnrRestClient.getPci(cellId);
+						int oldPci = ConfigurationClient.configClient(Configuration.getInstance().getConfigClientType()).getPci(cellId);
 						int newPci = pcisolutions.getPci();
 						PciUpdate pciUpdate = new PciUpdate();
 						pciUpdate.setCellId(cellId);
@@ -393,146 +392,146 @@ public class ChildThread implements Runnable {
 		}
 
 		cleanup();
-    }
+	}
 
-    private List<Map<CellPciPair, ArrayList<CellPciPair>>> getClusterMapsFromNotifications(List<String> notifications) {
-        ObjectMapper mapper = new ObjectMapper();
-        List<Map<CellPciPair, ArrayList<CellPciPair>>> clusterMaps = new ArrayList<>();
-        for (String notification : notifications) {
-            Map<CellPciPair, ArrayList<CellPciPair>> clusterMap = new HashMap<>();
-            ClusterMap clusterMapJson = new ClusterMap();
-            try {
-                clusterMapJson = mapper.readValue(notification, ClusterMap.class);
-                clusterMap.put(clusterMapJson.getCell(), clusterMapJson.getNeighbourList());
+	private List<Map<CellPciPair, ArrayList<CellPciPair>>> getClusterMapsFromNotifications(List<String> notifications) {
+		ObjectMapper mapper = new ObjectMapper();
+		List<Map<CellPciPair, ArrayList<CellPciPair>>> clusterMaps = new ArrayList<>();
+		for (String notification : notifications) {
+			Map<CellPciPair, ArrayList<CellPciPair>> clusterMap = new HashMap<>();
+			ClusterMap clusterMapJson = new ClusterMap();
+			try {
+				clusterMapJson = mapper.readValue(notification, ClusterMap.class);
+				clusterMap.put(clusterMapJson.getCell(), clusterMapJson.getNeighbourList());
 
-                log.debug("clusterMap{}", clusterMap);
-                clusterMaps.add(clusterMap);
-            } catch (IOException e) {
-                log.error("Error parsing the buffered notification, skipping {}", e);
-            }
-        }
-        return clusterMaps;
-    }
+				log.debug("clusterMap{}", clusterMap);
+				clusterMaps.add(clusterMap);
+			} catch (IOException e) {
+				log.error("Error parsing the buffered notification, skipping {}", e);
+			}
+		}
+		return clusterMaps;
+	}
 
-    private Either<List<String>, Integer> getBufferedNotifications() {
-        log.info("Check if notifications are buffered");
-        BufferNotificationComponent bufferNotificationComponent = new BufferNotificationComponent();
-        ClusterDetailsComponent clusterDetailsComponent = new ClusterDetailsComponent();
-        String clusterId = clusterDetailsComponent.getClusterId(Thread.currentThread().getId());
-        List<String> bufferedNotifications = bufferNotificationComponent.getBufferedNotification(clusterId);
-        if (bufferedNotifications == null || bufferedNotifications.isEmpty()) {
-            return Either.right(404);
-        } else {
-            return Either.left(bufferedNotifications);
-        }
+	private Either<List<String>, Integer> getBufferedNotifications() {
+		log.info("Check if notifications are buffered");
+		BufferNotificationComponent bufferNotificationComponent = new BufferNotificationComponent();
+		ClusterDetailsComponent clusterDetailsComponent = new ClusterDetailsComponent();
+		String clusterId = clusterDetailsComponent.getClusterId(Thread.currentThread().getId());
+		List<String> bufferedNotifications = bufferNotificationComponent.getBufferedNotification(clusterId);
+		if (bufferedNotifications == null || bufferedNotifications.isEmpty()) {
+			return Either.right(404);
+		} else {
+			return Either.left(bufferedNotifications);
+		}
 
-    }
+	}
 
-    /**
-     * cleanup resources.
-     */
-    private void cleanup() {
-        log.info("cleaning up database and killing child thread");
-        List<String> childStatus = new ArrayList<>();
-        childStatus.add(Long.toString(Thread.currentThread().getId()));
-        childStatus.add("done");
-        try {
-            childStatusUpdate.put(childStatus);
-        } catch (InterruptedException e) {
-            log.debug("InterruptedException during cleanup{}", e);
-            Thread.currentThread().interrupt();
+	/**
+	 * cleanup resources.
+	 */
+	private void cleanup() {
+		log.info("cleaning up database and killing child thread");
+		List<String> childStatus = new ArrayList<>();
+		childStatus.add(Long.toString(Thread.currentThread().getId()));
+		childStatus.add("done");
+		try {
+			childStatusUpdate.put(childStatus);
+		} catch (InterruptedException e) {
+			log.debug("InterruptedException during cleanup{}", e);
+			Thread.currentThread().interrupt();
 
-        }
-        ClusterDetailsRepository clusterDetailsRepository = BeanUtil.getBean(ClusterDetailsRepository.class);
-        clusterDetailsRepository.deleteByChildThreadId(threadId.getChildThreadId());
-        log.info("Child thread :{} {}", Thread.currentThread().getId(), "completed");
-        MDC.remove("logFileName");
+		}
+		ClusterDetailsRepository clusterDetailsRepository = BeanUtil.getBean(ClusterDetailsRepository.class);
+		clusterDetailsRepository.deleteByChildThreadId(threadId.getChildThreadId());
+		log.info("Child thread :{} {}", Thread.currentThread().getId(), "completed");
+		MDC.remove("logFileName");
 
-    }
+	}
 
-    /**
-     * Buffer Notification.
-     */
-    public List<Map<CellPciPair, ArrayList<CellPciPair>>> bufferNotification() {
+	/**
+	 * Buffer Notification.
+	 */
+	public List<Map<CellPciPair, ArrayList<CellPciPair>>> bufferNotification() {
 
-        // Processing Buffered notifications
+		// Processing Buffered notifications
 
-        List<Map<CellPciPair, ArrayList<CellPciPair>>> clusterMapList = new ArrayList<>();
+		List<Map<CellPciPair, ArrayList<CellPciPair>>> clusterMapList = new ArrayList<>();
 
-        Configuration config = Configuration.getInstance();
+		Configuration config = Configuration.getInstance();
 
-        int bufferTime = config.getBufferTime();
+		int bufferTime = config.getBufferTime();
 
-        Timestamp currentTime = new Timestamp(System.currentTimeMillis());
-        log.debug("Current time {}", currentTime);
+		Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+		log.debug("Current time {}", currentTime);
 
-        Timestamp laterTime = new Timestamp(System.currentTimeMillis());
-        log.debug("Later time {}", laterTime);
+		Timestamp laterTime = new Timestamp(System.currentTimeMillis());
+		log.debug("Later time {}", laterTime);
 
-        long difference = laterTime.getTime() - currentTime.getTime();
-        while (difference < bufferTime) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                log.error("InterruptedException {}", e);
-                Thread.currentThread().interrupt();
+		long difference = laterTime.getTime() - currentTime.getTime();
+		while (difference < bufferTime) {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				log.error("InterruptedException {}", e);
+				Thread.currentThread().interrupt();
 
-            }
-            laterTime = new Timestamp(System.currentTimeMillis());
-            difference = laterTime.getTime() - currentTime.getTime();
+			}
+			laterTime = new Timestamp(System.currentTimeMillis());
+			difference = laterTime.getTime() - currentTime.getTime();
 
-            log.debug("Timer has run for  seconds {}", difference);
+			log.debug("Timer has run for  seconds {}", difference);
 
-            if (!queue.isEmpty()) {
-                Map<CellPciPair, ArrayList<CellPciPair>> clusterMap;
-                clusterMap = queue.poll();
-                clusterMapList.add(clusterMap);
-            }
+			if (!queue.isEmpty()) {
+				Map<CellPciPair, ArrayList<CellPciPair>> clusterMap;
+				clusterMap = queue.poll();
+				clusterMapList.add(clusterMap);
+			}
 
-        }
-        return clusterMapList;
-    }
+		}
+		return clusterMapList;
+	}
 
-    /**
-     * Check if ANR to be triggered.
-     */
-    public Either<List<AnrInput>, Integer> checkAnrTrigger() {
+	/**
+	 * Check if ANR to be triggered.
+	 */
+	public Either<List<AnrInput>, Integer> checkAnrTrigger() {
 
-        List<AnrInput> anrInputList = new ArrayList<>();
-        Configuration configuration = Configuration.getInstance();
-        List<HoDetails> hoDetailsList;
-        Either<List<HandOverMetrics>, Integer> hoMetrics = hoMetricsComponent.getAll();
-        if (hoMetrics.isRight()) {
-            log.error("Error in getting HO details from db");
-            return Either.right(500);
-        }
-        List<HandOverMetrics> hoMetricsList = hoMetrics.left().value();
-        for (HandOverMetrics hoMetric : hoMetricsList) {
-            String hoDetailsListString = hoMetric.getHoDetails();
-            ObjectMapper mapper = new ObjectMapper();
-            try {
-                hoDetailsList = mapper.readValue(hoDetailsListString, new TypeReference<ArrayList<HoDetails>>() {
-                });
-            } catch (Exception e) {
-                log.error("Exception in parsing HO metrics", hoDetailsListString, e);
-                continue;
-            }
-            List<String> removeableNeighbors = new ArrayList<>();
-            log.info("Checking poor count for src cell {}", hoMetric.getSrcCellId());
-            for (HoDetails hoDetail : hoDetailsList) {
-                if (hoDetail.getPoorCount() >= configuration.getPoorCountThreshold()) {
-                    removeableNeighbors.add(hoDetail.getDstCellId());
-                }
-            }
+		List<AnrInput> anrInputList = new ArrayList<>();
+		Configuration configuration = Configuration.getInstance();
+		List<HoDetails> hoDetailsList;
+		Either<List<HandOverMetrics>, Integer> hoMetrics = hoMetricsComponent.getAll();
+		if (hoMetrics.isRight()) {
+			log.error("Error in getting HO details from db");
+			return Either.right(500);
+		}
+		List<HandOverMetrics> hoMetricsList = hoMetrics.left().value();
+		for (HandOverMetrics hoMetric : hoMetricsList) {
+			String hoDetailsListString = hoMetric.getHoDetails();
+			ObjectMapper mapper = new ObjectMapper();
+			try {
+				hoDetailsList = mapper.readValue(hoDetailsListString, new TypeReference<ArrayList<HoDetails>>() {
+				});
+			} catch (Exception e) {
+				log.error("Exception in parsing HO metrics", hoDetailsListString, e);
+				continue;
+			}
+			List<String> removeableNeighbors = new ArrayList<>();
+			log.info("Checking poor count for src cell {}", hoMetric.getSrcCellId());
+			for (HoDetails hoDetail : hoDetailsList) {
+				if (hoDetail.getPoorCount() >= configuration.getPoorCountThreshold()) {
+					removeableNeighbors.add(hoDetail.getDstCellId());
+				}
+			}
 
-            if (!removeableNeighbors.isEmpty()) {
-                AnrInput anrInput = new AnrInput(hoMetric.getSrcCellId(), removeableNeighbors);
-                anrInputList.add(anrInput);
-            }
-        }
-        if (!anrInputList.isEmpty()) {
-            return Either.left(anrInputList);
-        }
-        return Either.right(404);
-    }
+			if (!removeableNeighbors.isEmpty()) {
+				AnrInput anrInput = new AnrInput(hoMetric.getSrcCellId(), removeableNeighbors);
+				anrInputList.add(anrInput);
+			}
+		}
+		if (!anrInputList.isEmpty()) {
+			return Either.left(anrInputList);
+		}
+		return Either.right(404);
+	}
 }

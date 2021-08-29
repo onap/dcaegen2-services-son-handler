@@ -2,21 +2,21 @@
  *  ============LICENSE_START=======================================================
  *  son-handler
  *  ================================================================================
- *   Copyright (C) 2019-2020 Wipro Limited.
+ *   Copyright (C) 2019-2021 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *  
+ *
  *          http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  *     ============LICENSE_END=========================================================
- *  
+ *
  *******************************************************************************/
 
 package org.onap.dcaegen2.services.sonhms;
@@ -46,6 +46,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.onap.dcaegen2.services.sonhms.child.Graph;
 import org.onap.dcaegen2.services.sonhms.entity.ClusterDetails;
 import org.onap.dcaegen2.services.sonhms.exceptions.ConfigDbNotFoundException;
+import org.onap.dcaegen2.services.sonhms.exceptions.CpsNotFoundException;
 import org.onap.dcaegen2.services.sonhms.model.CellPciPair;
 import org.onap.dcaegen2.services.sonhms.model.FapServiceList;
 import org.onap.dcaegen2.services.sonhms.model.LteNeighborListInUseLteCell;
@@ -64,83 +65,81 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest(classes = EventHandler.class)
 public class EventHandlerTest {
 
-    @Mock 
-    ClusterUtils clusterutilsMock;
-    
-    @Mock
-    ExecutorService pool;
-    
-    @Mock
-    ThreadUtils threadUtilsMock;
-    
-    private static Notification notification;
-    private static List<ClusterDetails> clusterDetails = new ArrayList<>();
-    private static FaultEvent faultEvent;
-    @InjectMocks
-    EventHandler eventHandler;
-    
-    @Before
-    public void setup() {
-        
-        notification = new Notification();
-        faultEvent = new FaultEvent();
+	@Mock
+	ClusterUtils clusterutilsMock;
 
-        String notificationString = readFromFile("/notification3.json");
-        String clusterInfo1 = readFromFile("/clusterInfo1.json");
-        String clusterInfo2 = readFromFile("/clusterInfo2.json");
-        String clusterInfo3 = readFromFile("/clusterInfo3.json");
-        String clusterInfo4 = readFromFile("/clusterInfo4.json");
-        String faultInfo = readFromFile("/faultNotification.json");
-        ObjectMapper mapper = new ObjectMapper();
-        
-        try {
-            notification = mapper.readValue(notificationString, Notification.class);
-            faultEvent = mapper.readValue(faultInfo, FaultEvent.class);
+	@Mock
+	ExecutorService pool;
 
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        System.out.println(notification.toString());
-        
-        clusterDetails.add(new ClusterDetails("1", clusterInfo1, 35));
-        clusterDetails.add(new ClusterDetails("2", clusterInfo2, 36));
-        clusterDetails.add(new ClusterDetails("3", clusterInfo3, 37));
-        clusterDetails.add(new ClusterDetails("4", clusterInfo4, 38));
-  
-    }
-    
-    @Test 
-    public void handleSdnrNotificationTest() {
-        
-        String clusterInfo7 = readFromFile("/clusterInfo7.json");
-        Graph cluster = new Graph(clusterInfo7);
-        NotificationToClusterMapping mapping = new NotificationToClusterMapping();
-        Map<FapServiceList, String> cellsinCluster = new HashMap<>();
-        List<FapServiceList> newCells = new ArrayList<>();
-        newCells.add(notification.getPayload().getRadioAccess().getFapServiceList().get(0));
-        mapping.setCellsinCluster(cellsinCluster);
-        mapping.setNewCells(newCells);
-        Either<Graph, Integer> existingCluster = Either.right(404);
-        
-        
-        Mockito.when(clusterutilsMock.getAllClusters()).thenReturn(clusterDetails);
-        Mockito.when(clusterutilsMock.getClustersForNotification(notification, clusterDetails)).thenReturn(mapping);
-        Mockito.when(clusterutilsMock.getClusterForCell(Mockito.any(), Mockito.any())).thenReturn(existingCluster);
-        
-        try {
-            Mockito.when(clusterutilsMock.createCluster(Mockito.any())).thenReturn(cluster);
-        } catch (ConfigDbNotFoundException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        }
+	@Mock
+	ThreadUtils threadUtilsMock;
 
-        
-        Assert.assertEquals(true, eventHandler.handleSdnrNotification(notification));
-        
-        
-        
-    }
+	private static Notification notification;
+	private static List<ClusterDetails> clusterDetails = new ArrayList<>();
+	private static FaultEvent faultEvent;
+	@InjectMocks
+	EventHandler eventHandler;
+
+	@Before
+	public void setup() {
+
+		notification = new Notification();
+		faultEvent = new FaultEvent();
+
+		String notificationString = readFromFile("/notification3.json");
+		String clusterInfo1 = readFromFile("/clusterInfo1.json");
+		String clusterInfo2 = readFromFile("/clusterInfo2.json");
+		String clusterInfo3 = readFromFile("/clusterInfo3.json");
+		String clusterInfo4 = readFromFile("/clusterInfo4.json");
+		String faultInfo = readFromFile("/faultNotification.json");
+		ObjectMapper mapper = new ObjectMapper();
+
+		try {
+			notification = mapper.readValue(notificationString, Notification.class);
+			faultEvent = mapper.readValue(faultInfo, FaultEvent.class);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println(notification.toString());
+
+		clusterDetails.add(new ClusterDetails("1", clusterInfo1, 35));
+		clusterDetails.add(new ClusterDetails("2", clusterInfo2, 36));
+		clusterDetails.add(new ClusterDetails("3", clusterInfo3, 37));
+		clusterDetails.add(new ClusterDetails("4", clusterInfo4, 38));
+
+	}
+
+	@Test
+	public void handleSdnrNotificationTest() {
+
+		String clusterInfo7 = readFromFile("/clusterInfo7.json");
+		Graph cluster = new Graph(clusterInfo7);
+		NotificationToClusterMapping mapping = new NotificationToClusterMapping();
+		Map<FapServiceList, String> cellsinCluster = new HashMap<>();
+		List<FapServiceList> newCells = new ArrayList<>();
+		newCells.add(notification.getPayload().getRadioAccess().getFapServiceList().get(0));
+		mapping.setCellsinCluster(cellsinCluster);
+		mapping.setNewCells(newCells);
+		Either<Graph, Integer> existingCluster = Either.right(404);
+
+
+		Mockito.when(clusterutilsMock.getAllClusters()).thenReturn(clusterDetails);
+		Mockito.when(clusterutilsMock.getClustersForNotification(notification, clusterDetails)).thenReturn(mapping);
+		Mockito.when(clusterutilsMock.getClusterForCell(Mockito.any(), Mockito.any())).thenReturn(existingCluster);
+
+		try {
+			Mockito.when(clusterutilsMock.createCluster(Mockito.any())).thenReturn(cluster);
+		} catch (ConfigDbNotFoundException | CpsNotFoundException e1) {
+			e1.printStackTrace();
+		}
+
+
+		Assert.assertEquals(true, eventHandler.handleSdnrNotification(notification));
+
+
+
+	}
 
 	@Test
 	public void handleMatchingCellsTest() {
@@ -166,7 +165,7 @@ public class EventHandlerTest {
 
 		try {
 			Mockito.when(clusterutilsMock.createCluster(Mockito.any())).thenReturn(cluster);
-		} catch (ConfigDbNotFoundException e1) {
+		} catch (ConfigDbNotFoundException | CpsNotFoundException e1) {
 			e1.printStackTrace();
 		}
 		Assert.assertEquals(true, eventHandler.handleSdnrNotification(notification));
@@ -198,7 +197,7 @@ public class EventHandlerTest {
 
 		try {
 			Mockito.when(clusterutilsMock.findClusterMap(Mockito.any())).thenReturn(clusterMap);
-		} catch (ConfigDbNotFoundException e) {
+		} catch (ConfigDbNotFoundException | CpsNotFoundException e) {
 			e.printStackTrace();
 		}
 
@@ -223,7 +222,7 @@ public class EventHandlerTest {
 			Mockito.when(clusterutilsMock.findClusterMap(Mockito.any())).thenReturn(clusterMap);
 			Mockito.when(clusterutilsMock.modifyCluster(Mockito.any(), Mockito.any())).thenReturn(graph);
 
-		} catch (ConfigDbNotFoundException e) {
+		} catch (ConfigDbNotFoundException | CpsNotFoundException e) {
 			e.printStackTrace();
 		}
 
@@ -257,7 +256,7 @@ public class EventHandlerTest {
 
 		try {
 			Mockito.when(clusterutilsMock.findClusterMap(Mockito.any())).thenReturn(clusterMap);
-		} catch (ConfigDbNotFoundException e) {
+		} catch (ConfigDbNotFoundException | CpsNotFoundException e) {
 			e.printStackTrace();
 		}
 
@@ -281,7 +280,7 @@ public class EventHandlerTest {
 			Mockito.when(clusterutilsMock.findClusterMap(Mockito.any())).thenReturn(clusterMap);
 			Mockito.when(clusterutilsMock.createCluster(Mockito.any())).thenReturn(graph);
 
-		} catch (ConfigDbNotFoundException e) {
+		} catch (ConfigDbNotFoundException | CpsNotFoundException e) {
 			e.printStackTrace();
 		}
 
@@ -289,23 +288,23 @@ public class EventHandlerTest {
 
 	}
 
-    private static String readFromFile(String file) {
-        String content  = new String();
-        try {
-            
-            InputStream is = ClusterUtilsTest.class.getResourceAsStream(file);
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is));
-            content = bufferedReader.readLine();
-            String temp;
-            while((temp = bufferedReader.readLine()) != null) {
-                content = content.concat(temp);
-            }
-            content = content.trim();
-            bufferedReader.close();
-        }
-        catch(Exception e) {
-            content  = null;
-        }
-        return content;
-    }
+	private static String readFromFile(String file) {
+		String content  = new String();
+		try {
+
+			InputStream is = ClusterUtilsTest.class.getResourceAsStream(file);
+			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is));
+			content = bufferedReader.readLine();
+			String temp;
+			while((temp = bufferedReader.readLine()) != null) {
+				content = content.concat(temp);
+			}
+			content = content.trim();
+			bufferedReader.close();
+		}
+		catch(Exception e) {
+			content  = null;
+		}
+		return content;
+	}
 }

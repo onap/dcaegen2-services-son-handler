@@ -2,21 +2,21 @@
  *  ============LICENSE_START=======================================================
  *  son-handler
  *  ================================================================================
- *   Copyright (C) 2019-2020 Wipro Limited.
+ *   Copyright (C) 2019-2021 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *  
+ *
  *          http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  *     ============LICENSE_END=========================================================
- *  
+ *
  *******************************************************************************/
 
 package org.onap.dcaegen2.services.sonhms.restclient;
@@ -37,22 +37,31 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.ResponseEntity;
 
-public class SdnrRestClient {
+/**
+ *  A subclass which contains the methods
+ *  to get required information from the SDNR Client
+ *
+ */
+
+public class SdnrRestClient extends ConfigInterface{
 
     private static final String DATETIMEFORMAT = "yyyy-MM-dd HH:mm:ss";
     private static Logger log = LoggerFactory.getLogger(SdnrRestClient.class);
 
-    private SdnrRestClient() {
+    public SdnrRestClient()
+    {
 
     }
 
     /**
-     * Method to get neibhbour list from SDNR.
+     * Method to get neighbour list from SDNR.
      *
-     * @throws ConfigDbNotFoundException
-     *             when request to configDB fails
+     * @throws ConfigDbNotFoundException when request to configDB fails
      */
-    public static List<CellPciPair> getNbrList(String cellId) throws ConfigDbNotFoundException {
+
+    @Override
+    public List<CellPciPair> getNbrList(String cellId) throws ConfigDbNotFoundException
+    {
         Configuration configuration = Configuration.getInstance();
         String ts = new SimpleDateFormat(DATETIMEFORMAT).format(new Time(System.currentTimeMillis()));
         String requestUrl = configuration.getConfigDbService() + "/api/sdnc-config-db/v3/getNbrList" + "/" + cellId
@@ -79,7 +88,9 @@ public class SdnrRestClient {
      * @throws ConfigDbNotFoundException
      *             when request to configDB fails
      */
-    public static int getPci(String cellId) throws ConfigDbNotFoundException {
+
+    @Override
+    public int getPci(String cellId) throws ConfigDbNotFoundException {
         Configuration configuration = Configuration.getInstance();
         String ts = new SimpleDateFormat(DATETIMEFORMAT).format(new Time(System.currentTimeMillis()));
         String requestUrl = configuration.getConfigDbService() + "/api/sdnc-config-db/v3/getPCI" + "/" + cellId + "/"
@@ -95,7 +106,8 @@ public class SdnrRestClient {
      * @throws ConfigDbNotFoundException
      *             when request to configDB fails
      */
-    public static String getPnfName(String cellId) throws ConfigDbNotFoundException {
+    @Override
+    public String getPnfName(String cellId) throws ConfigDbNotFoundException {
         Configuration configuration = Configuration.getInstance();
         String ts = new SimpleDateFormat(DATETIMEFORMAT).format(new Time(System.currentTimeMillis()));
         String requestUrl = configuration.getConfigDbService() + "/api/sdnc-config-db/v3/getPnfId" + "/" + cellId + "/"
@@ -111,14 +123,15 @@ public class SdnrRestClient {
      * @throws ConfigDbNotFoundException
      *             when request to configDB fails
      */
-    public static JSONObject getCellData(String cellId) throws ConfigDbNotFoundException {
-	Configuration configuration = Configuration.getInstance();
-	String requestUrl = configuration.getConfigDbService() + "/api/sdnc-config-db/v3/getCell" + "/" + cellId;
-	String response = sendRequest(requestUrl);
-	JSONObject responseObject = new JSONObject(response);
-	return responseObject;
-    }
 
+    @Override
+    public JSONObject getCellData(String cellId) throws ConfigDbNotFoundException {
+        Configuration configuration = Configuration.getInstance();
+        String requestUrl = configuration.getConfigDbService() + "/api/sdnc-config-db/v3/getCell" + "/" + cellId;
+        String response = sendRequest(requestUrl);
+        JSONObject responseObject = new JSONObject(response);
+        return responseObject;
+    }
 
     /**
      * Method to send request.

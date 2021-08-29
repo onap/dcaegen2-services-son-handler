@@ -2,21 +2,21 @@
  *  ============LICENSE_START=======================================================
  *  son-handler
  *  ================================================================================
- *   Copyright (C) 2019 Wipro Limited.
+ *   Copyright (C) 2019-2021 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
  *     You may obtain a copy of the License at
- *  
+ *
  *          http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *     Unless required by applicable law or agreed to in writing, software
  *     distributed under the License is distributed on an "AS IS" BASIS,
  *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  *     ============LICENSE_END=========================================================
- *  
+ *
  *******************************************************************************/
 
 package org.onap.dcaegen2.services.sonhms.child;
@@ -27,12 +27,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.onap.dcaegen2.services.sonhms.Configuration;
 import org.onap.dcaegen2.services.sonhms.dao.CellInfoRepository;
 import org.onap.dcaegen2.services.sonhms.entity.CellInfo;
 import org.onap.dcaegen2.services.sonhms.exceptions.ConfigDbNotFoundException;
+import org.onap.dcaegen2.services.sonhms.exceptions.CpsNotFoundException;
 import org.onap.dcaegen2.services.sonhms.model.CellPciPair;
 import org.onap.dcaegen2.services.sonhms.restclient.AnrSolutions;
 import org.onap.dcaegen2.services.sonhms.restclient.PciSolutions;
+import org.onap.dcaegen2.services.sonhms.restclient.ConfigurationClient;
+import org.onap.dcaegen2.services.sonhms.restclient.CpsClient;
 import org.onap.dcaegen2.services.sonhms.restclient.SdnrRestClient;
 import org.onap.dcaegen2.services.sonhms.restclient.Solutions;
 import org.onap.dcaegen2.services.sonhms.utils.BeanUtil;
@@ -46,7 +50,7 @@ public class PnfUtils {
      * get pnfs.
      *
      */
-    public Map<String, List<CellPciPair>> getPnfs(Solutions solutions) throws ConfigDbNotFoundException {
+    public Map<String, List<CellPciPair>> getPnfs(Solutions solutions) throws ConfigDbNotFoundException, CpsNotFoundException {
 
         Map<String, List<CellPciPair>> pnfs = new HashMap<>();
         List<PciSolutions> pciSolutions = solutions.getPciSolutions();
@@ -60,7 +64,8 @@ public class PnfUtils {
             if (cellInfo.isPresent()) {
                 pnfName = cellInfo.get().getPnfName();
             } else {
-                pnfName = SdnrRestClient.getPnfName(cellId);
+
+                pnfName = ConfigurationClient.configClient(Configuration.getInstance().getConfigClientType()).getPnfName(cellId);
                 cellInfoRepository.save(new CellInfo(cellId, pnfName));
             }
             if (pnfs.containsKey(pnfName)) {
@@ -77,17 +82,17 @@ public class PnfUtils {
 
     /**
      * get pnfs for ANR solutions.
-     * 
+     *
      */
     public Map<String, List<Map<String, List<String>>>> getPnfsForAnrSolutions(List<AnrSolutions> anrSolutions)
-            throws ConfigDbNotFoundException {
+            throws ConfigDbNotFoundException, CpsNotFoundException {
 
         Map<String, List<Map<String, List<String>>>> anrPnfs = new HashMap<>();
 
         List<String> removeableNeighbors;
         for (AnrSolutions anrSolution : anrSolutions) {
             String cellId = anrSolution.getCellId();
-            String pnfName = SdnrRestClient.getPnfName(cellId);
+            String pnfName = ConfigurationClient.configClient(Configuration.getInstance().getConfigClientType()).getPnfName(cellId);
             removeableNeighbors = anrSolution.getRemoveableNeighbors();
             Map<String, List<String>> cellRemNeighborsPair = new HashMap<>();
             cellRemNeighborsPair.put(cellId, removeableNeighbors);
