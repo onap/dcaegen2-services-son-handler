@@ -141,6 +141,22 @@
 			"designer_editable": false
 		},
 		{
+			"name": "cps.username",
+			"value": "cpsuser",
+			"description": "cps configuration",
+			"sourced_at_deployment": false,
+			"policy_editable": false,
+			"designer_editable": false
+		},
+		{
+			"name": "cps.password",
+			"value": "cpsr0cks!",
+			"description": "cps configuration",
+			"sourced_at_deployment": false,
+			"policy_editable": false,
+			"designer_editable": false
+		},
+		{
 			"name": "sonhandler.optimizers",
 			"value": [
 				"pci"
@@ -191,6 +207,14 @@
 			"designer_editable": false
 		},
 		{
+			"name": "sonhandler.clientType",
+			"value": "ConfigDB",
+			"description": "Client type",
+			"sourced_at_deployment": false,
+			"policy_editable": false,
+			"designer_editable": false
+		},
+		{
 			"name": "sonhandler.dmaap.servers",
 			"value": [
 				"message-router:3904"
@@ -236,6 +260,46 @@
 			"name": "sonhandler.configDb.service",
 			"value": "http://sdnc:8282",
 			"description": "configDb service url",
+			"sourced_at_deployment": false,
+			"policy_editable": false,
+			"designer_editable": false
+		},
+		{
+			"name": "sonhandler.cps.service.url",
+			"value": "http://cps-tbdmt:8080",
+			"description": "Cps service url",
+			"sourced_at_deployment": false,
+			"policy_editable": false,
+			"designer_editable": false
+		},
+		{
+			"name": "sonhandler.get.cell.data.url",
+			"value": "execute/cps-ran-schema/get-cell-data",
+			"description": "Cps get cell data url",
+			"sourced_at_deployment": false,
+			"policy_editable": false,
+			"designer_editable": false
+		},
+		{
+			"name": "sonhandler.get.nbr.list.url",
+			"value": "execute/cps-ran-schema/get-nbr-list",
+			"description": "Cps get nbr list url",
+			"sourced_at_deployment": false,
+			"policy_editable": false,
+			"designer_editable": false
+		},
+		{
+			"name": "sonhandler.get.pci.url",
+			"value": "execute/cps-ran-schema/get-pci",
+			"description": "Cps get pci url",
+			"sourced_at_deployment": false,
+			"policy_editable": false,
+			"designer_editable": false
+		},
+		{
+			"name": "sonhandler.get.pnf.url",
+			"value": "execute/cps-ran-schema/get-pnf",
+			"description": "Cps get pnf url",
 			"sourced_at_deployment": false,
 			"policy_editable": false,
 			"designer_editable": false
