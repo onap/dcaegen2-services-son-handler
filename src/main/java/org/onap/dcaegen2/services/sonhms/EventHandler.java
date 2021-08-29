@@ -42,6 +42,7 @@ import org.onap.dcaegen2.services.sonhms.entity.ClusterDetails;
 import org.onap.dcaegen2.services.sonhms.exceptions.ConfigDbNotFoundException;
 import org.onap.dcaegen2.services.sonhms.model.CellPciPair;
 import org.onap.dcaegen2.services.sonhms.model.ClusterMap;
+import org.onap.dcaegen2.services.sonhms.exceptions.CpsNotFoundException;
 import org.onap.dcaegen2.services.sonhms.model.FapServiceList;
 import org.onap.dcaegen2.services.sonhms.model.LteNeighborListInUseLteCell;
 import org.onap.dcaegen2.services.sonhms.model.Notification;
@@ -110,8 +111,8 @@ public class EventHandler {
                 && !faultNotificationtoClusterMapping.getCellsinCluster().isEmpty()) {
             try {
                 handleMatchedFmCells(faultNotificationtoClusterMapping, clusterDetails);
-            } catch (ConfigDbNotFoundException e) {
-                log.error("Config DB Exception {}", e);
+            } catch (ConfigDbNotFoundException | CpsNotFoundException e) {
+                log.error("Config DB Exception {} or Cps Exception {} ", e);
             }
         }
         // unmatched new cells
@@ -128,7 +129,7 @@ public class EventHandler {
      * 
      */
     private void handleMatchedFmCells(FaultNotificationtoClusterMapping faultNotificationtoClusterMapping,
-            List<ClusterDetails> clusterDetails) throws ConfigDbNotFoundException {
+            List<ClusterDetails> clusterDetails) throws ConfigDbNotFoundException, CpsNotFoundException {
         Map<String, String> cellsinCluster = faultNotificationtoClusterMapping.getCellsinCluster();
         log.info("Handling Matching cells for FM notification");
 
@@ -184,7 +185,7 @@ public class EventHandler {
                     cluster.setCollisionConfusionMap(collisionConfusionMap);
 
                     newClusters.add(cluster);
-                } catch (ConfigDbNotFoundException e) {
+                } catch (ConfigDbNotFoundException | CpsNotFoundException e) {
                     log.error("Error connecting with configDB {}", e);
                 }
             }
@@ -198,8 +199,8 @@ public class EventHandler {
                     Map<String, ArrayList<Integer>> collisionConfusionMap = cluster.getCollisionConfusionMap();
                     collisionConfusionMap.put(cellId, collisionConfusionCount);
                     cluster.setCollisionConfusionMap(collisionConfusionMap);
-                } catch (ConfigDbNotFoundException e) {
-                    log.error("Config DB not found {}", e);
+                } catch (ConfigDbNotFoundException | CpsNotFoundException e) {
+                    log.error("Config DB or CPS not found {}", e);
                 }
                 newClusters.remove(cluster);
                 newClusters.add(modifiedCluster);
@@ -244,7 +245,7 @@ public class EventHandler {
 
     }
 
-    private void handleUnMatchingCells(List<FapServiceList> newCells) throws ConfigDbNotFoundException {
+    private void handleUnMatchingCells(List<FapServiceList> newCells) throws ConfigDbNotFoundException, CpsNotFoundException {
 
         log.info("handling unmatched cells");
 
@@ -261,8 +262,8 @@ public class EventHandler {
                             .getLteNeighborListInUseLteCell().get(0).getPlmnid());
                     cluster.setCollisionConfusionMap(new HashMap<>());
                     newClusters.add(cluster);
-                } catch (ConfigDbNotFoundException e) {
-                    log.error("Error connecting with configDB {}", e);
+                } catch (ConfigDbNotFoundException | CpsNotFoundException e) {
+                    log.error("Error connecting with configDB {} or CPS {}", e);
                 }
             }
 

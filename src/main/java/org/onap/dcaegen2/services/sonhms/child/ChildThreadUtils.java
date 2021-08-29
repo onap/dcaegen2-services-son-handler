@@ -2,7 +2,7 @@
  *  ============LICENSE_START=======================================================
  *  son-handler
  *  ================================================================================
- *   Copyright (C) 2019-2020 Wipro Limited.
+ *   Copyright (C) 2019-2021 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -34,6 +34,7 @@ import java.util.UUID;
 
 import org.onap.dcaegen2.services.sonhms.ConfigPolicy;
 import org.onap.dcaegen2.services.sonhms.Configuration;
+import org.onap.dcaegen2.services.sonhms.exceptions.CpsNotFoundException;
 import org.onap.dcaegen2.services.sonhms.HoMetricsComponent;
 import org.onap.dcaegen2.services.sonhms.dao.SonRequestsRepository;
 import org.onap.dcaegen2.services.sonhms.dmaap.PolicyDmaapClient;
@@ -55,6 +56,7 @@ import org.onap.dcaegen2.services.sonhms.model.Ran;
 import org.onap.dcaegen2.services.sonhms.model.X0005b9Lte;
 import org.onap.dcaegen2.services.sonhms.restclient.AsyncResponseBody;
 import org.onap.dcaegen2.services.sonhms.restclient.SdnrRestClient;
+import org.onap.dcaegen2.services.sonhms.restclient.ConfigurationClient;
 import org.onap.dcaegen2.services.sonhms.restclient.Solutions;
 import org.onap.dcaegen2.services.sonhms.utils.BeanUtil;
 import org.slf4j.Logger;
@@ -162,7 +164,7 @@ public class ChildThreadUtils {
      * @throws ConfigDbNotFoundException
      *             when config db is unreachable
      */
-    public Boolean sendToPolicy(AsyncResponseBody async) throws ConfigDbNotFoundException {
+    public Boolean sendToPolicy(AsyncResponseBody async) throws ConfigDbNotFoundException, CpsNotFoundException {
 
         if (log.isDebugEnabled()) {
             log.debug(async.toString());
@@ -224,7 +226,7 @@ public class ChildThreadUtils {
                             lteCell.setBlacklisted("true");
                             lteCell.setPlmnId(solutions.getNetworkId());
                             lteCell.setCid(removeableNeighbor);
-                            int pci = SdnrRestClient.getPci(cellId);
+                            int pci = ConfigurationClient.configClient(Configuration.getInstance().getConfigClientType()).getPci(cellId);
                             lteCell.setPhyCellId(pci);
                             lteCell.setPnfName(pnfName);
                             lteCellList.add(lteCell);
