@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "ee482fdd_e478af2a",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/Configuration.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-08-30T17:36:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f043a15f_8e77107d",
+      "revId": "146bd0b43019b94df98dff67d31a20ba50dbcbe5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3d15e30a_824d0d05",
         "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/EventHandler.java",
         "patchSetId": 1
@@ -33,6 +51,24 @@
       "revId": "146bd0b43019b94df98dff67d31a20ba50dbcbe5",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2914f05d_35220eca",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/EventHandler.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-08-30T17:36:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3d15e30a_824d0d05",
+      "revId": "146bd0b43019b94df98dff67d31a20ba50dbcbe5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "46781bf8_d4723277",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/child/ChildThread.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-08-30T17:36:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "92a4d661_a0c591d3",
+      "revId": "146bd0b43019b94df98dff67d31a20ba50dbcbe5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5d292f77_c0a10358",
         "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/child/ChildThread.java",
         "patchSetId": 1
@@ -67,6 +121,24 @@
       "revId": "146bd0b43019b94df98dff67d31a20ba50dbcbe5",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e109bfe1_692cbfca",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/child/ChildThread.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-08-30T17:36:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5d292f77_c0a10358",
+      "revId": "146bd0b43019b94df98dff67d31a20ba50dbcbe5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "c67d9696_654f9e92",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/child/ChildThreadUtils.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-08-30T17:36:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6c4a2997_e095ff7c",
+      "revId": "146bd0b43019b94df98dff67d31a20ba50dbcbe5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5b2c0f7a_75aa8cc1",
         "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/child/ChildThreadUtils.java",
         "patchSetId": 1
@@ -101,6 +191,24 @@
       "revId": "146bd0b43019b94df98dff67d31a20ba50dbcbe5",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "89aa313a_ca3842de",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/child/ChildThreadUtils.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-08-30T17:36:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5b2c0f7a_75aa8cc1",
+      "revId": "146bd0b43019b94df98dff67d31a20ba50dbcbe5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -121,6 +229,24 @@
     },
     {
       "key": {
+        "uuid": "17c1097e_04bf333f",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/child/PnfUtils.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-08-30T17:36:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9c2511fd_af80d004",
+      "revId": "146bd0b43019b94df98dff67d31a20ba50dbcbe5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1861fd7c_80897610",
         "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/exceptions/CpsNotFoundException.java",
         "patchSetId": 1
@@ -135,6 +261,24 @@
       "revId": "146bd0b43019b94df98dff67d31a20ba50dbcbe5",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "38b7dce6_eeca2732",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/exceptions/CpsNotFoundException.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-08-30T17:36:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1861fd7c_80897610",
+      "revId": "146bd0b43019b94df98dff67d31a20ba50dbcbe5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -155,6 +299,24 @@
     },
     {
       "key": {
+        "uuid": "1366b448_10ce1165",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/exceptions/CpsNotFoundException.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-08-30T17:36:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6d23f060_e5c8ee35",
+      "revId": "146bd0b43019b94df98dff67d31a20ba50dbcbe5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "27db2e7b_448887db",
         "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/restclient/ConfigInterface.java",
         "patchSetId": 1
@@ -169,6 +331,24 @@
       "revId": "146bd0b43019b94df98dff67d31a20ba50dbcbe5",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2f90e9f1_c03e8579",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/restclient/ConfigInterface.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-08-30T17:36:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "27db2e7b_448887db",
+      "revId": "146bd0b43019b94df98dff67d31a20ba50dbcbe5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -189,6 +369,24 @@
     },
     {
       "key": {
+        "uuid": "a9b9388c_baff710b",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/restclient/ConfigInterface.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-08-30T17:36:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f770f963_66988487",
+      "revId": "146bd0b43019b94df98dff67d31a20ba50dbcbe5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6f5678c7_52b5778b",
         "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/restclient/ConfigurationClient.java",
         "patchSetId": 1
@@ -203,6 +401,24 @@
       "revId": "146bd0b43019b94df98dff67d31a20ba50dbcbe5",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9c46a22e_08c8e4fc",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/restclient/ConfigurationClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-08-30T17:36:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6f5678c7_52b5778b",
+      "revId": "146bd0b43019b94df98dff67d31a20ba50dbcbe5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -223,6 +439,24 @@
     },
     {
       "key": {
+        "uuid": "b5ad8b84_1fdfde92",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/restclient/ConfigurationClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-08-30T17:36:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "853f67e9_469110f9",
+      "revId": "146bd0b43019b94df98dff67d31a20ba50dbcbe5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "67f148b7_a312575a",
         "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/restclient/CpsClient.java",
         "patchSetId": 1
@@ -237,6 +471,24 @@
       "revId": "146bd0b43019b94df98dff67d31a20ba50dbcbe5",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c3dad8c8_7e32a468",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/restclient/CpsClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-08-30T17:36:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "67f148b7_a312575a",
+      "revId": "146bd0b43019b94df98dff67d31a20ba50dbcbe5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -257,6 +509,24 @@
     },
     {
       "key": {
+        "uuid": "f464e01b_f519ff78",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/restclient/CpsClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-08-30T17:36:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "88ca349b_7f876aea",
+      "revId": "146bd0b43019b94df98dff67d31a20ba50dbcbe5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c4c2306c_5bcec4b7",
         "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/restclient/SdnrRestClient.java",
         "patchSetId": 1
@@ -271,6 +541,24 @@
       "revId": "146bd0b43019b94df98dff67d31a20ba50dbcbe5",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a8b86fd4_a0c85977",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/restclient/SdnrRestClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-08-30T17:36:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c4c2306c_5bcec4b7",
+      "revId": "146bd0b43019b94df98dff67d31a20ba50dbcbe5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -291,6 +579,24 @@
     },
     {
       "key": {
+        "uuid": "0f53e1ee_e4bb4e30",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/utils/ClusterUtils.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-08-30T17:36:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b5ac3646_e0cef35e",
+      "revId": "146bd0b43019b94df98dff67d31a20ba50dbcbe5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6e4e3ee9_8d7ddd0b",
         "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/utils/SonHandlerRestTemplate.java",
         "patchSetId": 1
@@ -305,6 +611,24 @@
       "revId": "146bd0b43019b94df98dff67d31a20ba50dbcbe5",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "75244d4f_fac5303f",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/utils/SonHandlerRestTemplate.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-08-30T17:36:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6e4e3ee9_8d7ddd0b",
+      "revId": "146bd0b43019b94df98dff67d31a20ba50dbcbe5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -325,6 +649,24 @@
     },
     {
       "key": {
+        "uuid": "fe10cb53_23231e81",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/utils/SonHandlerRestTemplate.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-08-30T17:36:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5c8a4f15_f3bdd79d",
+      "revId": "146bd0b43019b94df98dff67d31a20ba50dbcbe5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a4540e04_d2cb90f3",
         "filename": "src/test/java/org/onap/dcaegen2/services/sonhms/EventHandlerTest.java",
         "patchSetId": 1
@@ -339,6 +681,24 @@
       "revId": "146bd0b43019b94df98dff67d31a20ba50dbcbe5",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7b74467b_c25c13b7",
+        "filename": "src/test/java/org/onap/dcaegen2/services/sonhms/EventHandlerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-08-30T17:36:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a4540e04_d2cb90f3",
+      "revId": "146bd0b43019b94df98dff67d31a20ba50dbcbe5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -359,6 +719,24 @@
     },
     {
       "key": {
+        "uuid": "2ceeb4fb_f31332b7",
+        "filename": "src/test/java/org/onap/dcaegen2/services/sonhms/child/TestChildThreadUtils.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-08-30T17:36:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d4ac0865_6b977e06",
+      "revId": "146bd0b43019b94df98dff67d31a20ba50dbcbe5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "09dbb297_12de0eaf",
         "filename": "src/test/java/org/onap/dcaegen2/services/sonhms/child/TestPnfUtils.java",
         "patchSetId": 1
@@ -373,6 +751,24 @@
       "revId": "146bd0b43019b94df98dff67d31a20ba50dbcbe5",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "59cfaf4c_14b6d6d6",
+        "filename": "src/test/java/org/onap/dcaegen2/services/sonhms/child/TestPnfUtils.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-08-30T17:36:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "09dbb297_12de0eaf",
+      "revId": "146bd0b43019b94df98dff67d31a20ba50dbcbe5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -393,6 +789,24 @@
     },
     {
       "key": {
+        "uuid": "9130ed09_752840ec",
+        "filename": "src/test/java/org/onap/dcaegen2/services/sonhms/restclient/CpsClientTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-08-30T17:36:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "90357b1e_1827a065",
+      "revId": "146bd0b43019b94df98dff67d31a20ba50dbcbe5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d6a371df_6b4075de",
         "filename": "src/test/java/org/onap/dcaegen2/services/sonhms/restclient/SdnrRestClientTest.java",
         "patchSetId": 1
@@ -410,6 +824,24 @@
     },
     {
       "key": {
+        "uuid": "710452d6_d3361fc0",
+        "filename": "src/test/java/org/onap/dcaegen2/services/sonhms/restclient/SdnrRestClientTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-08-30T17:36:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d6a371df_6b4075de",
+      "revId": "146bd0b43019b94df98dff67d31a20ba50dbcbe5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "99181218_f01bea00",
         "filename": "src/test/java/org/onap/dcaegen2/services/sonhms/utils/ClusterUtilsTest.java",
         "patchSetId": 1
@@ -424,6 +856,24 @@
       "revId": "146bd0b43019b94df98dff67d31a20ba50dbcbe5",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "71ad3c58_42bd22c8",
+        "filename": "src/test/java/org/onap/dcaegen2/services/sonhms/utils/ClusterUtilsTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-08-30T17:36:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "99181218_f01bea00",
+      "revId": "146bd0b43019b94df98dff67d31a20ba50dbcbe5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
