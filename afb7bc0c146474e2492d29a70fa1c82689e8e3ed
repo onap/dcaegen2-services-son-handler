@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "81ea6223_482f7452",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/child/ChildThread.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-08-31T08:07:34Z",
+      "side": 1,
+      "message": "Just a hint - that call happens in multiple places, probably good idea to extract it into a single place.\n\n(won\u0027t hold off the merge on that though)",
+      "range": {
+        "startLine": 179,
+        "startChar": 26,
+        "endLine": 179,
+        "endChar": 109
+      },
+      "revId": "afb7bc0c146474e2492d29a70fa1c82689e8e3ed",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
