@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
          - [DCAEGEN2-2809](https://jira.onap.org/browse/DCAEGEN2-2809) - Remove security vulnerabilities
          - [DCAEGEN2-2884](https://jira.onap.org/browse/DCAEGEN2-2884) - Update FM message spec to VES 7.2
          - [DCAEGEN2-2883](https://jira.onap.org/browse/DCAEGEN2-2883) - Implement CPS Client in SON Handler
+         - [DCAEGEN2-2905](https://jira.onap.org/browse/DCAEGEN2-2905) - Implement CPS Client in SON Handler - code changes
 
 ## [2.1.3] - 03/02/2021
          - [DCAEGEN2-2599](https://jira.onap.org/browse/DCAEGEN2-2599) - Remove security vulnerabilities

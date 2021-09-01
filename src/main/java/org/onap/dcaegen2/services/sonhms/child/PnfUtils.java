@@ -45,6 +45,7 @@ import org.slf4j.Logger;
 public class PnfUtils {
 
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(ChildThreadUtils.class);
+    Configuration config = Configuration.getInstance();
 
     /**
      * get pnfs.
@@ -64,7 +65,7 @@ public class PnfUtils {
             if (cellInfo.isPresent()) {
                 pnfName = cellInfo.get().getPnfName();
             } else {
-                pnfName = ConfigurationClient.configClient(Configuration.getInstance().getConfigClientType()).getPnfName(cellId);
+                pnfName = config.getConfigurationClient().getPnfName(cellId);
                 cellInfoRepository.save(new CellInfo(cellId, pnfName));
             }
             if (pnfs.containsKey(pnfName)) {
@@ -91,7 +92,7 @@ public class PnfUtils {
         List<String> removeableNeighbors;
         for (AnrSolutions anrSolution : anrSolutions) {
             String cellId = anrSolution.getCellId();
-            String pnfName = ConfigurationClient.configClient(Configuration.getInstance().getConfigClientType()).getPnfName(cellId);
+            String pnfName = config.getConfigurationClient().getPnfName(cellId);
             removeableNeighbors = anrSolution.getRemoveableNeighbors();
             Map<String, List<String>> cellRemNeighborsPair = new HashMap<>();
             cellRemNeighborsPair.put(cellId, removeableNeighbors);

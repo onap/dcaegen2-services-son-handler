@@ -68,6 +68,7 @@ public class ChildThreadUtils {
     private PnfUtils pnfUtils;
     private PolicyDmaapClient policyDmaapClient;
     private HoMetricsComponent hoMetricsComponent;
+    Configuration configuration = Configuration.getInstance();
 
     /**
      * Parameterized constructor.
@@ -98,7 +99,6 @@ public class ChildThreadUtils {
     public Boolean triggerOrWait(Map<String, ArrayList<Integer>> collisionConfusionResult) {
         // determine collision or confusion
 
-        Configuration configuration = Configuration.getInstance();
         int collisionSum = 0;
         int confusionSum = 0;
 
@@ -226,7 +226,7 @@ public class ChildThreadUtils {
                             lteCell.setBlacklisted("true");
                             lteCell.setPlmnId(solutions.getNetworkId());
                             lteCell.setCid(removeableNeighbor);
-                            int pci = ConfigurationClient.configClient(Configuration.getInstance().getConfigClientType()).getPci(cellId);
+                            int pci = configuration.getConfigurationClient().getPci(cellId);
                             lteCell.setPhyCellId(pci);
                             lteCell.setPnfName(pnfName);
                             lteCellList.add(lteCell);

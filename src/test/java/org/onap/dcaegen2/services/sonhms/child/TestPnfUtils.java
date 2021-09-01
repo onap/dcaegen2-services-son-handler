@@ -136,7 +136,7 @@ public class TestPnfUtils {
         .thenReturn(cellInfoNull);
         try {
             PowerMockito.whenNew(SdnrRestClient.class).withAnyArguments().thenReturn(sdnr);
-            PowerMockito.when(ConfigurationClient.configClient(config.getConfigClientType()))
+            PowerMockito.when(config.getConfigurationClient())
                     .thenReturn(sdnr);
             PowerMockito.doReturn(pnfName).when(sdnr, "getPnfName", Mockito.anyString());
             PowerMockito.when(cellInfoRepositoryMock.save(new CellInfo(cellId, pnfName))).thenReturn(new CellInfo());
@@ -169,8 +169,7 @@ public class TestPnfUtils {
 
          try {
              PowerMockito.whenNew(SdnrRestClient.class).withAnyArguments().thenReturn(sdnr);
-             PowerMockito.when(ConfigurationClient.configClient(config.getConfigClientType()))
-                     .thenReturn(sdnr);
+             PowerMockito.when(config.getConfigurationClient()).thenReturn(sdnr);
              PowerMockito.doReturn("ncServer1").when(sdnr, "getPnfName", Mockito.anyString());
             actual = pnfUtils.getPnfsForAnrSolutions(anrSolutions);
         } catch (ConfigDbNotFoundException e) {
