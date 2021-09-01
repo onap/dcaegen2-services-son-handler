@@ -45,6 +45,7 @@ import org.onap.dcaegen2.services.sonhms.model.CellPciPair;
 import org.onap.dcaegen2.services.sonhms.model.FapServiceList;
 import org.onap.dcaegen2.services.sonhms.model.LteNeighborListInUseLteCell;
 import org.onap.dcaegen2.services.sonhms.model.Notification;
+import org.onap.dcaegen2.services.sonhms.restclient.ConfigInterface;
 import org.onap.dcaegen2.services.sonhms.restclient.ConfigurationClient;
 import org.onap.dcaegen2.services.sonhms.restclient.CpsClient;
 import org.onap.dcaegen2.services.sonhms.restclient.SdnrRestClient;
@@ -54,6 +55,7 @@ import org.slf4j.LoggerFactory;
 public class ClusterUtils {
 
     private static Logger log = LoggerFactory.getLogger(ClusterUtils.class);
+    Configuration config = Configuration.getInstance();
 
     public List<ClusterDetails> getAllClusters() {
         ClusterDetailsComponent clusterDetailsComponent = new ClusterDetailsComponent();
@@ -250,7 +252,7 @@ public class ClusterUtils {
             val1.setPhysicalCellId(phy);
             cluster.addEdge(val, val1);
 
-            List<CellPciPair> nbrList = ConfigurationClient.configClient(Configuration.getInstance().getConfigClientType()).getNbrList(cell);
+            List<CellPciPair> nbrList = config.getConfigurationClient().getNbrList(cell);
 
             for (CellPciPair nbr : nbrList) {
                 String cid = nbr.getCellId();
@@ -303,12 +305,12 @@ public class ClusterUtils {
      */
     public Map<CellPciPair, ArrayList<CellPciPair>> findClusterMap(String cellId) throws ConfigDbNotFoundException, CpsNotFoundException {
         log.info("indide clusterMap");
-        int phyCellId = ConfigurationClient.configClient(Configuration.getInstance().getConfigClientType()).getPci(cellId);
+        int phyCellId = config.getConfigurationClient().getPci(cellId);
         CellPciPair main = new CellPciPair();
         main.setCellId(cellId);
         main.setPhysicalCellId(phyCellId);
         ArrayList<CellPciPair> cellPciPairs;
-        cellPciPairs = (ArrayList<CellPciPair>) ConfigurationClient.configClient(Configuration.getInstance().getConfigClientType()).getNbrList(cellId);
+        cellPciPairs = (ArrayList<CellPciPair>) config.getConfigurationClient().getNbrList(cellId);
         Map<CellPciPair, ArrayList<CellPciPair>> clusterMap = new HashMap<>();
         clusterMap.put(main, cellPciPairs);
         log.info("clusterMap{}", clusterMap);

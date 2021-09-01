@@ -61,6 +61,7 @@ import org.onap.dcaegen2.services.sonhms.model.Flag;
 import org.onap.dcaegen2.services.sonhms.model.HoDetails;
 import org.onap.dcaegen2.services.sonhms.model.ThreadId;
 import org.onap.dcaegen2.services.sonhms.restclient.AsyncResponseBody;
+import org.onap.dcaegen2.services.sonhms.restclient.ConfigInterface;
 import org.onap.dcaegen2.services.sonhms.restclient.ConfigurationClient;
 import org.onap.dcaegen2.services.sonhms.restclient.PciSolutions;
 import org.onap.dcaegen2.services.sonhms.utils.BeanUtil;
@@ -82,6 +83,7 @@ public class ChildThread implements Runnable {
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(ChildThread.class);
     private static Timestamp startTime;
     private static String networkId;
+    Configuration config = Configuration.getInstance();
 
 
     /**
@@ -176,7 +178,7 @@ public class ChildThread implements Runnable {
 				FixedPciCellsRepository fixedPciCellsRepository = BeanUtil.getBean(FixedPciCellsRepository.class);
 				List<String> fixedPciCells = fixedPciCellsRepository.getFixedPciCells();
 				String cellId = fixedPciCells.get(0);
-				JSONObject cellData = ConfigurationClient.configClient(Configuration.getInstance().getConfigClientType()).getCellData(cellId);
+				JSONObject cellData = config.getConfigurationClient().getCellData(cellId);
 				networkId = cellData.getJSONObject("Cell").getString("networkId");
 			}
 
@@ -320,7 +322,7 @@ public class ChildThread implements Runnable {
 					for (PciSolutions pcisolutions : pciSolutionsList) {
 
 						String cellId = pcisolutions.getCellId();
-						int oldPci = ConfigurationClient.configClient(Configuration.getInstance().getConfigClientType()).getPci(cellId);
+						int oldPci = config.getConfigurationClient().getPci(cellId);
 						int newPci = pcisolutions.getPci();
 						PciUpdate pciUpdate = new PciUpdate();
 						pciUpdate.setCellId(cellId);

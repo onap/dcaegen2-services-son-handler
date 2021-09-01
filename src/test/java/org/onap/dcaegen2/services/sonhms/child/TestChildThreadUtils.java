@@ -201,8 +201,7 @@ public class TestChildThreadUtils {
         }
 
 		PowerMockito.whenNew(SdnrRestClient.class).withAnyArguments().thenReturn(sdnr);
-		PowerMockito.when(ConfigurationClient.configClient(config.getConfigClientType()))
-				.thenReturn(sdnr);
+		PowerMockito.when(config.getConfigurationClient()).thenReturn(sdnr);
 		PowerMockito.doReturn(3).when(sdnr, "getPci", Mockito.anyString());
 		PowerMockito.doReturn("pnfName").when(sdnr, "getPnfName", Mockito.anyString());
         when(policyDmaapClient.sendNotificationToPolicy(Mockito.anyString())).thenReturn(true);
