@@ -2,7 +2,7 @@
  * ============LICENSE_START=======================================================
  * son-handler
  *  ================================================================================
- *  Copyright (C) 2019-2020 Wipro Limited.
+ *  Copyright (C) 2019-2021 Wipro Limited.
  *  ==============================================================================
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -43,13 +43,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.onap.dcaegen2.services.sonhms.Configuration;
 import org.onap.dcaegen2.services.sonhms.dao.CellInfoRepository;
 import org.onap.dcaegen2.services.sonhms.entity.CellInfo;
 import org.onap.dcaegen2.services.sonhms.exceptions.ConfigDbNotFoundException;
+import org.onap.dcaegen2.services.sonhms.exceptions.CpsNotFoundException;
 import org.onap.dcaegen2.services.sonhms.model.CellPciPair;
-import org.onap.dcaegen2.services.sonhms.restclient.AnrSolutions;
-import org.onap.dcaegen2.services.sonhms.restclient.SdnrRestClient;
-import org.onap.dcaegen2.services.sonhms.restclient.Solutions;
+import org.onap.dcaegen2.services.sonhms.restclient.*;
 import org.onap.dcaegen2.services.sonhms.utils.BeanUtil;
 import org.onap.dcaegen2.services.sonhms.utils.ClusterUtilsTest;
 import org.powermock.api.mockito.PowerMockito;
@@ -64,7 +64,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore({"com.sun.org.apache.xerces.*", "javax.xml.*", "org.xml.*", "javax.management.*"})
 @PowerMockRunnerDelegate(SpringRunner.class)
-@PrepareForTest({BeanUtil.class, SdnrRestClient.class })
+@PrepareForTest({BeanUtil.class, SdnrRestClient.class, ConfigurationClient.class })
 @SpringBootTest(classes = PnfUtils.class)
 public class TestPnfUtils {
 
@@ -83,8 +83,9 @@ public class TestPnfUtils {
     
      @BeforeClass
      public static void setup() {
-         
-         
+
+         Configuration config = Configuration.getInstance();
+         config.setConfigClientType("ConfigDB");
          String solutionsString=readFromFile("/solutions.json");
          String anrSolutionsString = readFromFile("/anrSolutions.json");
          ObjectMapper mapper = new ObjectMapper();
@@ -118,6 +119,11 @@ public class TestPnfUtils {
          PowerMockito.mockStatic(BeanUtil.class);
          PowerMockito.mockStatic(SdnrRestClient.class);
 
+         PowerMockito.mockStatic(ConfigurationClient.class);
+
+         SdnrRestClient sdnr = PowerMockito.spy(new SdnrRestClient());
+         Configuration config = Configuration.getInstance();
+
          PowerMockito.when(BeanUtil.getBean(CellInfoRepository.class))
                  .thenReturn(cellInfoRepositoryMock);
          
@@ -126,18 +132,22 @@ public class TestPnfUtils {
         Mockito.when(cellInfoRepositoryMock.findById(cellId))
         .thenReturn(cellInfoNull);
         try {
-            PowerMockito.when(SdnrRestClient.getPnfName(cellId))
-            .thenReturn(pnfName);
+            PowerMockito.whenNew(SdnrRestClient.class).withAnyArguments().thenReturn(sdnr);
+            PowerMockito.when(config.getConfigurationClient())
+                    .thenReturn(sdnr);
+            PowerMockito.doReturn(pnfName).when(sdnr, "getPnfName", Mockito.anyString());
             PowerMockito.when(cellInfoRepositoryMock.save(new CellInfo(cellId, pnfName))).thenReturn(new CellInfo());
         } catch (ConfigDbNotFoundException e) {
             e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        pnfs.put(pnfName, cellpciPairList2);
+         pnfs.put(pnfName, cellpciPairList2);
         pnfs.put("ncserver1", cellpciPairList1);
         System.out.println(solutions);
         try {
             assertEquals(pnfs,pnfUtils.getPnfs(solutions));
-        } catch (ConfigDbNotFoundException e) {
+        } catch (ConfigDbNotFoundException | CpsNotFoundException e) {
             log.debug("exception in stateOof test {}", e);
             e.printStackTrace();
         }
@@ -147,14 +157,26 @@ public class TestPnfUtils {
      public void testGetPnfsForAnrSolutions() {
          Map<String, List<Map<String,List<String>>>> actual = null ;
          Map<String, List<Map<String,List<String>>>> expected = new HashMap<>();
+
+         PowerMockito.mockStatic(SdnrRestClient.class);
+         PowerMockito.mockStatic(ConfigurationClient.class);
+
+         SdnrRestClient sdnr = PowerMockito.spy(new SdnrRestClient());
+         Configuration config = Configuration.getInstance();
+
          try {
-             PowerMockito.mockStatic(SdnrRestClient.class);
-            PowerMockito.when(SdnrRestClient.getPnfName(Mockito.anyString())).thenReturn("ncServer1");
+             PowerMockito.whenNew(SdnrRestClient.class).withAnyArguments().thenReturn(sdnr);
+             PowerMockito.when(config.getConfigurationClient()).thenReturn(sdnr);
+             PowerMockito.doReturn("ncServer1").when(sdnr, "getPnfName", Mockito.anyString());
             actual = pnfUtils.getPnfsForAnrSolutions(anrSolutions);
         } catch (ConfigDbNotFoundException e) {
             e.printStackTrace();
-        }
-        List<String> remNeighbors1 = new ArrayList<>();
+        } catch (CpsNotFoundException e) {
+             e.printStackTrace();
+         } catch (Exception e) {
+             e.printStackTrace();
+         }
+         List<String> remNeighbors1 = new ArrayList<>();
         List<String> remNeighbors2 = new ArrayList<>();
         remNeighbors1.add("cell2");
         remNeighbors1.add("cell3");

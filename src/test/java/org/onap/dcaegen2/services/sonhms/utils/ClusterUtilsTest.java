@@ -2,7 +2,7 @@
  *  ============LICENSE_START=======================================================
  *  son-handler
  *  ================================================================================
- *   Copyright (C) 2019-2020 Wipro Limited.
+ *   Copyright (C) 2019-2021 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -55,6 +55,10 @@ import org.onap.dcaegen2.services.sonhms.exceptions.ConfigDbNotFoundException;
 import org.onap.dcaegen2.services.sonhms.model.CellPciPair;
 import org.onap.dcaegen2.services.sonhms.model.FapServiceList;
 import org.onap.dcaegen2.services.sonhms.model.Notification;
+import org.onap.dcaegen2.services.sonhms.Configuration;
+import org.onap.dcaegen2.services.sonhms.exceptions.CpsNotFoundException;
+import org.onap.dcaegen2.services.sonhms.restclient.ConfigInterface;
+import org.onap.dcaegen2.services.sonhms.restclient.ConfigurationClient;
 import org.onap.dcaegen2.services.sonhms.restclient.SdnrRestClient;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
@@ -67,7 +71,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore({"com.sun.org.apache.xerces.*", "javax.xml.*", "org.xml.*", "javax.management.*"})
 @PowerMockRunnerDelegate(SpringRunner.class)
-@PrepareForTest({ SdnrRestClient.class, BeanUtil.class })
+@PrepareForTest({ SdnrRestClient.class, BeanUtil.class, ConfigurationClient.class })
 @SpringBootTest(classes = ClusterUtils.class)
 public class ClusterUtilsTest {
 
@@ -86,6 +90,8 @@ public class ClusterUtilsTest {
     @BeforeClass
     public static void setup() {
 
+        Configuration config = Configuration.getInstance();
+        config.setConfigClientType("ConfigDB");
         notification1 = new Notification();
         notification2 = new Notification();
         clusterDetailsForGetClusterDetailsFromClusterIdTest = new ArrayList<ClusterDetails>();
@@ -150,7 +156,7 @@ public class ClusterUtilsTest {
     }
 
     @Test
-    public void createClusterTest() throws ConfigDbNotFoundException {
+    public void createClusterTest() throws Exception {
 
         Map<CellPciPair, ArrayList<CellPciPair>> clusterMap = new HashMap<CellPciPair, ArrayList<CellPciPair>>();
 
@@ -161,8 +167,14 @@ public class ClusterUtilsTest {
         nbrList.add(new CellPciPair("44", 3));
 
         PowerMockito.mockStatic(SdnrRestClient.class);
+        PowerMockito.mockStatic(ConfigurationClient.class);
 
-        PowerMockito.when(SdnrRestClient.getNbrList(Mockito.anyString())).thenReturn(nbrList);
+        SdnrRestClient sdnr = PowerMockito.spy(new SdnrRestClient());
+        Configuration config = Configuration.getInstance();
+
+        PowerMockito.whenNew(SdnrRestClient.class).withAnyArguments().thenReturn(sdnr);
+        PowerMockito.when(config.getConfigurationClient()).thenReturn(sdnr);
+        PowerMockito.doReturn(nbrList).when(sdnr, "getNbrList", Mockito.anyString());
 
         clusterMap.put(new CellPciPair("45", 310), (ArrayList<CellPciPair>) firstNbrList);
 
