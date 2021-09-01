@@ -22,6 +22,30 @@
       "revId": "afb7bc0c146474e2492d29a70fa1c82689e8e3ed",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ecf5a719_7621f5ca",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/child/ChildThread.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 7661
+      },
+      "writtenOn": "2021-09-01T14:30:44Z",
+      "side": 1,
+      "message": "Sure, will do that. Created another JIRA to make the changes. Please check: https://jira.onap.org/browse/DCAEGEN2-2905",
+      "parentUuid": "81ea6223_482f7452",
+      "range": {
+        "startLine": 179,
+        "startChar": 26,
+        "endLine": 179,
+        "endChar": 109
+      },
+      "revId": "afb7bc0c146474e2492d29a70fa1c82689e8e3ed",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
