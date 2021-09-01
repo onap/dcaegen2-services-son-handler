@@ -30,6 +30,8 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 
+import org.onap.dcaegen2.services.sonhms.restclient.ConfigInterface;
+import org.onap.dcaegen2.services.sonhms.restclient.ConfigurationClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -463,6 +465,12 @@ public class Configuration {
         Configuration.instance = instance;
     }
 
+    public ConfigInterface getConfigurationClient()
+    {
+        ConfigInterface conf = ConfigurationClient.configClient(Configuration.getInstance().getConfigClientType());
+        return conf;
+    }
+
     @Override
     public String toString() {
         return "Configuration [pgHost=" + pgHost + ", pgPort=" + pgPort + ", pgUsername=" + pgUsername + ", pgPassword="
@@ -490,6 +498,7 @@ public class Configuration {
 
         Type mapType = new TypeToken<Map<String, Object>>() {
         }.getType();
+
 
         JsonObject subscribes = jsonObject.getAsJsonObject("streams_subscribes");
         streamsSubscribes = new Gson().fromJson(subscribes, mapType);

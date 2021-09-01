@@ -57,6 +57,7 @@ import org.onap.dcaegen2.services.sonhms.model.FapServiceList;
 import org.onap.dcaegen2.services.sonhms.model.Notification;
 import org.onap.dcaegen2.services.sonhms.Configuration;
 import org.onap.dcaegen2.services.sonhms.exceptions.CpsNotFoundException;
+import org.onap.dcaegen2.services.sonhms.restclient.ConfigInterface;
 import org.onap.dcaegen2.services.sonhms.restclient.ConfigurationClient;
 import org.onap.dcaegen2.services.sonhms.restclient.SdnrRestClient;
 import org.powermock.api.mockito.PowerMockito;
@@ -172,8 +173,7 @@ public class ClusterUtilsTest {
         Configuration config = Configuration.getInstance();
 
         PowerMockito.whenNew(SdnrRestClient.class).withAnyArguments().thenReturn(sdnr);
-        PowerMockito.when(ConfigurationClient.configClient(config.getConfigClientType()))
-                .thenReturn(sdnr);
+        PowerMockito.when(config.getConfigurationClient()).thenReturn(sdnr);
         PowerMockito.doReturn(nbrList).when(sdnr, "getNbrList", Mockito.anyString());
 
         clusterMap.put(new CellPciPair("45", 310), (ArrayList<CellPciPair>) firstNbrList);

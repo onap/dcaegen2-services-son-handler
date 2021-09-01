@@ -33,18 +33,14 @@ import org.onap.dcaegen2.services.sonhms.entity.CellInfo;
 import org.onap.dcaegen2.services.sonhms.exceptions.ConfigDbNotFoundException;
 import org.onap.dcaegen2.services.sonhms.exceptions.CpsNotFoundException;
 import org.onap.dcaegen2.services.sonhms.model.CellPciPair;
-import org.onap.dcaegen2.services.sonhms.restclient.AnrSolutions;
-import org.onap.dcaegen2.services.sonhms.restclient.PciSolutions;
-import org.onap.dcaegen2.services.sonhms.restclient.ConfigurationClient;
-import org.onap.dcaegen2.services.sonhms.restclient.CpsClient;
-import org.onap.dcaegen2.services.sonhms.restclient.SdnrRestClient;
-import org.onap.dcaegen2.services.sonhms.restclient.Solutions;
+import org.onap.dcaegen2.services.sonhms.restclient.*;
 import org.onap.dcaegen2.services.sonhms.utils.BeanUtil;
 import org.slf4j.Logger;
 
 public class PnfUtils {
 
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(ChildThreadUtils.class);
+    Configuration config = Configuration.getInstance();
 
     /**
      * get pnfs.
@@ -64,7 +60,7 @@ public class PnfUtils {
             if (cellInfo.isPresent()) {
                 pnfName = cellInfo.get().getPnfName();
             } else {
-                pnfName = ConfigurationClient.configClient(Configuration.getInstance().getConfigClientType()).getPnfName(cellId);
+                pnfName = config.getConfigurationClient().getPnfName(cellId);
                 cellInfoRepository.save(new CellInfo(cellId, pnfName));
             }
             if (pnfs.containsKey(pnfName)) {
@@ -91,7 +87,7 @@ public class PnfUtils {
         List<String> removeableNeighbors;
         for (AnrSolutions anrSolution : anrSolutions) {
             String cellId = anrSolution.getCellId();
-            String pnfName = ConfigurationClient.configClient(Configuration.getInstance().getConfigClientType()).getPnfName(cellId);
+            String pnfName = config.getConfigurationClient().getPnfName(cellId);
             removeableNeighbors = anrSolution.getRemoveableNeighbors();
             Map<String, List<String>> cellRemNeighborsPair = new HashMap<>();
             cellRemNeighborsPair.put(cellId, removeableNeighbors);

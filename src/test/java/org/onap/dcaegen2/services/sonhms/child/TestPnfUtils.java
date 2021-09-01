@@ -49,10 +49,7 @@ import org.onap.dcaegen2.services.sonhms.entity.CellInfo;
 import org.onap.dcaegen2.services.sonhms.exceptions.ConfigDbNotFoundException;
 import org.onap.dcaegen2.services.sonhms.exceptions.CpsNotFoundException;
 import org.onap.dcaegen2.services.sonhms.model.CellPciPair;
-import org.onap.dcaegen2.services.sonhms.restclient.AnrSolutions;
-import org.onap.dcaegen2.services.sonhms.restclient.ConfigurationClient;
-import org.onap.dcaegen2.services.sonhms.restclient.SdnrRestClient;
-import org.onap.dcaegen2.services.sonhms.restclient.Solutions;
+import org.onap.dcaegen2.services.sonhms.restclient.*;
 import org.onap.dcaegen2.services.sonhms.utils.BeanUtil;
 import org.onap.dcaegen2.services.sonhms.utils.ClusterUtilsTest;
 import org.powermock.api.mockito.PowerMockito;
@@ -136,7 +133,7 @@ public class TestPnfUtils {
         .thenReturn(cellInfoNull);
         try {
             PowerMockito.whenNew(SdnrRestClient.class).withAnyArguments().thenReturn(sdnr);
-            PowerMockito.when(ConfigurationClient.configClient(config.getConfigClientType()))
+            PowerMockito.when(config.getConfigurationClient())
                     .thenReturn(sdnr);
             PowerMockito.doReturn(pnfName).when(sdnr, "getPnfName", Mockito.anyString());
             PowerMockito.when(cellInfoRepositoryMock.save(new CellInfo(cellId, pnfName))).thenReturn(new CellInfo());
@@ -169,8 +166,7 @@ public class TestPnfUtils {
 
          try {
              PowerMockito.whenNew(SdnrRestClient.class).withAnyArguments().thenReturn(sdnr);
-             PowerMockito.when(ConfigurationClient.configClient(config.getConfigClientType()))
-                     .thenReturn(sdnr);
+             PowerMockito.when(config.getConfigurationClient()).thenReturn(sdnr);
              PowerMockito.doReturn("ncServer1").when(sdnr, "getPnfName", Mockito.anyString());
             actual = pnfUtils.getPnfsForAnrSolutions(anrSolutions);
         } catch (ConfigDbNotFoundException e) {
