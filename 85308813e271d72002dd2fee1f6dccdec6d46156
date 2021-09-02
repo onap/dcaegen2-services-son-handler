@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "89065189_fda2411a",
+        "filename": "Changelog.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2021-09-02T15:46:27Z",
+      "side": 1,
+      "message": "This discription does not reflect the actual change introduced - both jira and entry here should be updated.. something like - \"Refactored code for standardizing configuration retrieval through common method\"",
+      "range": {
+        "startLine": 12,
+        "startChar": 73,
+        "endLine": 12,
+        "endChar": 123
+      },
+      "revId": "85308813e271d72002dd2fee1f6dccdec6d46156",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
