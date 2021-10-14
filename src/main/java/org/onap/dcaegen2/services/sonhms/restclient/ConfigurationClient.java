@@ -21,6 +21,9 @@
 
 package org.onap.dcaegen2.services.sonhms.restclient;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Class with method to get the Client type depending on the
  * configuration client specified.
@@ -30,6 +33,8 @@ package org.onap.dcaegen2.services.sonhms.restclient;
 
 public class ConfigurationClient
 {
+     private static Logger log = LoggerFactory.getLogger(ConfigurationClient.class);
+
     /**
      * Method to get the Client type.
      *
@@ -39,12 +44,16 @@ public class ConfigurationClient
      */
     public static ConfigInterface configClient(String config_name)
     {
-        if (config_name == null || config_name.isEmpty())
-            return null;
-        if ("ConfigDB".equals(config_name)) {
+        if (config_name == null || config_name.isEmpty()){
+            log.info("Returning null from ConfigClient class");
+	    return null;
+	}
+        if ("ConfigDB".equalsIgnoreCase(config_name)) {
+	    log.info("Creating SdnrClient object");
             return new SdnrRestClient();
         }
-        else if ("CPS".equals(config_name)) {
+        if ("CPS".equalsIgnoreCase(config_name)) {
+	    log.info("Creating CPSClient object");
             return new CpsClient();
         }
         return null;

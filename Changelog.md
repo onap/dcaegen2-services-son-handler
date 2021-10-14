@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.1.5] - 2021/10/14
+	 - [DCAEGEN2-2943](https://jira.onap.org/browse/DCAEGEN2-2943) - Fix bug in filtering new FM notification
+
 ## [2.1.4] - 2021/06/21
          - [DCAEGEN2-2711](https://jira.onap.org/browse/DCAEGEN2-2711) - Update sdk version to load policies from a file mounted by policy sidecar container
          - [DCAEGEN2-2809](https://jira.onap.org/browse/DCAEGEN2-2809) - Remove security vulnerabilities

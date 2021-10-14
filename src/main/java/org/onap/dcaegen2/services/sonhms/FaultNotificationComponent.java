@@ -2,7 +2,7 @@
  *  ============LICENSE_START=======================================================
  *  son-handler
  *  ================================================================================
- *   Copyright (C) 2019-2020 Wipro Limited.
+ *   Copyright (C) 2019-2021 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -47,6 +47,7 @@ public class FaultNotificationComponent {
 				.getBean(FaultNotificationsRepository.class);
 		String notificationString = faultNotificationsRepository.getFaultNotificationFromQueue();
 		log.info("get fault notifications method");
+		log.info("Notification String    " + notificationString);
 		if (notificationString == null) {
 			return Either.right(404);
 		}
