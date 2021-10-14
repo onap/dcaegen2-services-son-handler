@@ -2,7 +2,7 @@
  *  ============LICENSE_START=======================================================
  *  son-handler
  *  ================================================================================
- *   Copyright (C) 2019-2020 Wipro Limited.
+ *   Copyright (C) 2019-2021 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -161,12 +161,9 @@ public class MainThread implements Runnable {
 							if (fmNotification.getEvent().getFaultFields().getSpecificProblem()
 									.equals("Optimised PCI")) {
 								log.info("PCI problem cleared for :" + fmNotification);
-							} else if ((fmNotification.getEvent().getFaultFields().getSpecificProblem()
-									.equals("Collision"))
-									|| (fmNotification.getEvent().getFaultFields().getSpecificProblem()
-											.equals("Confusion"))
-									|| (fmNotification.getEvent().getFaultFields().getSpecificProblem()
-											.equals("CollisionAndConfusion"))) {
+							} else if ((fmNotification.getEvent().getFaultFields().getAlarmCondition()
+						   				.equalsIgnoreCase("RanPciCollisionConfusionOccurred")))	
+							{
 								faultCellId = fmNotification.getEvent().getCommonEventHeader().getSourceName();
 								bufferedFmNotificationCells.put(faultCellId, fmNotification);
 								log.info("Buffered FM cell {}", faultCellId);

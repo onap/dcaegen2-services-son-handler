@@ -98,8 +98,8 @@ public class EventHandler {
             networkId = faultEvent.getEvent().getFaultFields().getAlarmAdditionalInformation().getNetworkId();
 
             ArrayList<Integer> counts = new ArrayList<>();
-            counts.add(faultEvent.getEvent().getFaultFields().getEventCategory().contains("Collision")?1:0);
-            counts.add(faultEvent.getEvent().getFaultFields().getEventCategory().contains("Confusion")?1:0);
+            counts.add(faultEvent.getEvent().getFaultFields().getEventCategory().contains("PCICollision")?1:0);
+            counts.add(faultEvent.getEvent().getFaultFields().getEventCategory().contains("PCIConfusion")?1:0);
             collisionConfusionMap.put(cellId, counts);
         }
         FaultNotificationtoClusterMapping faultNotificationtoClusterMapping = clusterUtils
