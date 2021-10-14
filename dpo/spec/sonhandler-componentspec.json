@@ -274,7 +274,7 @@
 		},
 		{
 			"name": "sonhandler.get.cell.data.url",
-			"value": "execute/cps-ran-schema/get-cell-data",
+			"value": "execute/cps-ran-schemaset/get-cell-list",
 			"description": "Cps get cell data url",
 			"sourced_at_deployment": false,
 			"policy_editable": false,
@@ -282,7 +282,7 @@
 		},
 		{
 			"name": "sonhandler.get.nbr.list.url",
-			"value": "execute/cps-ran-schema/get-nbr-list",
+			"value": "execute/cps-ran-schemaset/get-nbr-list",
 			"description": "Cps get nbr list url",
 			"sourced_at_deployment": false,
 			"policy_editable": false,
@@ -290,7 +290,7 @@
 		},
 		{
 			"name": "sonhandler.get.pci.url",
-			"value": "execute/cps-ran-schema/get-pci",
+			"value": "execute/ran-network-schemaset/get-pci",
 			"description": "Cps get pci url",
 			"sourced_at_deployment": false,
 			"policy_editable": false,
@@ -298,7 +298,7 @@
 		},
 		{
 			"name": "sonhandler.get.pnf.url",
-			"value": "execute/cps-ran-schema/get-pnf",
+			"value": "execute/ran-network-schemaset/get-pnf",
 			"description": "Cps get pnf url",
 			"sourced_at_deployment": false,
 			"policy_editable": false,

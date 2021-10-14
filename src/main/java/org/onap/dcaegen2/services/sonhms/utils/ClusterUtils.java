@@ -304,8 +304,9 @@ public class ClusterUtils {
      * Find cluster Map.
      */
     public Map<CellPciPair, ArrayList<CellPciPair>> findClusterMap(String cellId) throws ConfigDbNotFoundException, CpsNotFoundException {
-        log.info("indide clusterMap");
+        log.info("inside clusterMap");
         int phyCellId = config.getConfigurationClient().getPci(cellId);
+        log.info("phyCellId of clustermap is" + phyCellId);
         CellPciPair main = new CellPciPair();
         main.setCellId(cellId);
         main.setPhysicalCellId(phyCellId);

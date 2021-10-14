@@ -468,6 +468,7 @@ public class Configuration {
     public ConfigInterface getConfigurationClient()
     {
         ConfigInterface conf = ConfigurationClient.configClient(Configuration.getInstance().getConfigClientType());
+        log.info("ConfigurationClient obj is : " + conf);
         return conf;
     }
 
