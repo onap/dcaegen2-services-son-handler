@@ -47,6 +47,7 @@ public class FaultNotificationComponent {
 				.getBean(FaultNotificationsRepository.class);
 		String notificationString = faultNotificationsRepository.getFaultNotificationFromQueue();
 		log.info("get fault notifications method");
+		log.info("Notification String    " + notificationString);
 		if (notificationString == null) {
 			return Either.right(404);
 		}

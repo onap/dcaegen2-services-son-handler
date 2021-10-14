@@ -141,7 +141,7 @@ public class CpsClient extends ConfigInterface {
                 new ParameterizedTypeReference<String>() {
                 });
         if (response == null) {
-            throw new CpsNotFoundException("Cannot reach Config DB");
+            throw new CpsNotFoundException("Cannot reach CPS");
         }
         return response.getBody();
     }

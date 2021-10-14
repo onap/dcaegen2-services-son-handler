@@ -161,12 +161,9 @@ public class MainThread implements Runnable {
 							if (fmNotification.getEvent().getFaultFields().getSpecificProblem()
 									.equals("Optimised PCI")) {
 								log.info("PCI problem cleared for :" + fmNotification);
-							} else if ((fmNotification.getEvent().getFaultFields().getSpecificProblem()
-									.equals("Collision"))
-									|| (fmNotification.getEvent().getFaultFields().getSpecificProblem()
-											.equals("Confusion"))
-									|| (fmNotification.getEvent().getFaultFields().getSpecificProblem()
-											.equals("CollisionAndConfusion"))) {
+							} else if ((fmNotification.getEvent().getFaultFields().getAlarmCondition()
+						   				.equalsIgnoreCase("RanPciCollisionConfusionOccurred")))	
+							{
 								faultCellId = fmNotification.getEvent().getCommonEventHeader().getSourceName();
 								bufferedFmNotificationCells.put(faultCellId, fmNotification);
 								log.info("Buffered FM cell {}", faultCellId);
