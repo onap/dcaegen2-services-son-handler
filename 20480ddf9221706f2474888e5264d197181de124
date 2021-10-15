@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "44f5ef65_c90b5ed2",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/FaultNotificationComponent.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-10-15T18:58:20Z",
+      "side": 1,
+      "message": "add 2021",
+      "revId": "20480ddf9221706f2474888e5264d197181de124",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5727819b_a7b910e1",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/MainThread.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-10-15T18:58:20Z",
+      "side": 1,
+      "message": "add 2021",
+      "revId": "20480ddf9221706f2474888e5264d197181de124",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "045367cd_2edcb078",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/restclient/ConfigurationClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-10-15T18:58:20Z",
+      "side": 1,
+      "message": "move } to next line",
+      "revId": "20480ddf9221706f2474888e5264d197181de124",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3226d7ba_74ca503c",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/restclient/ConfigurationClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-10-15T18:58:20Z",
+      "side": 1,
+      "message": "remove \u0027else\u0027 (previous line does a return, so \u0027else\u0027 is redundant)",
+      "revId": "20480ddf9221706f2474888e5264d197181de124",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
