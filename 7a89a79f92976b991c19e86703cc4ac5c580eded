@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cb820c52_82dcf1ad",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/Configuration.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2021-10-19T15:45:46Z",
+      "side": 1,
+      "message": "remove tab and indent with spaces",
+      "range": {
+        "startLine": 471,
+        "startChar": 0,
+        "endLine": 472,
+        "endChar": 1
+      },
+      "revId": "7a89a79f92976b991c19e86703cc4ac5c580eded",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b71aca65_423caf62",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/utils/ClusterUtils.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2021-10-19T15:45:46Z",
+      "side": 1,
+      "message": "replace with spaces",
+      "range": {
+        "startLine": 309,
+        "startChar": 0,
+        "endLine": 309,
+        "endChar": 1
+      },
+      "revId": "7a89a79f92976b991c19e86703cc4ac5c580eded",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
