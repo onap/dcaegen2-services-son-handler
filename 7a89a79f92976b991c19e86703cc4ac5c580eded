@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "9a1442a6_d74aa948",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/Configuration.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 7661
+      },
+      "writtenOn": "2021-10-20T11:58:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cb820c52_82dcf1ad",
+      "range": {
+        "startLine": 471,
+        "startChar": 0,
+        "endLine": 472,
+        "endChar": 1
+      },
+      "revId": "7a89a79f92976b991c19e86703cc4ac5c580eded",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b71aca65_423caf62",
         "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/utils/ClusterUtils.java",
         "patchSetId": 2
@@ -45,6 +69,30 @@
       "revId": "7a89a79f92976b991c19e86703cc4ac5c580eded",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "45addf82_72c7c4b0",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/utils/ClusterUtils.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 7661
+      },
+      "writtenOn": "2021-10-20T11:58:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b71aca65_423caf62",
+      "range": {
+        "startLine": 309,
+        "startChar": 0,
+        "endLine": 309,
+        "endChar": 1
+      },
+      "revId": "7a89a79f92976b991c19e86703cc4ac5c580eded",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
