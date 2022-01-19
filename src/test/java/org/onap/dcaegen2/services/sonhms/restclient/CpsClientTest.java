@@ -103,7 +103,7 @@ public class CpsClientTest {
     @Test
     public void getPciTest() {
 
-        String responseBody = "{\n" + "  \"attribute-name\": \"string\",\n" + "  \"value\": 0\n" + "}";
+        String responseBody = "{\n" + "  \"nRPCI\": \"11\",\n" + "  \"value\": 0\n" + "}";
         PowerMockito.mockStatic(SonHandlerRestTemplate.class);
         PowerMockito.mockStatic(Configuration.class);
         PowerMockito.when(Configuration.getInstance()).thenReturn(configuration);
@@ -116,7 +116,7 @@ public class CpsClientTest {
             int result = cps.getPci("1");
             String response = ResponseEntity.ok(responseBody).getBody();
             JSONObject respObj = new JSONObject(response);
-            assertEquals(respObj.getInt("value"), result);
+            assertEquals(respObj.getInt("nRPCI"), result);
         } catch (CpsNotFoundException e) {
             log.debug("CpsNotFoundException {}", e.toString());
             ;
@@ -127,7 +127,7 @@ public class CpsClientTest {
     @Test
     public void getPnfNameTest() {
 
-        String responseBody = "{\n" + "  \"attribute-name\": \"string\",\n" + "  \"value\": \"string\"\n" + "}";
+        String responseBody = "[{\n" + "  \"idGNBCUCPFunction\": \"cucpserver1\",\n" + "  \"value\": \"string\"\n" + "}]";
         PowerMockito.mockStatic(SonHandlerRestTemplate.class);
         PowerMockito.mockStatic(Configuration.class);
         PowerMockito.when(Configuration.getInstance()).thenReturn(configuration);
@@ -136,10 +136,13 @@ public class CpsClientTest {
                         Matchers.<ParameterizedTypeReference<String>>any()))
                 .thenReturn(ResponseEntity.ok(responseBody));
         try {
-            String result = cps.getPnfName("1");
+            String result = cps.getPnfName("cucpserver1");
             String response = ResponseEntity.ok(responseBody).getBody();
-            JSONObject respObj = new JSONObject(response);
-            assertEquals(respObj.getString("value"), result);
+            
+	    JSONArray requestArray = new JSONArray(response);
+	    for (int i=0;i<requestArray.length();i++) {
+		    assertEquals(requestArray.getJSONObject(i).getString("idGNBCUCPFunction"), result);
+            }
         } catch (CpsNotFoundException e) {
             log.debug("CpsNotFoundException {}", e.toString());
             ;
