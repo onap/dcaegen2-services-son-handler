@@ -2,7 +2,7 @@
  *  ============LICENSE_START=======================================================
  *  son-handler
  *  ================================================================================
- *   Copyright (C) 2019-2021 Wipro Limited.
+ *   Copyright (C) 2019-2022 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -390,28 +390,28 @@ public class Configuration {
     }
 
     public int getPolicyNegativeAckThreshold() {
-		return policyNegativeAckThreshold;
-	}
+        return policyNegativeAckThreshold;
+    }
 
-	public void setPolicyNegativeAckThreshold(int policyNegativeAckThreshold) {
-		this.policyNegativeAckThreshold = policyNegativeAckThreshold;
-	}
+    public void setPolicyNegativeAckThreshold(int policyNegativeAckThreshold) {
+        this.policyNegativeAckThreshold = policyNegativeAckThreshold;
+    }
 
-	public long getPolicyFixedPciTimeInterval() {
-		return policyFixedPciTimeInterval;
-	}
+    public long getPolicyFixedPciTimeInterval() {
+        return policyFixedPciTimeInterval;
+    }
 
-	public void setPolicyFixedPciTimeInterval(long policyFixedPciTimeInterval) {
-		this.policyFixedPciTimeInterval = policyFixedPciTimeInterval;
-	}
+    public void setPolicyFixedPciTimeInterval(long policyFixedPciTimeInterval) {
+        this.policyFixedPciTimeInterval = policyFixedPciTimeInterval;
+    }
 	
-	public String getNfNamingCode() {
-		return nfNamingCode;
-	}
+    public String getNfNamingCode() {
+        return nfNamingCode;
+    }
 
-	public void setNfNamingCode(String nfNamingCode) {
-		this.nfNamingCode = nfNamingCode;
-	}
+    public void setNfNamingCode(String nfNamingCode) {
+        this.nfNamingCode = nfNamingCode;
+    }
 
     public static Logger getLog() {
         return log;
@@ -463,13 +463,6 @@ public class Configuration {
 
     public static void setInstance(Configuration instance) {
         Configuration.instance = instance;
-    }
-
-    public ConfigInterface getConfigurationClient()
-    {
-        ConfigInterface conf = ConfigurationClient.configClient(Configuration.getInstance().getConfigClientType());
-        log.info("ConfigurationClient obj is : " + conf);
-        return conf;
     }
 
     @Override
@@ -554,12 +547,18 @@ public class Configuration {
         getCellDataUrl = jsonObject.get("cps.get.celldata").getAsString();
         getPnfUrl = jsonObject.get("cps.get.pnf.url").getAsString();
         getPciUrl = jsonObject.get("cps.get.pci.url").getAsString();
+        getNbrListUrl = jsonObject.get("cps.get.nbr.list.url").getAsString();
         ConfigClientType = jsonObject.get("sonhandler.clientType").getAsString();
 
         log.info("configuration from CBS {}", this);
 
     }
 
-
+    public ConfigInterface getConfigurationClient()
+    {
+         ConfigInterface conf = ConfigurationClient.configClient(Configuration.getInstance().getConfigClientType());
+         log.info("ConfigurationClient obj is : " + conf);
+         return conf;
+    }
 
 }

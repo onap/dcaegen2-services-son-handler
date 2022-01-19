@@ -4,7 +4,7 @@
  *  ============LICENSE_START=======================================================
  *  son-handler
  *  ================================================================================
- *   Copyright (C) 2019-2021 Wipro Limited.
+ *   Copyright (C) 2019-2022 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@
         <groupId>org.onap.dcaegen2.services.son-handler</groupId>
         <artifactId>son-handler</artifactId>
         <name>dcaegen2-services-son-handler</name>
-        <version>2.1.5-SNAPSHOT</version>
+        <version>2.1.6-SNAPSHOT</version>
 
        <!--parent> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-parent</artifactId>
                 <version>2.0.4.RELEASE</version> </parent -->
