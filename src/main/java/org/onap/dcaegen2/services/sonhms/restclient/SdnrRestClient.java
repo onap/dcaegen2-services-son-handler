@@ -2,7 +2,7 @@
  *  ============LICENSE_START=======================================================
  *  son-handler
  *  ================================================================================
- *   Copyright (C) 2019-2021 Wipro Limited.
+ *   Copyright (C) 2019-2022 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -66,6 +66,7 @@ public class SdnrRestClient extends ConfigInterface {
                 + "/" + ts;
         log.debug("request url: {}", requestUrl);
         String response = sendRequest(requestUrl);
+        log.info("Response from configdb getNbrList is : " + response);
         List<CellPciPair> nbrList = new ArrayList<>();
         JSONObject responseJson = new JSONObject(response);
         JSONArray nbrListObj = responseJson.getJSONArray("nbrList");
@@ -94,6 +95,7 @@ public class SdnrRestClient extends ConfigInterface {
         String requestUrl = configuration.getConfigDbService() + "/api/sdnc-config-db/v3/getPCI" + "/" + cellId + "/"
                 + ts;
         String response = sendRequest(requestUrl);
+        log.info("Response from configdb getPci is : " + response);
         JSONObject respObj = new JSONObject(response);
         return respObj.getInt("value");
     }
@@ -112,6 +114,7 @@ public class SdnrRestClient extends ConfigInterface {
         String requestUrl = configuration.getConfigDbService() + "/api/sdnc-config-db/v3/getPnfId" + "/" + cellId + "/"
                 + ts;
         String response = sendRequest(requestUrl);
+        log.info("Response from configdb getPnfName is : " + response);
         JSONObject responseObject = new JSONObject(response);
         return responseObject.getString("value");
     }
@@ -125,11 +128,12 @@ public class SdnrRestClient extends ConfigInterface {
 
     @Override
     public JSONObject getCellData(String cellId) throws ConfigDbNotFoundException {
-	Configuration configuration = Configuration.getInstance();
-	String requestUrl = configuration.getConfigDbService() + "/api/sdnc-config-db/v3/getCell" + "/" + cellId;
-	String response = sendRequest(requestUrl);
-	JSONObject responseObject = new JSONObject(response);
-	return responseObject;
+        Configuration configuration = Configuration.getInstance();
+        String requestUrl = configuration.getConfigDbService() + "/api/sdnc-config-db/v3/getCell" + "/" + cellId;
+        String response = sendRequest(requestUrl);
+        log.info("Response from configdb getCellData is : " + response);
+        JSONObject responseObject = new JSONObject(response);
+        return responseObject;
     }
 
 

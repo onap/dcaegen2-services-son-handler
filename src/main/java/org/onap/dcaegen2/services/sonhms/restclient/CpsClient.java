@@ -2,7 +2,7 @@
  *  ============LICENSE_START=======================================================
  *  son-handler
  *  ================================================================================
- *   Copyright (C) 2021 Wipro Limited.
+ *   Copyright (C) 2021-2022 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -65,9 +65,10 @@ public class CpsClient extends ConfigInterface {
         reqbody.put("inputParameters", inputparam);
         log.debug("request url: {}", requestUrl);
         String response = sendRequest(requestUrl, reqbody);
+        log.info("Response from CPS is : " + response);
         List<CellPciPair> nbrList = new ArrayList<>();
-
-        JSONArray nbrListObj = new JSONArray(response);
+        JSONObject responseJson = new JSONObject(response);
+        JSONArray nbrListObj = responseJson.getJSONArray("NRCellRelation");
         for (int i = 0; i < nbrListObj.length(); i++) {
             JSONObject cellObj = nbrListObj.getJSONObject(i);
             JSONObject obj = cellObj.getJSONObject("attributes");
@@ -95,8 +96,11 @@ public class CpsClient extends ConfigInterface {
         inputparam.put("cellId", cellId);
         reqbody.put("inputParameters", inputparam);
         String response = sendRequest(requestUrl, reqbody);
+        log.info("Response from CPS is : " + response);
         JSONObject respObj = new JSONObject(response);
-        return respObj.getInt("value");
+        int obj = respObj.getInt("nRPCI");
+        log.info("The nRPCI value is " + obj );
+        return respObj.getInt("nRPCI");
     }
 
     /**
@@ -107,14 +111,20 @@ public class CpsClient extends ConfigInterface {
     @Override
     public String getPnfName(String cellId) throws CpsNotFoundException {
         Configuration configuration = Configuration.getInstance();
+        String responseObject = "";
         String requestUrl = configuration.getCpsServiceUrl() + "/" + configuration.getGetPnfUrl();
         JSONObject inputparam = new JSONObject();
         JSONObject reqbody = new JSONObject();
         inputparam.put("cellId", cellId);
         reqbody.put("inputParameters", inputparam);
         String response = sendRequest(requestUrl, reqbody);
-        JSONObject responseObject = new JSONObject(response);
-        return responseObject.getString("value");
+        log.info("Response from CPS is : " + response);
+        JSONArray requestArray = new JSONArray(response);
+        for (int i=0;i<requestArray.length();i++) {
+            String pnfName = requestArray.getJSONObject(i).optString("idGNBCUCPFunction");
+            responseObject = pnfName;
+	}
+	return responseObject;
     }
 
     /**
@@ -132,6 +142,7 @@ public class CpsClient extends ConfigInterface {
         inputparam.put("cellId", cellId);
         reqbody.put("inputParameters", inputparam);
         String response = sendRequest(requestUrl, reqbody);
+        log.info("Response from CPS is : " + response);
         JSONObject responseObject = new JSONObject(response);
         return responseObject;
     }
