@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0a140cfe_87cee190",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/Configuration.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 414,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2022-01-20T16:28:33Z",
+      "side": 1,
+      "message": "As this file is being update, will be good to these replace tabs with spaces",
+      "range": {
+        "startLine": 392,
+        "startChar": 0,
+        "endLine": 414,
+        "endChar": 2
+      },
+      "revId": "24aa42e09659e3f4a6d76011915e39a6b5bf9d67",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
