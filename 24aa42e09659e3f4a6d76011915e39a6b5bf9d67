@@ -22,6 +22,30 @@
       "revId": "24aa42e09659e3f4a6d76011915e39a6b5bf9d67",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bd860ed1_f29eae86",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/Configuration.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 414,
+      "author": {
+        "id": 7661
+      },
+      "writtenOn": "2022-02-07T10:38:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0a140cfe_87cee190",
+      "range": {
+        "startLine": 392,
+        "startChar": 0,
+        "endLine": 414,
+        "endChar": 2
+      },
+      "revId": "24aa42e09659e3f4a6d76011915e39a6b5bf9d67",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
