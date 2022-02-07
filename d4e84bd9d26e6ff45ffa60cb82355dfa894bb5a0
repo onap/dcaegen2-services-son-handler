@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0ab08153_4b2a09cf",
+        "filename": "pom.xml",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2022-02-07T16:24:20Z",
+      "side": 1,
+      "message": "need to add 2022",
+      "revId": "d4e84bd9d26e6ff45ffa60cb82355dfa894bb5a0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "98df1cce_1e63719b",
+        "filename": "version.properties",
+        "patchSetId": 4
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2022-02-07T16:24:20Z",
+      "side": 1,
+      "message": "need to add 2022",
+      "revId": "d4e84bd9d26e6ff45ffa60cb82355dfa894bb5a0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
