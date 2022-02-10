@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.1.6] - 2022/02/10
+         - [DCAEGEN2-3053](https://jira.onap.org/browse/DCAEGEN2-3053) - Remove security vulnerabilities
+
 ## [2.1.5] - 2021/10/14
 	 - [DCAEGEN2-2943](https://jira.onap.org/browse/DCAEGEN2-2943) - Fix bug in filtering new FM notification
 
