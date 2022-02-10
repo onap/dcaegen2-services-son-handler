@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [2.1.6] - 2022/02/07
          - [DCAEGEN2-3057](https://jira.onap.org/browse/DCAEGEN2-3057) - Fix bug in triggering control loop for PCI collision/confusion - by replacing Config DB with CPS
+         - [DCAEGEN2-3053](https://jira.onap.org/browse/DCAEGEN2-3053) - Remove security vulnerabilities
 
 ## [2.1.5] - 2021/10/14
 	 - [DCAEGEN2-2943](https://jira.onap.org/browse/DCAEGEN2-2943) - Fix bug in filtering new FM notification
