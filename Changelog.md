@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.1.7] - 2021/05/11
+         - [DCAEGEN2-3150](https://jira.onap.org/browse/DCAEGEN2-3150) - Fix bug in handling FM notification
 
 ## [2.1.6] - 2022/02/07
          - [DCAEGEN2-3057](https://jira.onap.org/browse/DCAEGEN2-3057) - Fix bug in triggering control loop for PCI collision/confusion - by replacing Config DB with CPS

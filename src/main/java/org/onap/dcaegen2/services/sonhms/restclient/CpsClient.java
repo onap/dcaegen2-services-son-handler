@@ -90,6 +90,7 @@ public class CpsClient extends ConfigInterface {
     public int getPci(String cellId) throws CpsNotFoundException {
 
         Configuration configuration = Configuration.getInstance();
+        int responseObject = 0;
         String requestUrl = configuration.getCpsServiceUrl() + "/" + configuration.getGetPciUrl();
         JSONObject inputparam = new JSONObject();
         JSONObject reqbody = new JSONObject();
@@ -97,10 +98,13 @@ public class CpsClient extends ConfigInterface {
         reqbody.put("inputParameters", inputparam);
         String response = sendRequest(requestUrl, reqbody);
         log.info("Response from CPS is : " + response);
-        JSONObject respObj = new JSONObject(response);
-        int obj = respObj.getInt("nRPCI");
-        log.info("The nRPCI value is " + obj );
-        return respObj.getInt("nRPCI");
+        JSONArray requestArray = new JSONArray(response);
+        for (int i=0;i<requestArray.length();i++) {
+            int pciValue = requestArray.getJSONObject(i).getInt("nRPCI");
+            responseObject = pciValue;
+            log.info("The nRPCI value is : " + responseObject);
+        }
+        return responseObject;
     }
 
     /**
@@ -121,7 +125,7 @@ public class CpsClient extends ConfigInterface {
         log.info("Response from CPS is : " + response);
         JSONArray requestArray = new JSONArray(response);
         for (int i=0;i<requestArray.length();i++) {
-            String pnfName = requestArray.getJSONObject(i).optString("idGNBCUCPFunction");
+            String pnfName = requestArray.getJSONObject(i).optString("idGNBDUFunction");
             responseObject = pnfName;
         }
         return responseObject;
