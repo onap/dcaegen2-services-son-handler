@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "dfdec527_d2877c65",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/restclient/CpsClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 7661
+      },
+      "writtenOn": "2022-05-11T08:32:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "de60231b_69189d78",
+      "range": {
+        "startLine": 93,
+        "startChar": 0,
+        "endLine": 94,
+        "endChar": 2
+      },
+      "revId": "645b9cdae1678b125e2e870c39d2e430d6113d7e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "cece1338_58312e2a",
         "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/restclient/CpsClient.java",
         "patchSetId": 1
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "6cf7e1a4_97af0e51",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/restclient/CpsClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 7661
+      },
+      "writtenOn": "2022-05-11T08:32:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cece1338_58312e2a",
+      "range": {
+        "startLine": 102,
+        "startChar": 0,
+        "endLine": 107,
+        "endChar": 23
+      },
+      "revId": "645b9cdae1678b125e2e870c39d2e430d6113d7e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5d5e0396_6cdb4eb6",
         "filename": "src/test/java/org/onap/dcaegen2/services/sonhms/restclient/CpsClientTest.java",
         "patchSetId": 1
@@ -68,6 +116,30 @@
       "revId": "645b9cdae1678b125e2e870c39d2e430d6113d7e",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b3fd2279_0a3b7b0a",
+        "filename": "src/test/java/org/onap/dcaegen2/services/sonhms/restclient/CpsClientTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 7661
+      },
+      "writtenOn": "2022-05-11T08:32:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5d5e0396_6cdb4eb6",
+      "range": {
+        "startLine": 118,
+        "startChar": 0,
+        "endLine": 121,
+        "endChar": 6
+      },
+      "revId": "645b9cdae1678b125e2e870c39d2e430d6113d7e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
