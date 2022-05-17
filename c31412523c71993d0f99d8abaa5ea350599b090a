@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "90eb1c71_96fae1f6",
+        "filename": "releases/2.1.7-container.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2022-05-17T14:08:15Z",
+      "side": 1,
+      "message": "listed tag 2.1.7-20220512T023435Z is not generated from this job",
+      "range": {
+        "startLine": 4,
+        "startChar": 66,
+        "endLine": 4,
+        "endChar": 70
+      },
+      "revId": "c31412523c71993d0f99d8abaa5ea350599b090a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
