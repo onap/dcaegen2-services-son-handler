@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.1.8] - 2022/08/31
+         - [DCAEGEN2-3222](https://jira.onap.org/browse/DCAEGEN2-3222) - dcaegen2-services-son-handler vulnerability updates
+
 ## [2.1.7] - 2021/05/11
          - [DCAEGEN2-3150](https://jira.onap.org/browse/DCAEGEN2-3150) - Fix bug in handling FM notification
 
