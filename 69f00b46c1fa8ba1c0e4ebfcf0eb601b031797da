@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cefc9162_27f4a48e",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/controller/ConfigFetchFromCbs.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2022-08-29T16:27:43Z",
+      "side": 1,
+      "message": "similar to comment for slicems, log this as error as policy config is not expected to be empty",
+      "range": {
+        "startLine": 98,
+        "startChar": 32,
+        "endLine": 98,
+        "endChar": 36
+      },
+      "revId": "69f00b46c1fa8ba1c0e4ebfcf0eb601b031797da",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
