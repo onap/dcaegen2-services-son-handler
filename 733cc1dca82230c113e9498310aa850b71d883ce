@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "55a6fb41_fc16b8ab",
+        "filename": "pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2022-08-31T17:33:18Z",
+      "side": 1,
+      "message": "I\u0027m pretty sure the \"i\" is a mistake.",
+      "revId": "733cc1dca82230c113e9498310aa850b71d883ce",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
