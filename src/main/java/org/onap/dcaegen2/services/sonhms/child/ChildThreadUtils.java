@@ -2,7 +2,7 @@
  *  ============LICENSE_START=======================================================
  *  son-handler
  *  ================================================================================
- *   Copyright (C) 2019-2021 Wipro Limited.
+ *   Copyright (C) 2019-2022 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -133,7 +133,7 @@ public class ChildThreadUtils {
             }
         }
         else {
-            closedLoopControlName = "ControlLoop-vSONH-7d4baf04-8875-4d1f-946d-06b874048b61";
+            closedLoopControlName = "ControlLoop-SONA1-7d4baf04-8875-4d1f-946d-06b874048b61";
             try {
                 closedLoopControlName = (String) configPolicy.getConfig().get("PCI_MODCONFIGANR_POLICY_NAME");
             } catch (NullPointerException e) {
