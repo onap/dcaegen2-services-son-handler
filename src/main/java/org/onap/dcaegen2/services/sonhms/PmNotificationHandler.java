@@ -38,6 +38,7 @@ import org.onap.dcaegen2.services.sonhms.dao.HandOverMetricsRepository;
 import org.onap.dcaegen2.services.sonhms.dmaap.PolicyDmaapClient;
 import org.onap.dcaegen2.services.sonhms.entity.HandOverMetrics;
 import org.onap.dcaegen2.services.sonhms.model.AdditionalMeasurements;
+import org.onap.dcaegen2.services.sonhms.model.ANRPayload;
 import org.onap.dcaegen2.services.sonhms.model.CellConfig;
 import org.onap.dcaegen2.services.sonhms.model.Common;
 import org.onap.dcaegen2.services.sonhms.model.Configurations;
@@ -48,11 +49,15 @@ import org.onap.dcaegen2.services.sonhms.model.HoDetails;
 import org.onap.dcaegen2.services.sonhms.model.Lte;
 import org.onap.dcaegen2.services.sonhms.model.LteCell;
 import org.onap.dcaegen2.services.sonhms.model.NeighborListInUse;
+import org.onap.dcaegen2.services.sonhms.model.Neighbours;
 import org.onap.dcaegen2.services.sonhms.model.Payload;
 import org.onap.dcaegen2.services.sonhms.model.PmNotification;
+import org.onap.dcaegen2.services.sonhms.model.PolicyData;
 import org.onap.dcaegen2.services.sonhms.model.Ran;
 import org.onap.dcaegen2.services.sonhms.utils.BeanUtil;
 import org.onap.dcaegen2.services.sonhms.utils.DmaapUtils;
+import org.onap.dcaegen2.services.sonhms.restclient.ConfigurationClient;
+import org.onap.dcaegen2.services.sonhms.restclient.CpsClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -78,7 +83,7 @@ public class PmNotificationHandler {
         Boolean newEntryFlag = false;
         try {
             List<HoDetails> hoDetailsList = new ArrayList<>();
-            List<LteCell> lteCellList = new ArrayList<>();
+            List<Neighbours> neighbourList = new ArrayList<>();
             String srcCellId = pmNotification.getEvent().getCommonEventHeader().getSourceName();
             /*
              * check whether entry already exists if yes : read the hometrics and update it
@@ -103,66 +108,16 @@ public class PmNotificationHandler {
                     .getAdditionalMeasurements()) {
                 int attemptsCount = Integer.parseInt(additionalMeasurements.getHashMap().get("InterEnbOutAtt_X2HO"));
                 int successCount = Integer.parseInt(additionalMeasurements.getHashMap().get("InterEnbOutSucc_X2HO"));
-                float successRate = ((float) successCount / attemptsCount) * 100;
+                int successRate = (int)((float) successCount / attemptsCount) * 100;
 
-                if (successRate >= badThreshold && successRate <= poorThreshold) { // poor neighbor
-                    HoDetails hoDetails = new HoDetails();
-                    hoDetails.setDstCellId(additionalMeasurements.getName());
-                    hoDetails.setAttemptsCount(attemptsCount);
-                    hoDetails.setSuccessCount(successCount);
-                    hoDetails.setSuccessRate(successRate);
-                    int pc = 1;
-                    int bc = 0;
-                    if (dstCellIdPcPair.containsKey(additionalMeasurements.getName())) {
-                        pc = dstCellIdPcPair.get(additionalMeasurements.getName()) + 1;
-                    }
-                    hoDetails.setBadCount(bc);
-                    hoDetails.setPoorCount(pc);
-                    hoDetailsList.add(hoDetails);
-                    log.info("poor neighbor {}", additionalMeasurements.getName());
-                } else if (successRate < badThreshold) { // bad neighbor
-                    log.info(" bad  neighbor {}", additionalMeasurements.getName());
-                    HoDetails hoDetails = new HoDetails();
-                    hoDetails.setDstCellId(additionalMeasurements.getName());
-                    hoDetails.setAttemptsCount(attemptsCount);
-                    hoDetails.setSuccessCount(successCount);
-                    hoDetails.setSuccessRate(successRate);
-                    int bc = 1;
-                    int pc = 0;
-                    if (dstCellIdBcPair.containsKey(additionalMeasurements.getName())) {
-                        bc = dstCellIdBcPair.get(additionalMeasurements.getName()) + 1;
-                    }
-                    if (dstCellIdPcPair.containsKey(additionalMeasurements.getName())) {
-                        pc = dstCellIdPcPair.get(additionalMeasurements.getName());
-                    }
-                    hoDetails.setBadCount(bc);
-                    hoDetails.setPoorCount(pc);
-                    hoDetailsList.add(hoDetails);
-                    if (bc >= badCountThreshold) {
-                        LteCell lteCell = new LteCell();
-                        lteCell.setBlacklisted("true");
-                        lteCell.setCid(additionalMeasurements.getName());
-                        lteCell.setPlmnId(additionalMeasurements.getHashMap().get("networkId"));
-                        lteCell.setPnfName(pmNotification.getEvent().getCommonEventHeader().getReportingEntityName());
-                        lteCellList.add(lteCell);
-                        hoDetailsList.remove(hoDetails);
-                    }
-
-                } else if (successRate > poorThreshold) { // good neighbor
-                    HoDetails hoDetails = new HoDetails();
-                    hoDetails.setDstCellId(additionalMeasurements.getName());
-                    hoDetails.setAttemptsCount(attemptsCount);
-                    hoDetails.setSuccessCount(successCount);
-                    hoDetails.setSuccessRate(successRate);
-                    int pc = 0;
-                    int bc = 0;
-                    hoDetails.setBadCount(bc);
-                    hoDetails.setPoorCount(pc);
-                    hoDetailsList.add(hoDetails);
-                    log.info("good neighbor {}", additionalMeasurements.getName());
-                }
+                Neighbours neighbourCell = new Neighbours();
+                neighbourCell.setHoKpi(successRate);
+                neighbourCell.setCellId(additionalMeasurements.getName());
+                neighbourCell.setPlmnId(additionalMeasurements.getHashMap().get("networkId"));
+                neighbourCell.setPnfName(pmNotification.getEvent().getCommonEventHeader().getReportingEntityName());
+                neighbourList.add(neighbourCell);
             }
-            if (!lteCellList.isEmpty()) {
+            if (!neighbourList.isEmpty()) {
                 log.info("triggering policy to remove bad neighbors");
                 Flag policyTriggerFlag = BeanUtil.getBean(Flag.class);
 
@@ -171,7 +126,7 @@ public class PmNotificationHandler {
                 }
 
                 policyTriggerFlag.setHolder("PM");
-                result = sendAnrUpdateToPolicy(pmNotification, lteCellList);
+                result = sendAnrUpdateToPolicy(pmNotification, neighbourList);
                 log.info("Sent ANR update to policy {}", result);
                 policyTriggerFlag.setHolder("NONE");
             }
@@ -199,19 +154,17 @@ public class PmNotificationHandler {
 
     }
 
-    private Boolean sendAnrUpdateToPolicy(PmNotification pmNotification, List<LteCell> lteCellList) {
+    private Boolean sendAnrUpdateToPolicy(PmNotification pmNotification, List<Neighbours> neighbourList) {
         ObjectMapper mapper = new ObjectMapper();
         try {
             mapper.setSerializationInclusion(Include.NON_NULL);
-            ArrayList<Configurations> configurations = new ArrayList<>();
             String cellId = pmNotification.getEvent().getCommonEventHeader().getSourceName();
-            Configurations configuration = new Configurations(
-                    new Data(new FapService(cellId, null,
-                            new CellConfig(new Lte(new Ran(new Common(cellId),
-                                    new NeighborListInUse(null, lteCellList, String.valueOf(lteCellList.size()))))))),
-                    null);
-            configurations.add(configuration);
-            Payload payload = new Payload(configurations);
+            String pnfName = pmNotification.getEvent().getCommonEventHeader().getReportingEntityName();
+            String plmnId =  pmNotification.getEvent().getMeasurementFields()
+               .getAdditionalMeasurements().get(0).getHashMap().get("networkId");
+            String ric_id = CpsClient.getRicId(cellId);
+            ANRPayload payload = new ANRPayload("CreatePolicy",1,1,ric_id,
+                    (new PolicyData(pnfName,plmnId,cellId,neighbourList)));
             log.info("payload : {}", payload);
             String anrUpdateString = mapper.writeValueAsString(payload);
             ChildThreadUtils childUtils = new ChildThreadUtils(ConfigPolicy.getInstance(), new PnfUtils(),
@@ -219,7 +172,7 @@ public class PmNotificationHandler {
             String requestId = UUID.randomUUID().toString();
             String notification = childUtils.getNotificationString(
                     pmNotification.getEvent().getCommonEventHeader().getReportingEntityName(), requestId,
-                    anrUpdateString, System.currentTimeMillis(), "ModifyConfigANR");
+                    anrUpdateString, System.currentTimeMillis(), "ModifyA1Policy");
             log.info("Policy Notification: {}", notification);
             Boolean result = policyDmaapClient.sendNotificationToPolicy(notification);
             log.info("send notification to policy result {} ", result);

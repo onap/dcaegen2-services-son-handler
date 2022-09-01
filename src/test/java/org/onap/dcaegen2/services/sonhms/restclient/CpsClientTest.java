@@ -152,6 +152,28 @@ public class CpsClientTest {
     }
 
     @Test
+    public void getRicIdTest() {
+        String responseBody = "{\"idNearRTRIC\":\"22\"}";
+        PowerMockito.mockStatic(SonHandlerRestTemplate.class);
+        PowerMockito.mockStatic(Configuration.class);
+        PowerMockito.when(Configuration.getInstance()).thenReturn(configuration);
+        PowerMockito
+             .when(SonHandlerRestTemplate.sendPostRequest(Mockito.anyString(), Mockito.anyString(),
+                    Matchers.<ParameterizedTypeReference<String>>any()))
+             .thenReturn(ResponseEntity.ok(responseBody));
+        try {
+           String result = cps.getRicId("1");
+           String response = ResponseEntity.ok(responseBody).getBody();
+           JSONObject respObj = new JSONObject(response);
+           assertEquals(respObj.get("idNearRTRIC"), result);
+        } catch (CpsNotFoundException e) {
+           log.debug("CpsNotFoundException {}", e.toString());
+        }
+    }
+
+
+
+    @Test
     public void getCellData() {
         String responseBody = "{\"networkId\":\"netw1000\"}";
         PowerMockito.mockStatic(SonHandlerRestTemplate.class);
