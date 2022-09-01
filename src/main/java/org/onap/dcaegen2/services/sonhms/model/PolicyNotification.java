@@ -2,7 +2,7 @@
  *  ============LICENSE_START=======================================================
  *  son-handler
  *  ================================================================================
- *   Copyright (C) 2019-2020 Wipro Limited.
+ *   Copyright (C) 2019-2022 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -65,7 +65,7 @@ public class PolicyNotification {
      * Constructor.
      */
     public PolicyNotification(String closedLoopControlName, String requestId, Long alarmStartTime, String pnfName,
-            String action) {
+            String action, String policyName) {
         this.closedLoopControlName = closedLoopControlName;
         this.requestId = requestId;
         this.closedLoopEventClient = "microservice.PCI";
@@ -80,7 +80,7 @@ public class PolicyNotification {
         aai.put("generic-vnf.is-closed-loop-disabled", "false");
         aai.put("generic-vnf.prov-status", "ACTIVE");
         aai.put("pnf.pnf-name", pnfName);
-        this.policyName = "PCI";
+        this.policyName = policyName;
         this.policyVersion = "1.0.2";
     }
 
