@@ -2,7 +2,7 @@
  *  ============LICENSE_START=======================================================
  *  son-handler
  *  ================================================================================
- *   Copyright (C) 2021 Wipro Limited.
+ *   Copyright (C) 2021-2022 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -53,7 +53,7 @@ public abstract class ConfigInterface
      */
     public abstract int getPci(String cellId) throws ConfigDbNotFoundException, CpsNotFoundException;
 
-    /**
+   /**
      * Abstract method to get PNF name from SDNR or CPS based on the client mentioned.
      *
      * @throws ConfigDbNotFoundException,CpsNotFoundException

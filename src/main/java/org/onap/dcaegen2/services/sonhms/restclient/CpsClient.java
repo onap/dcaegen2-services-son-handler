@@ -131,6 +131,24 @@ public class CpsClient extends ConfigInterface {
         return responseObject;
     }
 
+    /*
+     * Method to get NearRTRIC ID from CPS.
+     *
+     * @throws CpsNotFoundException when request to CPS fails
+     */
+
+    public static String getRicId(String cellId) throws CpsNotFoundException {
+        Configuration configuration = Configuration.getInstance();
+        String requestUrl = configuration.getCpsServiceUrl() + "/" + configuration.getGetRicIdUrl();
+        JSONObject inputparam = new JSONObject();
+        JSONObject reqbody = new JSONObject();
+        inputparam.put("cellId", cellId);
+        reqbody.put("inputParameters", inputparam);
+        String response = sendRequest(requestUrl, reqbody);
+        JSONObject responseObject = new JSONObject(response);
+        return responseObject.getString("idNearRTRIC");
+    }
+
     /**
      * Method to get CellData name from CPS.
      *
@@ -151,7 +169,7 @@ public class CpsClient extends ConfigInterface {
         return responseObject;
     }
 
-    private String sendRequest(String url, JSONObject reqbody) throws CpsNotFoundException {
+    private static String sendRequest(String url, JSONObject reqbody) throws CpsNotFoundException {
         ResponseEntity<String> response = SonHandlerRestTemplate.sendPostRequest(url, reqbody.toString(),
                 new ParameterizedTypeReference<String>() {
                 });

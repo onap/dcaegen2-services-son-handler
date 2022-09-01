@@ -2,7 +2,7 @@
  *  ============LICENSE_START=======================================================
  *  son-handler
  *  ================================================================================
- *   Copyright (C) 2019-2021 Wipro Limited.
+ *   Copyright (C) 2019-2022 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -124,8 +124,10 @@ public class ChildThreadUtils {
             String action) {
 
         String closedLoopControlName = "";
-        if (action.equals("ModifyConfig")) {
-            closedLoopControlName = "ControlLoop-vPCI-fb41f388-a5f2-11e8-98d0-529269fb1459";
+        String policyName = "";
+        if (action.equals("ModifyO1Config")) {
+            closedLoopControlName = "ControlLoop-SONO1-fb41f388-a5f2-11e8-98d0-529269fb1459";
+            policyName = "SONO1";
             try {
                 closedLoopControlName = (String) configPolicy.getConfig().get("PCI_MODCONFIG_POLICY_NAME");
             } catch (NullPointerException e) {
@@ -133,7 +135,8 @@ public class ChildThreadUtils {
             }
         }
         else {
-            closedLoopControlName = "ControlLoop-vSONH-7d4baf04-8875-4d1f-946d-06b874048b61";
+            closedLoopControlName = "ControlLoop-SONA1-7d4baf04-8875-4d1f-946d-06b874048b61";
+            policyName = "SONA1";
             try {
                 closedLoopControlName = (String) configPolicy.getConfig().get("PCI_MODCONFIGANR_POLICY_NAME");
             } catch (NullPointerException e) {
@@ -142,10 +145,11 @@ public class ChildThreadUtils {
         }
 
         PolicyNotification policyNotification = new PolicyNotification(closedLoopControlName, requestId, alarmStartTime,
-                pnfName, action);
+                pnfName, action, policyName);
 
         policyNotification.setClosedLoopControlName(closedLoopControlName);
         policyNotification.setPayload(payloadString);
+        policyNotification.setPolicyName(policyName);	
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(Include.NON_NULL);
 
@@ -200,7 +204,7 @@ public class ChildThreadUtils {
                 String requestId = UUID.randomUUID().toString();
 
                 String notification = getNotificationString(pnfName, requestId, payloadString,
-                        System.currentTimeMillis(), "ModifyConfig");
+                        System.currentTimeMillis(), "ModifyO1Config");
                 log.info("Policy Notification: {}", notification);
                 boolean status = policyDmaapClient.sendNotificationToPolicy(notification);
                 log.debug("sent Message: {}", status);
@@ -271,7 +275,7 @@ public class ChildThreadUtils {
                     }
                     String requestId = UUID.randomUUID().toString();
                     String notification = getNotificationString(pnfName, requestId, payloadString,
-                            System.currentTimeMillis(), "ModifyConfigANR");
+                            System.currentTimeMillis(), "ModifyA1Policy");
                     log.info("Policy Notification: {}", notification);
                     Boolean result = policyDmaapClient.sendNotificationToPolicy(notification);
                     log.info("send notification to policy result {} ", result);
