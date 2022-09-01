@@ -52,6 +52,7 @@ public class Configuration {
     private String getNbrListUrl;
     private String getPciUrl;
     private String getPnfUrl;
+    private String getRicIdUrl;
     private String oofService;
     private String oofEndpoint;
     private String cg;
@@ -404,7 +405,7 @@ public class Configuration {
     public void setPolicyFixedPciTimeInterval(long policyFixedPciTimeInterval) {
         this.policyFixedPciTimeInterval = policyFixedPciTimeInterval;
     }
-	
+  
     public String getNfNamingCode() {
         return nfNamingCode;
     }
@@ -461,6 +462,14 @@ public class Configuration {
         this.getPnfUrl = getPnfUrl;
     }
 
+    public void setGetRicIdUrl(String getRicIdUrl) {
+        this.getRicIdUrl = getRicIdUrl;
+    }
+
+    public String getGetRicIdUrl() {
+        return getRicIdUrl;
+    }
+
     public static void setInstance(Configuration instance) {
         Configuration.instance = instance;
     }
@@ -470,7 +479,7 @@ public class Configuration {
         return "Configuration [pgHost=" + pgHost + ", pgPort=" + pgPort + ", pgUsername=" + pgUsername + ", pgPassword="
                 + pgPassword + ", dmaapServers=" + dmaapServers + ", configDbService=" + configDbService
                 + ", cpsServiceUrl=" + cpsServiceUrl + ", CpsUsername=" + CpsUsername + ",CpsPassword=" + CpsPassword + ",ConfigClientType=" + ConfigClientType + ", getCellDataUrl=" + getCellDataUrl + ", getNbrListUrl="
-                + getNbrListUrl + ", getPciUrl=" + getPciUrl + ", getPnfUrl=" + getPnfUrl + ", oofService=" + oofService + ", oofEndpoint=" + oofEndpoint + ", cg=" + cg + ", cid=" + cid
+                + getNbrListUrl + ", getPciUrl=" + getPciUrl + ", getPnfUrl=" + getPnfUrl + ", getRicIdUrl=" + getRicIdUrl + ",oofService=" + oofService + ", oofEndpoint=" + oofEndpoint + ", cg=" + cg + ", cid=" + cid
                 + ", pollingInterval=" + pollingInterval + ", pollingTimeout=" + pollingTimeout + ", minCollision="
                 + minCollision + ", minConfusion=" + minConfusion + ", sourceId=" + sourceId + ", callbackUrl="
                 + callbackUrl + ", pciOptimizer=" + pciOptimizer + ", pciAnrOptimizer=" + pciAnrOptimizer
