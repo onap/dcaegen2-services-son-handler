@@ -80,7 +80,7 @@ public class PolicyNotification {
         aai.put("generic-vnf.is-closed-loop-disabled", "false");
         aai.put("generic-vnf.prov-status", "ACTIVE");
         aai.put("pnf.pnf-name", pnfName);
-        this.policyName = "PCI";
+        this.policyName = "SONA1";
         this.policyVersion = "1.0.2";
     }
 
