@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.1.9] - 2022/09/01
+         - [DCAEGEN2-3148](https://jira.onap.org/browse/DCAEGEN2-3148) - Modify payload for ANR closedloop to align with A1 based action
+
 ## [2.1.8] - 2022/08/31
          - [DCAEGEN2-3222](https://jira.onap.org/browse/DCAEGEN2-3222) - dcaegen2-services-son-handler vulnerability updates
 

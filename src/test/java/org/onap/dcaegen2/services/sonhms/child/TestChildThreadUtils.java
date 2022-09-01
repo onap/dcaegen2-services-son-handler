@@ -2,7 +2,7 @@
  *  ============LICENSE_START=======================================================
  *  son-handler
  *  ================================================================================
- *   Copyright (C) 2019-2021 Wipro Limited.
+ *   Copyright (C) 2019-2022 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -80,7 +80,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest(classes = TestChildThreadUtils.class)
 public class TestChildThreadUtils {
 
-	ChildThreadUtils childThreadUtils;
+        ChildThreadUtils childThreadUtils;
 	@Mock
 	private SonRequestsRepository repository;
 
@@ -107,7 +107,7 @@ public class TestChildThreadUtils {
 		config.setMinCollision(5);
 		config.setMinConfusion(5);
 		Map<String, Object> configPolicyMap = new HashMap<>();
-		configPolicyMap.put("PCI_MODCONFIG_POLICY_NAME", "ControlLoop-vPCI-fb41f388-a5f2-11e8-98d0-529269fb1459");
+		configPolicyMap.put("PCI_MODCONFIG_POLICY_NAME", "ControlLoop-SONO1-fb41f388-a5f2-11e8-98d0-529269fb1459");
 		configPolicy.setConfig(configPolicyMap);
 		childThreadUtils = new ChildThreadUtils(configPolicy, pnfUtils,  policyDmaapClient, hoMetricsComponent);
 		MockitoAnnotations.initMocks(this);
@@ -169,7 +169,7 @@ public class TestChildThreadUtils {
 		String requestId = "a4130fd5-2291-4a83-8992-04e4c9f32731";
 		Long alarmStart = Long.parseLong("1542445563201");
 
-		String result = childThreadUtils.getNotificationString(pnfName, requestId, "payloadString", alarmStart, "ModifyConfig");
+		String result = childThreadUtils.getNotificationString(pnfName, requestId, "payloadString", alarmStart, "ModifyO1Config");
 		PolicyNotification actual = new PolicyNotification();
 		try {
 			actual = mapper.readValue(result, PolicyNotification.class);
