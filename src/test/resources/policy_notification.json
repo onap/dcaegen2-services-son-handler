@@ -1,5 +1,5 @@
 {
-	"closedLoopControlName": "ControlLoop-vPCI-fb41f388-a5f2-11e8-98d0-529269fb1459",
+	"closedLoopControlName": "ControlLoop-SONO1-fb41f388-a5f2-11e8-98d0-529269fb1459",
 	"closedLoopAlarmStart": 1542445563201,
 	"closedLoopEventClient": "microservice.PCI",
 	"closedLoopEventStatus": "ONSET",
@@ -14,5 +14,5 @@
 		"generic-vnf.is-closed-loop-disabled": "false",
 		"pnf.pnf-name": "ncserver23"
 	},
-	"Action": "ModifyConfig"
+	"Action": "ModifyO1Config"
 }
