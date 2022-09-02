@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "06b96cc5_fbab43cc",
+        "filename": "pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2022-09-02T03:34:53Z",
+      "side": 1,
+      "message": "you\u0027re mixing versions of different spring framework libraries. This is generally a bad idea. Are you CERTAIN that we really want to do this? Why didn\u0027t you just change the property of spring.version to 5.3.20 and update all of the spring framework libraries to the same version?",
+      "revId": "791c2910c6b7f80651b30b93fb015a38017f407a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
