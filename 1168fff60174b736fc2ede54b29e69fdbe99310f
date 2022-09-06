@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "2545c585_0cabdf7e",
+        "filename": "Changelog.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2022-09-06T13:01:04Z",
+      "side": 1,
+      "message": "Please do NOT remove the info for 2.1.7 from this file",
+      "revId": "1168fff60174b736fc2ede54b29e69fdbe99310f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a38a2693_44096378",
         "filename": "pom.xml",
         "patchSetId": 3
