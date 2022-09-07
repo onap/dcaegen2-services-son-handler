@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "aeb1b1e1_dc27f2a0",
+        "filename": "Changelog.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2022-09-07T13:51:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2545c585_0cabdf7e",
+      "revId": "1168fff60174b736fc2ede54b29e69fdbe99310f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a38a2693_44096378",
         "filename": "pom.xml",
         "patchSetId": 3
@@ -33,6 +51,24 @@
       "revId": "1168fff60174b736fc2ede54b29e69fdbe99310f",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bec74c77_59d175b7",
+        "filename": "pom.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2022-09-07T13:51:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a38a2693_44096378",
+      "revId": "1168fff60174b736fc2ede54b29e69fdbe99310f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
