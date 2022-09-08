@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "19b302db_5ebee0a6",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/model/ANRPayload.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2022-09-08T14:13:35Z",
+      "side": 1,
+      "message": "javadoc for the class?",
+      "revId": "ba0f52323d52beccf6e93e49f12953d85cc671c2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1beaec63_e5cdce11",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/model/Neighbours.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2022-09-08T14:13:35Z",
+      "side": 1,
+      "message": "javadoc for the class?",
+      "revId": "ba0f52323d52beccf6e93e49f12953d85cc671c2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
