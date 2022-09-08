@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "e9b6ea2e_ab365fcc",
+        "filename": "Changelog.md",
+        "patchSetId": 15
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2022-09-08T15:19:21Z",
+      "side": 1,
+      "message": "2022",
+      "range": {
+        "startLine": 13,
+        "startChar": 16,
+        "endLine": 13,
+        "endChar": 17
+      },
+      "revId": "ba0f52323d52beccf6e93e49f12953d85cc671c2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "19b302db_5ebee0a6",
         "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/model/ANRPayload.java",
         "patchSetId": 15
