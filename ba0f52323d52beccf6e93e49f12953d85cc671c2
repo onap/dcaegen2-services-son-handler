@@ -42,6 +42,24 @@
     },
     {
       "key": {
+        "uuid": "0b1b2598_237ad4de",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/model/ANRPayload.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 7661
+      },
+      "writtenOn": "2022-09-08T15:19:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "19b302db_5ebee0a6",
+      "revId": "ba0f52323d52beccf6e93e49f12953d85cc671c2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1beaec63_e5cdce11",
         "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/model/Neighbours.java",
         "patchSetId": 15
@@ -56,6 +74,24 @@
       "revId": "ba0f52323d52beccf6e93e49f12953d85cc671c2",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4f3ade75_66a79f03",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/model/Neighbours.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 7661
+      },
+      "writtenOn": "2022-09-08T15:19:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1beaec63_e5cdce11",
+      "revId": "ba0f52323d52beccf6e93e49f12953d85cc671c2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
