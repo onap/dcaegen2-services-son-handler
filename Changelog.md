@@ -4,7 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+<<<<<<< HEAD   (c88aa8 Fix bug in handling FM notification)
 ## [2.1.7] - 2021/05/11
+=======
+## [2.1.10] - 2022/09/13
+         - [DCAEGEN2-3242](https://jira.onap.org/browse/DCAEGEN2-3242) - Fix bug in ConfigFectchFromCbs that fetch will get hung when policy config in pdp engine is empty
+
+## [2.1.9] - 2022/09/01
+         - [DCAEGEN2-3148](https://jira.onap.org/browse/DCAEGEN2-3148) - Modify payload for ANR closedloop to align with A1 based action
+
+## [2.1.8] - 2022/08/31
+         - [DCAEGEN2-3222](https://jira.onap.org/browse/DCAEGEN2-3222) - dcaegen2-services-son-handler vulnerability updates
+
+## [2.1.7] - 2022/05/11
+>>>>>>> CHANGE (7d549f [ConfigFetchFromCbs] Fix bug of cbs that fetch configs getti)
          - [DCAEGEN2-3150](https://jira.onap.org/browse/DCAEGEN2-3150) - Fix bug in handling FM notification
 
 ## [2.1.6] - 2022/02/07
