@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.1.8] - 2022/09/16
+         - [DCAEGEN2-3242](https://jira.onap.org/browse/DCAEGEN2-3242) - Fix bug in ConfigFectchFromCbs that fetch will get hung when policy config in pdp engine is empty
+
 ## [2.1.7] - 2021/05/11
          - [DCAEGEN2-3150](https://jira.onap.org/browse/DCAEGEN2-3150) - Fix bug in handling FM notification
 
