@@ -4,8 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [2.1.10] - 2022/09/13
+## [2.1.10] - 2022/09/20
          - [DCAEGEN2-3242](https://jira.onap.org/browse/DCAEGEN2-3242) - Fix bug in ConfigFectchFromCbs that fetch will get hung when policy config in pdp engine is empty
+         - [DCAEGEN2-3265](https://jira.onap.org/browse/DCAEGEN2-3265) - Fix started up exception
 
 ## [2.1.9] - 2022/09/01
          - [DCAEGEN2-3148](https://jira.onap.org/browse/DCAEGEN2-3148) - Modify payload for ANR closedloop to align with A1 based action
