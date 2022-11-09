@@ -53,6 +53,7 @@ public class Configuration {
     private String getPciUrl;
     private String getPnfUrl;
     private String getRicIdUrl;
+    private String nearRtricUrl;
     private String oofService;
     private String oofEndpoint;
     private String cg;
@@ -470,6 +471,14 @@ public class Configuration {
         return getRicIdUrl;
     }
 
+    public void setNearRtricUrl(String nearRtricUrl) {
+        this.nearRtricUrl = nearRtricUrl;
+    }
+
+    public String getNearRtricUrl() {
+        return nearRtricUrl;
+    }
+
     public static void setInstance(Configuration instance) {
         Configuration.instance = instance;
     }
@@ -479,7 +488,7 @@ public class Configuration {
         return "Configuration [pgHost=" + pgHost + ", pgPort=" + pgPort + ", pgUsername=" + pgUsername + ", pgPassword="
                 + pgPassword + ", dmaapServers=" + dmaapServers + ", configDbService=" + configDbService
                 + ", cpsServiceUrl=" + cpsServiceUrl + ", CpsUsername=" + CpsUsername + ",CpsPassword=" + CpsPassword + ",ConfigClientType=" + ConfigClientType + ", getCellDataUrl=" + getCellDataUrl + ", getNbrListUrl="
-                + getNbrListUrl + ", getPciUrl=" + getPciUrl + ", getPnfUrl=" + getPnfUrl + ", getRicIdUrl=" + getRicIdUrl + ",oofService=" + oofService + ", oofEndpoint=" + oofEndpoint + ", cg=" + cg + ", cid=" + cid
+                + getNbrListUrl + ", getPciUrl=" + getPciUrl + ", getPnfUrl=" + getPnfUrl + ", getRicIdUrl=" + getRicIdUrl + ", nearRtricUrl=" + nearRtricUrl + ",oofService=" + oofService + ", oofEndpoint=" + oofEndpoint + ", cg=" + cg + ", cid=" + cid
                 + ", pollingInterval=" + pollingInterval + ", pollingTimeout=" + pollingTimeout + ", minCollision="
                 + minCollision + ", minConfusion=" + minConfusion + ", sourceId=" + sourceId + ", callbackUrl="
                 + callbackUrl + ", pciOptimizer=" + pciOptimizer + ", pciAnrOptimizer=" + pciAnrOptimizer
@@ -557,6 +566,7 @@ public class Configuration {
         getPnfUrl = jsonObject.get("cps.get.pnf.url").getAsString();
         getPciUrl = jsonObject.get("cps.get.pci.url").getAsString();
         getNbrListUrl = jsonObject.get("cps.get.nbr.list.url").getAsString();
+        nearRtricUrl = jsonObject.get("sonhandler.nearRtricUrl").getAsString();
         ConfigClientType = jsonObject.get("sonhandler.clientType").getAsString();
 
         log.info("configuration from CBS {}", this);
