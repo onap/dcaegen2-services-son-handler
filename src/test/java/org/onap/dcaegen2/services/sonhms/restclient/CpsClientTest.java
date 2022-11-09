@@ -153,7 +153,7 @@ public class CpsClientTest {
 
     @Test
     public void getRicIdTest() {
-        String responseBody = "{\"idNearRTRIC\":\"22\"}";
+        String responseBody = "[{\"idNearRTRIC\":\"22\"}]";
         PowerMockito.mockStatic(SonHandlerRestTemplate.class);
         PowerMockito.mockStatic(Configuration.class);
         PowerMockito.when(Configuration.getInstance()).thenReturn(configuration);
@@ -164,8 +164,10 @@ public class CpsClientTest {
         try {
            String result = cps.getRicId("1");
            String response = ResponseEntity.ok(responseBody).getBody();
-           JSONObject respObj = new JSONObject(response);
-           assertEquals(respObj.get("idNearRTRIC"), result);
+           JSONArray requestArray = new JSONArray(response);
+           for (int i=0;i<requestArray.length();i++) {
+               assertEquals(requestArray.getJSONObject(i).getString("idNearRTRIC"), result);
+           }
         } catch (CpsNotFoundException e) {
            log.debug("CpsNotFoundException {}", e.toString());
         }

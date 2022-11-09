@@ -31,85 +31,141 @@ import java.util.List;
 
 public class ANRPayload {
 
-    @JsonProperty("action")
-    private String action;
+  @JsonProperty("policy_id")
+  private String policy_id;
 
-    @JsonProperty("policy_id")
-    private int policy_id;
+  @JsonProperty("policytype_id")
+  private String policy_type_id;
 
-    @JsonProperty("policy_type_id")
-    private int policy_type_id;
+  @JsonProperty("ric_id")
+  private String ric_id;
 
-    @JsonProperty("ric_id")
-    private String ric_id;
+  @JsonProperty("policy_data")
+  private PolicyData policy_data;
 
-    @JsonProperty("policy_data")
-    private PolicyData policy_data;
+  @JsonProperty("service_id")
+  private String service_id;
 
-    /**
-     * Constructor
-     */
+  @JsonProperty("transient")
+  private boolean transient1;
 
-    public ANRPayload() {
+  @JsonProperty("status_notification_uri")
+  private String status;
 
-    }
+  /**
+   * Constructor
+   */
 
-    /**
-     *  Constructor
-     */
+  public ANRPayload() {
 
-    public ANRPayload(String action, int policy_id, int policy_type_id, String ric_id, PolicyData policy_data) {
-        super();
-        this.action = action;
-        this.policy_id = policy_id;
-        this.policy_type_id = policy_type_id;
-        this.ric_id = ric_id;
-        this.policy_data=policy_data;
-    }
+  }
 
-    public String getAction() {
-        return action;
-    }
+    
 
-    public void setAction(String action) {
-        this.action = action;
-    }
+  public ANRPayload(String policy_id, String policy_type_id, String ric_id, PolicyData policy_data,
+      String service_id, boolean transient1, String status) {
+    super();
+    this.policy_id = policy_id;
+    this.policy_type_id = policy_type_id;
+    this.ric_id = ric_id;
+    this.policy_data = policy_data;
+    this.service_id = service_id;
+    this.transient1 = transient1;
+    this.status = status;
+  }
 
-    public int getPolicyId(){
-        return policy_id;
-    }
-    public void setPolicyId(int policy_id){
-        this.policy_id = policy_id;
-    }
+  public String getPolicy_id() {
+    return policy_id;
+  }
 
-    public int getPolicyTypeId(){
-        return policy_type_id;
-    }
 
-    public void setPolicyTypeId(int policy_type_id){
-        this.policy_type_id = policy_type_id;
-    }
 
-    public String getRicId(){
-        return ric_id;
-    }
+  public void setPolicy_id(String policy_id) {
+    this.policy_id = policy_id;
+  }
 
-    public void setRicId(String ric_id){
-        this.ric_id = ric_id;
-    }
 
-    public PolicyData getPolicyData(){
-        return policy_data;
-    }
 
-    public void setPolicyData(PolicyData policy_data){
-        this.policy_data = policy_data;
-    }
+  public String getPolicy_type_id() {
+    return policy_type_id;
+  }
 
-    @Override
-    public String toString() {
-        return "Payload [=" + action + "]";
 
-    }
+
+  public void setPolicy_type_id(String policy_type_id) {
+    this.policy_type_id = policy_type_id;
+  }
+
+
+
+  public String getRic_id() {
+    return ric_id;
+  }
+
+
+
+  public void setRic_id(String ric_id) {
+    this.ric_id = ric_id;
+  }
+
+
+
+  public PolicyData getPolicy_data() {
+    return policy_data;
+  }
+
+
+
+  public void setPolicy_data(PolicyData policy_data) {
+    this.policy_data = policy_data;
+  }
+
+
+
+  public String getService_id() {
+    return service_id;
+  }
+
+
+
+  public void setService_id(String service_id) {
+    this.service_id = service_id;
+  }
+
+
+
+  public boolean isTransient1() {
+    return transient1;
+  }
+
+
+
+  public void setTransient1(boolean transient1) {
+    this.transient1 = transient1;
+  }
+
+
+
+  public String getStatus() {
+    return status;
+  }
+
+
+
+  public void setStatus(String status) {
+    this.status = status;
+  }
+
+
+
+  @Override
+  public String toString() {
+    return "ANRPayload [ policy_id=" + policy_id + ", policy_type_id=" + policy_type_id
+        + ", ric_id=" + ric_id + ", policy_data=" + policy_data + ", service_id=" + service_id + ", transient1="
+        + transient1 + ", status=" + status + "]";
+  }
+
+   
 
 }
+
