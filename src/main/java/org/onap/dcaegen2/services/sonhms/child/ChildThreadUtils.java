@@ -275,7 +275,7 @@ public class ChildThreadUtils {
                     }
                     String requestId = UUID.randomUUID().toString();
                     String notification = getNotificationString(pnfName, requestId, payloadString,
-                            System.currentTimeMillis(), "ModifyA1Policy");
+                            System.currentTimeMillis(), "putA1Policy");
                     log.info("Policy Notification: {}", notification);
                     Boolean result = policyDmaapClient.sendNotificationToPolicy(notification);
                     log.info("send notification to policy result {} ", result);

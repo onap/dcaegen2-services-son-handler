@@ -88,7 +88,14 @@ public class Neighbours {
     }
 
     public void setHoKpi(int hoKpi) {
-        this.hoKpi = hoKpi;
+       this.hoKpi = hoKpi;
+    }
+
+    @Override
+    public String toString() {
+         return "Neighbours [pnfName=" + pnfName + ", plmnId=" + plmnId + ", cellId=" + cellId + ", hoKpi=" + hoKpi
+            + "]";
     }
 
 }
+
