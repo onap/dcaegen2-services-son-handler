@@ -38,6 +38,7 @@ import org.onap.dcaegen2.services.sonhms.dao.HandOverMetricsRepository;
 import org.onap.dcaegen2.services.sonhms.dmaap.PolicyDmaapClient;
 import org.onap.dcaegen2.services.sonhms.entity.HandOverMetrics;
 import org.onap.dcaegen2.services.sonhms.model.AdditionalMeasurements;
+import org.onap.dcaegen2.services.sonhms.model.A1Payload;
 import org.onap.dcaegen2.services.sonhms.model.ANRPayload;
 import org.onap.dcaegen2.services.sonhms.model.CellConfig;
 import org.onap.dcaegen2.services.sonhms.model.Common;
@@ -46,6 +47,7 @@ import org.onap.dcaegen2.services.sonhms.model.Data;
 import org.onap.dcaegen2.services.sonhms.model.FapService;
 import org.onap.dcaegen2.services.sonhms.model.Flag;
 import org.onap.dcaegen2.services.sonhms.model.HoDetails;
+import org.onap.dcaegen2.services.sonhms.model.Input;
 import org.onap.dcaegen2.services.sonhms.model.Lte;
 import org.onap.dcaegen2.services.sonhms.model.LteCell;
 import org.onap.dcaegen2.services.sonhms.model.NeighborListInUse;
@@ -108,7 +110,7 @@ public class PmNotificationHandler {
                     .getAdditionalMeasurements()) {
                 int attemptsCount = Integer.parseInt(additionalMeasurements.getHashMap().get("InterEnbOutAtt_X2HO"));
                 int successCount = Integer.parseInt(additionalMeasurements.getHashMap().get("InterEnbOutSucc_X2HO"));
-                int successRate = (int)((float) successCount / attemptsCount) * 100;
+                int successRate = (int)(((float) successCount / attemptsCount) * 100);
 
                 Neighbours neighbourCell = new Neighbours();
                 neighbourCell.setHoKpi(successRate);
@@ -162,17 +164,21 @@ public class PmNotificationHandler {
             String pnfName = pmNotification.getEvent().getCommonEventHeader().getReportingEntityName();
             String plmnId =  pmNotification.getEvent().getMeasurementFields()
                .getAdditionalMeasurements().get(0).getHashMap().get("networkId");
-            String ric_id = CpsClient.getRicId(cellId);
-            ANRPayload payload = new ANRPayload("CreatePolicy",1,1,ric_id,
-                    (new PolicyData(pnfName,plmnId,cellId,neighbourList)));
+            UUID uuid = UUID.randomUUID(); 
+
+            A1Payload payload = new A1Payload(new Input("https://10.31.4.43:30294/a1-policy/v2/policies",
+                                       new ANRPayload(uuid.toString(),"ANR","a1-terminator",
+                                       new PolicyData(pnfName,plmnId,cellId,neighbourList),"",false,"")));
+
             log.info("payload : {}", payload);
             String anrUpdateString = mapper.writeValueAsString(payload);
+            log.info("After converting A1Paylod to String: " + anrUpdateString);
             ChildThreadUtils childUtils = new ChildThreadUtils(ConfigPolicy.getInstance(), new PnfUtils(),
                     new PolicyDmaapClient(new DmaapUtils(), Configuration.getInstance()), new HoMetricsComponent());
             String requestId = UUID.randomUUID().toString();
             String notification = childUtils.getNotificationString(
                     pmNotification.getEvent().getCommonEventHeader().getReportingEntityName(), requestId,
-                    anrUpdateString, System.currentTimeMillis(), "ModifyA1Policy");
+                    anrUpdateString, System.currentTimeMillis(), "putA1Policy");
             log.info("Policy Notification: {}", notification);
             Boolean result = policyDmaapClient.sendNotificationToPolicy(notification);
             log.info("send notification to policy result {} ", result);
@@ -201,3 +207,4 @@ public class PmNotificationHandler {
         return true;
     }
 }
+

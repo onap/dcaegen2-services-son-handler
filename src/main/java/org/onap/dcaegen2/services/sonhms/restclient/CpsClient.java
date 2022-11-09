@@ -139,14 +139,20 @@ public class CpsClient extends ConfigInterface {
 
     public static String getRicId(String cellId) throws CpsNotFoundException {
         Configuration configuration = Configuration.getInstance();
+        String responseObject = "";
         String requestUrl = configuration.getCpsServiceUrl() + "/" + configuration.getGetRicIdUrl();
         JSONObject inputparam = new JSONObject();
         JSONObject reqbody = new JSONObject();
         inputparam.put("cellId", cellId);
         reqbody.put("inputParameters", inputparam);
         String response = sendRequest(requestUrl, reqbody);
-        JSONObject responseObject = new JSONObject(response);
-        return responseObject.getString("idNearRTRIC");
+        log.info("Response from CPS is : " + response);
+        JSONArray requestArray = new JSONArray(response);
+        for (int i=0;i<requestArray.length();i++) {
+            String ricId = requestArray.getJSONObject(i).optString("idNearRTRIC");
+            responseObject = ricId;
+        }
+        return responseObject;
     }
 
     /**
