@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2954d17d_8c7e5647",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/PmNotificationHandler.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2022-11-15T13:55:22Z",
+      "side": 1,
+      "message": "where does this hard-coded URL come from?",
+      "revId": "b051690d8f9cc695255227b196d00656f355668f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a27b8a50_7d227979",
+        "filename": "src/main/java/org/onap/dcaegen2/services/sonhms/PmNotificationHandler.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2022-11-15T13:55:22Z",
+      "side": 1,
+      "message": "are there any security issues with logging the payload?",
+      "revId": "b051690d8f9cc695255227b196d00656f355668f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
