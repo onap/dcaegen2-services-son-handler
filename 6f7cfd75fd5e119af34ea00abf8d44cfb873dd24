@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6c8baa0f_2e90bd20",
+        "filename": "releases/2.1.11-container.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2022-11-26T16:01:18Z",
+      "side": 1,
+      "message": "1227 is not a valid job#... probably should be 1210?",
+      "range": {
+        "startLine": 4,
+        "startChar": 66,
+        "endLine": 4,
+        "endChar": 70
+      },
+      "revId": "6f7cfd75fd5e119af34ea00abf8d44cfb873dd24",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
