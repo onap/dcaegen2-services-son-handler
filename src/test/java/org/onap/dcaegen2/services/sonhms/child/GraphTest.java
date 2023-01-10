@@ -3,6 +3,7 @@
  *  son-handler
  *  ================================================================================
  *   Copyright (C) 2019 Wipro Limited.
+ *   Copyright (C) 2022 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -21,11 +22,13 @@
 
 package org.onap.dcaegen2.services.sonhms.child;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import org.junit.Test;
 import org.onap.dcaegen2.services.sonhms.model.CellPciPair;
@@ -37,7 +40,7 @@ public class GraphTest {
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(GraphTest.class);
 
     @Test
-    public void graphTest() {
+    public void graphTest() throws IllegalArgumentException {
 
         CellPciPair cpPair1 = new CellPciPair();
         cpPair1.setCellId("25");
@@ -57,6 +60,18 @@ public class GraphTest {
         System.out.println("graph" + graph.getCellPciNeighbourMap());
         System.out.println("graphJSON" + graph.getPciNeighbourJson());
         assertNotEquals(map, graph.getCellPciNeighbourMap());
+        graph.setNetworkId("110");
+        UUID graphId = new UUID(1, 2);
+        graph.setGraphId(graphId);
+        assertEquals("110", graph.getNetworkId());
+        assertEquals(graphId, graph.getGraphId());
+        Object obj = new Object();
+        obj = null;
+        graph.equals(obj);
+        assertEquals(false, graph.equals(obj));
+        Object obj1 = new Object();
+        obj1 = 1;
+        assertEquals(false, graph.hashCode() == obj1.hashCode());
 
     }
 

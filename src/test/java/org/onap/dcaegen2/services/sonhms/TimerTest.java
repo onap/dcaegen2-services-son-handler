@@ -3,6 +3,7 @@
  *  son-handler
  *  ================================================================================
  *   Copyright (C) 2019 Wipro Limited.
+ *   Copyright (C) 2022 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -40,7 +41,11 @@ public class TimerTest {
 		assertEquals(timestamp, timer.getCurrentTime());
 		assertEquals(timestamp, timer.getStartTime());
 		assertEquals(true, timer.getIsTimer());
-
+                Timer timer1 = new Timer();
+                timer1.setIsTimer(false);
+                assertEquals(false, timer1.getIsTimer());
+                timer1.setCount(0);
+                timer1.init();
 	}
 
 }

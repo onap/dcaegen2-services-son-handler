@@ -3,6 +3,7 @@
  *  son-handler
  *  ================================================================================
  *   Copyright (C) 2019 Wipro Limited.
+ *   Copyright (C) 2022 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -29,6 +30,9 @@ public class NewFmNotificationTest {
 	@Test
 	public void test() {
 		NewFmNotification newFmNotification = new NewFmNotification(true);
+                NewFmNotification newFmNotification1 = new NewFmNotification();		
+                newFmNotification1.setNewNotif(false);
+                newFmNotification1.init();
 		newFmNotification.setNewNotif(true);
 		assertTrue(newFmNotification.getNewNotif());
 	}

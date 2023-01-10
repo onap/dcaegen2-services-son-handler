@@ -3,6 +3,7 @@
  *  son-handler
  *  ================================================================================
  *   Copyright (C) 2019 Wipro Limited.
+ *   Copyright (C) 2022 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -36,6 +37,13 @@ public class TopicTest {
         assertEquals("consumer", topic.getConsumer());
         assertEquals("name", topic.getName());
         assertEquals("producer", topic.getProducer());
-        
+        String name="name";
+        String producer="producer";
+        String consumer="consumer";
+        assertEquals("topic [name=" + name + ", producer=" + producer + ", consumer=" + consumer + "]",topic.toString());
+        Topic topic2=new Topic(name, producer, consumer);
+        assertEquals("consumer", topic2.getConsumer());
+        assertEquals("name", topic2.getName());
+        assertEquals("producer", topic2.getProducer());
     }
 }

@@ -3,6 +3,7 @@
  *  son-handler
  *  ================================================================================
  *   Copyright (C) 2019 Wipro Limited.
+ *   Copyright (C) 2022 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -33,10 +34,15 @@ public class PerformanceNotificationsTest {
 	@Test
 	public void test() {
 		
-		 PerformanceNotifications performanceNotifications = new PerformanceNotifications();
-		 performanceNotifications.setNotification("notification");
-		 performanceNotifications.setCreatedAt(createdAt);
+             PerformanceNotifications performanceNotifications = new PerformanceNotifications();
+             performanceNotifications.setNotification("notification");
+             performanceNotifications.setCreatedAt(createdAt);
 	     assertEquals("notification", performanceNotifications.getNotification());
-	     assertEquals(createdAt, performanceNotifications.getCreatedAt());	}
+	     assertEquals(createdAt, performanceNotifications.getCreatedAt());
+             String notification = "Notification";
+             PerformanceNotifications performanceNotifications1 = new PerformanceNotifications(notification, createdAt);
+             assertEquals(notification, performanceNotifications1.getNotification());
+             assertEquals(createdAt, performanceNotifications1.getCreatedAt());
+	}
 
 }

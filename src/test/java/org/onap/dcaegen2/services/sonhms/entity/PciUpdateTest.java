@@ -3,6 +3,7 @@
  *  son-handler
  *  ================================================================================
  *   Copyright (C) 2019-2020 Wipro Limited.
+ *   Copyright (C) 2022 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -40,6 +41,11 @@ public class PciUpdateTest {
 		assertEquals(5000, pciUpdate.getNewPci());
 		assertEquals(3000, pciUpdate.getOldPci());
 		assertEquals(3, pciUpdate.getNegativeAckCount());
+                PciUpdate pciUpdate1 = new PciUpdate("Chn0001",3000,5000,3);
+                assertEquals("Chn0001", pciUpdate1.getCellId());
+                assertEquals(5000, pciUpdate1.getNewPci());
+                assertEquals(3000, pciUpdate1.getOldPci());
+                assertEquals(3, pciUpdate1.getNegativeAckCount());
 
 	}
 

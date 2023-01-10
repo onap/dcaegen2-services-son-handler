@@ -3,6 +3,7 @@
  *  son-handler
  *  ================================================================================
  *   Copyright (C) 2019 Wipro Limited.
+ *   Copyright (C) 2022 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -40,5 +41,11 @@ public class BufferedNotificationsTest {
         assertEquals("clusterId", bufferedNotifications.getClusterId());
         assertEquals("notification", bufferedNotifications.getNotification());
         assertEquals(createdAt, bufferedNotifications.getCreatedAt());
+        BufferedNotifications bufferedNotifications2=new BufferedNotifications("notification", createdAt,"clusterId");
+        bufferedNotifications2.setClusterId("clusterId");
+        bufferedNotifications2.setNotification("notification");
+        assertEquals("clusterId", bufferedNotifications2.getClusterId());
+        assertEquals("notification", bufferedNotifications2.getNotification());
+        assertEquals(createdAt, bufferedNotifications2.getCreatedAt());
     }
 }

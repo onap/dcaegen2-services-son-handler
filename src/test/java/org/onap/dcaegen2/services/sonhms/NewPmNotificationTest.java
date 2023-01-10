@@ -3,6 +3,7 @@
  *  son-handler
  *  ================================================================================
  *   Copyright (C) 2019 Wipro Limited.
+ *   Copyright (C) 2022 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -32,6 +33,12 @@ public class NewPmNotificationTest {
 		NewPmNotification newPmNotification = new NewPmNotification();
 		newPmNotification.setNewNotif(true);
 		assertTrue(newPmNotification.getNewNotif());
+                NewPmNotification newPmNotification1 = new NewPmNotification(true);
+                newPmNotification1.setNewNotif(true);
+                assertEquals(true, newPmNotification1.getNewNotif());
+                NewPmNotification newPmNotification2 = new NewPmNotification();
+                newPmNotification2.setNewNotif(false);
+                newPmNotification2.init();
 	}
 
 }

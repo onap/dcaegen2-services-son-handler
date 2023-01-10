@@ -3,6 +3,7 @@
  *  son-handler
  *  ================================================================================
  *   Copyright (C) 2019 Wipro Limited.
+ *   Copyright (C) 2022 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -38,6 +39,10 @@ public class FaultNotificationsTest {
         faultNotifications.setCreatedAt(createdAt);
         assertEquals("notification", faultNotifications.getNotification());
         assertEquals(createdAt, faultNotifications.getCreatedAt());
+        FaultNotifications faultNotifications2=new FaultNotifications("notifications", createdAt);
+        faultNotifications2.setNotification("notifications");
+        assertEquals("notifications", faultNotifications2.getNotification());
+        assertEquals(createdAt,faultNotifications2.getCreatedAt());
     }
 
 }

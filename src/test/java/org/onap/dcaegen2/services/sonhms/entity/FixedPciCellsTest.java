@@ -3,6 +3,7 @@
  *  son-handler
  *  ================================================================================
  *   Copyright (C) 2019-2020 Wipro Limited.
+ *   Copyright (C) 2022 Wipro Limited.
  *   ==============================================================================
  *     Licensed under the Apache License, Version 2.0 (the "License");
  *     you may not use this file except in compliance with the License.
@@ -40,7 +41,12 @@ public class FixedPciCellsTest {
 		assertEquals("Chn0001", fixedPciCells.getCellId());
 		assertEquals(5000, fixedPciCells.getFixedPci());
 		assertEquals(createdAt, fixedPciCells.getCreatedAt());
-
+                String cellId = "100";
+                long fixedPci = 19393;
+                FixedPciCells fixedPciCells1 = new FixedPciCells(cellId, fixedPci, createdAt);
+                assertEquals(cellId, fixedPciCells1.getCellId());
+                assertEquals(fixedPci, fixedPciCells1.getFixedPci());
+                assertEquals(createdAt, fixedPciCells1.getCreatedAt());
 	}
 
 }
